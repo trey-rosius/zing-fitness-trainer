@@ -20,24 +20,12 @@ class BookingsPage extends StatelessWidget {
       ],
       child: DefaultTabController(
         length: 2,
-        child: MaterialApp(
-          title: 'Bookings',
-          home: Scaffold(
-            drawer: MyDrawer(),
+        child: Scaffold(
+
             appBar: AppBar(
               elevation: 0.0,
               iconTheme: IconThemeData(color: MyColors().deepBlue, size: 40),
-              backgroundColor: MyColors().white,
-              title: Consumer<AppBarData>(
-                builder: (context, data, _) => Center(
-                  child: Text(
-                    data.getTitle,
-                    style: TextStyle(
-                        color: MyColors().deepBlue,
-                        fontWeight: FontWeight.w900),
-                  ),
-                ),
-              ),
+
               bottom: PreferredSize(
                 preferredSize: Size(double.infinity, 50),
                 child: MyTabBar(),
@@ -51,7 +39,7 @@ class BookingsPage extends StatelessWidget {
             ),
             body: BookingsBody(),
           ),
-        ),
+
       ),
     );
   }

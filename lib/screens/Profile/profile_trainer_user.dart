@@ -65,100 +65,71 @@ class ProfilePageBody extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: MyColors().gray,
                         borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
+                    child: 
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            DottedBorder(
-                              //the image with the dotted border here
-                                borderType: BorderType.Circle,
-                                padding: EdgeInsets.all(8),
-                                color: MyColors().deepBlue,
-                                strokeWidth: 2,
-                                dashPattern: [5, 8],
-                                child:  ClipRRect(
-                                    borderRadius:
-                                    BorderRadius.circular(60),
+                            ClipOval(
+
                                     child: CachedNetworkImage(
-                                      width: 70.0,
-                                      height: 70.0,
+                                      width: 80.0,
+                                      height: 80.0,
                                       fit: BoxFit.cover,
                                       imageUrl: profileModel.profilePicUrl??"",
                                       placeholder: (context, url) =>
                                           CircularProgressIndicator(),
                                       errorWidget: (context, url, ex) =>
                                           Icon(Icons.error),
-                                    ))
-                            ),
+                                    )),
+
 
                             //the name and age here in a column
 
-                            Padding(
-                              padding:  EdgeInsets.only(left: 26),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    profileModel.name,
-                                    style:
-                                    TextStyle(color: MyColors().textBlack, fontSize: 16),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      Text(
-                                        "Age: ",
-                                        style:
-                                        TextStyle(color: MyColors().textBlack, fontSize: 13),
-                                      ),
-                                      Text(
-                                        profileModel.age,
-                                        style:
-                                        TextStyle(color: MyColors().textBlack, fontSize: 13),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                            Expanded(
+                              child: Padding(
+                                padding:  EdgeInsets.only(left: 26),
+                                child:
+                                    Text(
+                                      profileModel.name,
+                                      style:
+                                      TextStyle(color: MyColors().textBlack, fontSize: 20),
+                                    ),
+
+
+
+
+
                               ),
                             ),
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color:MyColors().deepBlue,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(20)
+                                
+                              ),
+                              child: IconButton(icon: Icon(Icons.edit,color:  Colors.white), onPressed: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) {
+                                    return StreamProvider.value(
+                                        value: ProfileProvider.instance()
+                                            .streamUserCerts(userId),
+                                        catchError: (context, error) {
+                                          print(error);
+                                        },
+                                        child: EditProfileTrainer(userId: userId,trainerProfileModel: profileModel,));
+                                    //  child: ProfileRegularUser();
+                                  }),
+                                );
+                              }),
+                            )
                           ],
                         ),
-                        IconButton(
-                          padding: EdgeInsets.all(3),
-                          alignment: Alignment.topRight,
-                          icon: Icon(
-                            Icons.settings,
-                            color: MyColors().deepBlue,
-                            size: 15,
-                          ),
-                          onPressed: () {
 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) {
-                                return StreamProvider.value(
-                                    value: ProfileProvider.instance()
-                                        .streamUserCerts(userId),
-                                    catchError: (context, error) {
-                                      print(error);
-                                    },
-                                    child: EditProfileTrainer(userId: userId,trainerProfileModel: profileModel,));
-                                //  child: ProfileRegularUser();
-                              }),
-                            );
 
-                          },
-                        ),
-                      ],
-                    ),
                   ),
                   ProfileTabBar(),
                   Padding(

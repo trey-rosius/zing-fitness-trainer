@@ -59,7 +59,7 @@ class TrainerInfoAddHome extends StatelessWidget {
                       width: MediaQuery.of(context).size.width / 1.2,
                       child: Column(
                         children: <Widget>[
-                          /////////////////////////////////////////////////////////////////////////////////
+
                           DropDown(
                             label: 'Service area',
                             item: ['hello', 'how', 'are', 'you'],

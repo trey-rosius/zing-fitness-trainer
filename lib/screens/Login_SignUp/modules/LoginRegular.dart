@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:zing_fitnes_trainer/components/passwordInput.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Login_SignUp/modules/SignUpRegular.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/edit_profile_regular.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/profile_regular_user.dart';
+import 'package:zing_fitnes_trainer/screens/home/home_container.dart';
+import 'package:zing_fitnes_trainer/screens/home/home_screen.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/authentication.dart';
 import 'package:zing_fitnes_trainer/utils/showdialogue.dart';
@@ -190,11 +193,6 @@ class _LoginRegularState extends State<LoginRegular> {
                           onClick: () {
                             validateForm(data);
 
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              content: Text('Button moved to separate widget'),
-                              duration: Duration(seconds: 3),
-                            ));
                           }),
                     )
               //
@@ -205,6 +203,12 @@ class _LoginRegularState extends State<LoginRegular> {
         ],
       ),
     );
+  }
+  _saveUserId(String userId) async {
+    final prefs =  await StreamingSharedPreferences.instance;
+
+
+    prefs.setString(Config.userId, userId);
   }
 
   validateForm(LoginSignUpProvider data) {
@@ -222,7 +226,8 @@ class _LoginRegularState extends State<LoginRegular> {
           });
 
           data.login().then((value) {
-
+            _saveUserId(value);
+/*
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {
@@ -237,6 +242,16 @@ class _LoginRegularState extends State<LoginRegular> {
                   ),
                 );
               }),
+            );
+            */
+
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                 builder: (context) => HomeContainer(),
+
+              ),
             );
 
             print("login is == " + value);
@@ -256,6 +271,12 @@ class _LoginRegularState extends State<LoginRegular> {
         setState(() {
           _loading = false;
         });
+        Scaffold.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+              onError.toString(),style: TextStyle(fontSize: 20),),
+          duration: Duration(seconds: 3),
+        ));
       });
 
       /*

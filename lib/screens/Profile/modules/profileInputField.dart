@@ -21,8 +21,7 @@ class ProfileInputField extends StatelessWidget {
         MediaQuery.of(context).size.width / 32,
         0,
       ),
-      width: MediaQuery.of(context).size.width -
-          (MediaQuery.of(context).size.width / 7),
+
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(15)),
         color: colors.inputBlue,

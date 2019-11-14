@@ -14,6 +14,7 @@ class PersonalDetails extends StatelessWidget {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             //the gray container containing physical properties and their values
+              /*
             Container(
               padding: EdgeInsets.all(15),
               decoration: BoxDecoration(
@@ -30,7 +31,7 @@ class PersonalDetails extends StatelessWidget {
               ),
             ),
             //container ends here,
-
+*/
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
             ),

@@ -12,7 +12,7 @@ import 'package:zing_fitnes_trainer/components/button.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/certificate_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/pFootbg.dart';
-
+import 'package:zing_fitnes_trainer/utils/myColors.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/profileInputField.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/row_text_input.dart';
 
@@ -79,13 +79,12 @@ class _FormSectionState extends State<FormSection> {
   String serviceArea;
   String experience;
   String sessionRate;
-  String specialty;
+
   String _path;
   Map<String, String> _paths;
   String _extension='pdf';
   bool _loadingPath = false;
-  bool _multiPick = false;
-  bool _hasValidMime = false;
+
   FileType _pickingType = FileType.CUSTOM;
   File file;
   var targetPath;
@@ -93,14 +92,14 @@ class _FormSectionState extends State<FormSection> {
   String profilePic;
   String _fileName;
   bool loading = false;
+  String sessionType = 'Single';
 
   final  userNameController = TextEditingController();
   final  locationController = TextEditingController();
   final  phoneController = TextEditingController();
-  final  heightController = TextEditingController();
-  final  ageController = TextEditingController();
-  final  weightController = TextEditingController();
-  final  specialityController = TextEditingController();
+  final  experienceController = TextEditingController();
+  final  sessionTypeController = TextEditingController();
+
   final  sessionRateController = TextEditingController();
 
 
@@ -158,11 +157,11 @@ class _FormSectionState extends State<FormSection> {
       profilePic = widget.profileModel.profilePicUrl;
       userNameController.text = widget.profileModel.name;
       phoneController.text = widget.profileModel.phoneNumber;
-      heightController.text = widget.profileModel.height;
-      ageController.text = widget.profileModel.age;
-      weightController.text = widget.profileModel.weight;
+
+      sessionType = widget.profileModel.sessionType;
+      experienceController.text = widget.profileModel.experience;
       locationController.text = widget.profileModel.location;
-      specialityController.text = widget.profileModel.speciality;
+
       sessionRateController.text = widget.profileModel.sessionRate;
 
 
@@ -180,10 +179,10 @@ class _FormSectionState extends State<FormSection> {
     userNameController.dispose();
     locationController.dispose();
     phoneController.dispose();
-    heightController.dispose();
-    ageController.dispose();
-    weightController.dispose();
-    specialityController.dispose();
+
+    sessionTypeController.dispose();
+    experienceController.dispose();
+
     sessionRateController.dispose();
 
   }
@@ -268,125 +267,195 @@ class _FormSectionState extends State<FormSection> {
   @override
   Widget build(BuildContext context) {
     var userCertModel = Provider.of<List<UserCertificateModel>>(context);
-    return Container(
-      alignment: Alignment.topLeft,
-      child: SingleChildScrollView(
+    var colors = new MyColors();
+    return SingleChildScrollView(
         child: Form(
           key: _regularFormKey,
-          child: Center(
+          child:  Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  profilePic != null ?
+                  mainAxisAlignment: MainAxisAlignment.start,
 
-                  ClipRRect(
-                      borderRadius:
-                      BorderRadius.circular(60),
-                      child: CachedNetworkImage(
-                        width: 100.0,
-                        height: 100.0,
-                        fit: BoxFit.cover,
-                        imageUrl: profilePic??"",
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, ex) =>
-                            Icon(Icons.error),
-                      )) :
-                  _previewImage(),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
 
-                  Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 50)),
+                    profilePic != null?
 
-                  ProfileInputField(
-                    hintText: 'Trainer Name',
-                    icon: Icons.account_circle,
-                    controller: userNameController,
-                    validator: (value) {
-                      return Validator().textValidator(value);
-                    },
-                    onChanged: (value) {
-                      phoneNumber = value;
-                    },
-                  ),
-                  Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 50)),
-                  ProfileInputField(
-                    hintText: 'Mobile number',
-                    icon: Icons.phone_iphone,
-                    controller: phoneController,
+                   Center(
+                     child:  ClipRRect(
+                         borderRadius:
+                         BorderRadius.circular(60),
+                         child: CachedNetworkImage(
+                           width: 100.0,
+                           height: 100.0,
+                           fit: BoxFit.cover,
+                           imageUrl: profilePic??"",
+                           placeholder: (context, url) =>
+                               CircularProgressIndicator(),
+                           errorWidget: (context, url, ex) =>
+                               Icon(Icons.error),
+                         )),
+                   ) :
 
-                    validator: (value) {
-                      return Validator().textValidator(value);
-                    },
-                    onChanged: (value) {
-                      phoneNumber = value;
-                    },
-                  ),
+                    Center(
+                      child: _previewImage(),
+                    ),
 
-                  Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 50)),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 50)),
 
-                  ProfileInputField(
-                    hintText: 'Location',
-                    controller: locationController,
-                    icon: Icons.location_on,
-                    validator: (value){return Validator().textValidator(value);},
-                  ),
+                    ProfileInputField(
+                      hintText: 'Trainer Name',
+                      icon: Icons.account_circle,
+                      controller: userNameController,
+                      validator: (value) {
+                        return Validator().textValidator(value);
+                      },
+                      onChanged: (value) {
+                        phoneNumber = value;
+                      },
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 50)),
+                    ProfileInputField(
+                      hintText: 'Mobile number',
+                      icon: Icons.phone_iphone,
+                      controller: phoneController,
 
+                      validator: (value) {
+                        return Validator().textValidator(value);
+                      },
+                      onChanged: (value) {
+                        phoneNumber = value;
+                      },
+                    ),
 
-                  Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 50)),
-///////////
-                  /// as from here is the trainer info on the design sheet
-///////////
-                  Container(
-                    width: MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width / 7),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 50)),
 
-                      children: <Widget>[
-                        RowTextInput(label:'Height',controller: heightController,validator: (value){return Validator().textValidator(value);},),
-                        RowTextInput(label:'Age',controller: ageController,validator: (value){return Validator().textValidator(value);},),
-                      ],
-                    ) ,
-                  ),
-
-                  Padding(padding: EdgeInsets.only(top:MediaQuery.of(context).size.height/50)),
-
-                  Container(
-                    width: MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width / 7),
-                    child:RowTextInput(label:'Weight',controller: weightController,validator: (value){return Validator().textValidator(value);},),
-                  ),
+                    ProfileInputField(
+                      hintText: 'Session Area/Location',
+                      controller: locationController,
+                      icon: Icons.location_on,
+                      validator: (value){return Validator().textValidator(value);},
+                    ),
 
 
-                  Padding(
-                   padding:  EdgeInsets.all(20.0),
-                   child: Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: <Widget>[
-                       Text("Certificates"),
-                       _loadingPath ? CircularProgressIndicator() : IconButton(icon: Icon(Icons.add_circle,size: 40,), onPressed: (){
-                       _openFileExplorer();
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 50)),
 
-                       })
-                     ],
+
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                        MediaQuery.of(context).size.width / 30,
+                        5,
+                        MediaQuery.of(context).size.width / 32,
+                        0,
+                      ),
+
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: colors.inputBlue,
+                      ),
+
+                      child: TextFormField(
+                          onChanged: ((value){
+
+                          }),
+                          validator: (value){return Validator().textValidator(value);},
+                          //   initialValue: initialValue,
+                          controller: sessionRateController,
+                          keyboardType: TextInputType.number,
+
+                          decoration: InputDecoration(
+
+                              labelText: "Hourly Rates(\$)",
+                            labelStyle: TextStyle(color: colors.deepBlue),
+                              border: InputBorder.none,
+                              )),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 50)),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                        MediaQuery.of(context).size.width / 30,
+                        5,
+                        MediaQuery.of(context).size.width / 32,
+                        0,
+                      ),
+
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: colors.inputBlue,
+                      ),
+
+                      child: TextFormField(
+                          onChanged: ((value){
+
+                          }),
+                          validator: (value){return Validator().textValidator(value);},
+                          //   initialValue: initialValue,
+                          controller: experienceController,
+                          keyboardType: TextInputType.number,
+
+                          decoration: InputDecoration(
+
+                            labelText: "Years of Experience",
+                            labelStyle: TextStyle(color: colors.deepBlue),
+                            border: InputBorder.none,
+                          )),
+                    ),
+
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 50)),
+
+                    Text("Session Type",style: TextStyle(fontSize: 20,color: Colors.white),),
+
+                    DropdownButton<String>(
+                      hint: Text(sessionType,style: TextStyle(color: colors.deepBlue),),
+
+
+                      items: <String>['Single','Groups(Maximum Count of 15 members','Classes'].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child:  Text(value,),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          sessionType = value;
+                        });
+                      },
+                    ),
+
+                    Padding(
+                     padding:  EdgeInsets.all(20.0),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: <Widget>[
+                         Text("Certificates"),
+                         _loadingPath ? CircularProgressIndicator() : IconButton(icon: Icon(Icons.add_circle,size: 40,), onPressed: (){
+                         _openFileExplorer();
+
+                         })
+                       ],
+                     ),
                    ),
-                 ),
 
-               userCertModel != null ?   ListView.builder(
-                 shrinkWrap: true,
-                 physics: ClampingScrollPhysics(),
-                 itemBuilder: (context,index){
-                    return StreamProvider.value(value: ProfileProvider.instance().streamCertificateDocument(userCertModel[index].certId),
-                    catchError: (context,error){
-                      print(error);
-                    }, child: Consumer<CertificateModel>(
+                 userCertModel != null ?   ListView.builder(
+                   shrinkWrap: true,
+                   physics: ClampingScrollPhysics(),
+                   itemBuilder: (context,index){
+                      return StreamProvider.value(value: ProfileProvider.instance().streamCertificateDocument(userCertModel[index].certId),
+                      catchError: (context,error){
+                        print(error);
+                      }, child: Consumer<CertificateModel>(
 builder: (_,value,child){
   return value !=null ? ListTile(
     title: Text(value.certName),
@@ -395,60 +464,40 @@ builder: (_,value,child){
     }),
   ) : Container();
 },
-                      ),);
-                  },
-                  itemCount: userCertModel.length,) : Container(),
+                        ),);
+                    },
+                    itemCount: userCertModel.length,) : Container(),
 
-                  Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 50)),
-
-
-                  Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 50)),
-
-                  Container(
-                    width: MediaQuery.of(context).size.width -
-                        (MediaQuery.of(context).size.width / 7),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height / 50),
-                        ),
-                        RowTextInput(label:'Session Rate(\$)',controller: sessionRateController,validator: (value){return Validator().textValidator(value);},),
-
-                      ],
-                    ),
-                  ),
-
-                  Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 50)),
-
-                  ProfileInputField(
-                    hintText: 'Speciality',
-                    controller: specialityController,
-                    validator: (value){return Validator().textValidator(value);},
-                  ),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 50)),
 
 
-                  Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 50)),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 50)),
 
-                  //Notes(hintText:'Notes'),
 
-                  Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 50)),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 50)),
 
-              loading ?CircularProgressIndicator() :   Button(
-                      text: 'Update',
-                      onClick: () async {
+
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 50)),
+
+                    //Notes(hintText:'Notes'),
+
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 50)),
+
+                loading ?Center(
+                  child: CircularProgressIndicator(),
+                ) :   Button(
+                        text: 'Update',
+                        onClick: () async {
     if (_regularFormKey.currentState.validate()) {
       setState(() {
         loading = true;
@@ -459,65 +508,66 @@ builder: (_,value,child){
 
         print("file image is" + file.path);
         compressAndGetFile(file, targetPath)
-            .then((File result) {
-          print("result is" + result.path);
-
-          ProfileProvider.instance()
-              .uploadImage(result)
-              .then((value) {
-            Map userData = Map<String, dynamic>();
-
-
-            userData[Config.profilePicUrl] = value;
-            userData[Config.fullNames] = userNameController.text;
-            userData[Config.location] = locationController.text;
-            userData[Config.height] = heightController.text;
-            userData[Config.age] = ageController.text;
-            userData[Config.weight] = weightController.text;
-            userData[Config.phone] = phoneController.text;
-            userData[Config.sessionRate] = sessionRateController.text;
-            userData[Config.speciality] = specialityController.text;
-
+              .then((File result) {
+            print("result is" + result.path);
 
             ProfileProvider.instance()
-                .saveUserData(widget.userId, userData)
-                .then((_) {
-              print("successfull");
+                .uploadImage(result)
+                .then((value) {
+              Map userData = Map<String, dynamic>();
 
-              setState(() {
-                loading = false;
+
+              userData[Config.profilePicUrl] = value;
+              userData[Config.fullNames] = userNameController.text;
+              userData[Config.location] = locationController.text;
+              userData[Config.experience] =experienceController.text;
+              userData[Config.sessionType] =sessionType;
+
+              userData[Config.phone] = phoneController.text;
+              userData[Config.sessionRate] = sessionRateController.text;
+
+
+
+              ProfileProvider.instance()
+                  .saveUserData(widget.userId, userData)
+                  .then((_) {
+                print("successfull");
+
+                setState(() {
+                  loading = false;
+                });
+
+                Navigator.of(context).pop();
               });
-
-              Navigator.of(context).pop();
             });
-          });
         });
       } else if(file == null && profilePic != null){
 
-            Map userData = Map<String, dynamic>();
+              Map userData = Map<String, dynamic>();
 
 
-            userData[Config.profilePicUrl] = profilePic;
-            userData[Config.fullNames] = userNameController.text;
-            userData[Config.location] = locationController.text;
-            userData[Config.height] = heightController.text;
-            userData[Config.age] = ageController.text;
-            userData[Config.weight] = weightController.text;
-            userData[Config.phone] = phoneController.text;
-            userData[Config.sessionRate] = sessionRateController.text;
-            userData[Config.speciality] = specialityController.text;
+              userData[Config.profilePicUrl] = profilePic;
+              userData[Config.fullNames] = userNameController.text;
+              userData[Config.location] = locationController.text;
+              userData[Config.experience] =experienceController.text;
+              userData[Config.sessionType] =sessionType;
 
 
-            ProfileProvider.instance()
-                .saveUserData(widget.userId, userData)
-                .then((_) {
-              print("successfull");
+              userData[Config.phone] = phoneController.text;
+              userData[Config.sessionRate] = sessionRateController.text;
 
-              setState(() {
-                loading = false;
+
+
+              ProfileProvider.instance()
+                  .saveUserData(widget.userId, userData)
+                  .then((_) {
+                print("successfull");
+
+                setState(() {
+                  loading = false;
+                });
+                Navigator.of(context).pop();
               });
-              Navigator.of(context).pop();
-            });
 
 
 
@@ -528,67 +578,67 @@ builder: (_,value,child){
 
         print("file image is" + file.path);
         compressAndGetFile(file, targetPath)
-            .then((File result) {
-          print("result is" + result.path);
-
-          ProfileProvider.instance()
-              .uploadImage(result)
-              .then((value) {
-            Map userData = Map<String, dynamic>();
-
-
-            userData[Config.profilePicUrl] = value;
-            userData[Config.fullNames] = userNameController.text;
-            userData[Config.location] = locationController.text;
-            userData[Config.height] = heightController.text;
-            userData[Config.age] = ageController.text;
-            userData[Config.weight] = weightController.text;
-            userData[Config.phone] = phoneController.text;
-            userData[Config.sessionRate] = sessionRateController.text;
-            userData[Config.speciality] = specialityController.text;
-
+              .then((File result) {
+            print("result is" + result.path);
 
             ProfileProvider.instance()
-                .saveUserData(widget.userId, userData)
-                .then((_) {
-              print("successfull");
+                .uploadImage(result)
+                .then((value) {
+              Map userData = Map<String, dynamic>();
 
-              setState(() {
-                loading = false;
+
+              userData[Config.profilePicUrl] = value;
+              userData[Config.fullNames] = userNameController.text;
+              userData[Config.location] = locationController.text;
+              userData[Config.sessionType] =sessionType;
+              userData[Config.experience] = experienceController.text;
+
+              userData[Config.phone] = phoneController.text;
+              userData[Config.sessionRate] = sessionRateController.text;
+
+
+              ProfileProvider.instance()
+                  .saveUserData(widget.userId, userData)
+                  .then((_) {
+                print("successfull");
+
+                setState(() {
+                  loading = false;
+                });
+                Navigator.of(context).pop();
               });
-              Navigator.of(context).pop();
             });
-          });
         });
 
       }else
         {
-          setState(() {
-            loading = false;
-          });
+            setState(() {
+              loading = false;
+            });
 
-          Scaffold.of(context).showSnackBar(SnackBar(
-            backgroundColor: Theme.of(context).primaryColor,
-            content: Text(
-                'Please add a profile picture'),
-            duration: Duration(seconds: 3),
-          ));
+            Scaffold.of(context).showSnackBar(SnackBar(
+              backgroundColor: Theme.of(context).primaryColor,
+              content: Text(
+                  'Please add a profile picture'),
+              duration: Duration(seconds: 3),
+            ));
         }
 
     }
-                      })
-                      ,
+                        })
+                        ,
 
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height / 15),
-                  ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height / 15),
+                    ),
 
-                  FootBgr()
-                ]),
+                    FootBgr()
+                  ]),
           ),
+
         ),
-      ),
-    );
+      );
+
   }
 }

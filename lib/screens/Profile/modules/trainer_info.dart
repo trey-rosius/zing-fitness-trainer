@@ -55,7 +55,7 @@ class TrainerInfo extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                detailItem("Service area", profileModel.serviceArea),
+                detailItem("Service area", profileModel.location),
                 Divider(
                   color: MyColors().gray,
                 ),
@@ -67,11 +67,11 @@ class TrainerInfo extends StatelessWidget {
                 Divider(
                   color: MyColors().gray,
                 ),
-                detailItem("Session type", "Body Sculpting"),
+                detailItem("Session type", profileModel.sessionType),
                 Divider(
                   color: MyColors().gray,
                 ),
-                detailItem("Speciality", profileModel.speciality),
+
               ],
             )
           ]),

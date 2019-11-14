@@ -134,6 +134,7 @@ class Config{
   static final String certName = "certName";
   static final String certId = "certId";
   static final String certUrl = "certUrl";
+  static final String sessionType = "sessionType";
   static final String certificates = "certificates";
   static final String userCertificates = "userCertificates";
   static final String notificationToken = "notificationToken";

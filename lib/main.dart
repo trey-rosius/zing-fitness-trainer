@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:zing_fitnes_trainer/screens/home/home_container.dart';
 import 'package:zing_fitnes_trainer/screens/selectusertype/select_user_type_screen.dart';
 import 'package:zing_fitnes_trainer/screens/shared_preferences/app_inherited_widget.dart';
 import 'package:zing_fitnes_trainer/screens/shared_preferences/app_settings.dart';
@@ -21,6 +22,7 @@ class App extends StatelessWidget {
       settings: settings,
        child: MaterialApp(
           debugShowCheckedModeBanner: false,
+         // home: HomeContainer(),
           home: SelectUserTypeScreen(),
 
           theme: ThemeData(
