@@ -34,6 +34,7 @@ dependencies:
   cached_network_image: ^1.1.1
   streaming_shared_preferences: ^1.0.0
   firebase_storage: ^3.0.6
+  flutter_cupertino_date_picker: ^1.0.8
 
   firebase_messaging: ^5.1.2
   font_awesome_flutter: ^8.4.0
@@ -81,9 +82,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-   - family: FredokaOne-Regular
+   - family: Montserrat
      fonts:
-       - asset: assets/fonts/FredokaOne-Regular.ttf
+       - asset: assets/fonts/Montserrat.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

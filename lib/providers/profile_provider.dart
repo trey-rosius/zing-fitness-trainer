@@ -57,6 +57,18 @@ class ProfileProvider extends ChangeNotifier{
     });
   }
 
+  /// Stream trainers profiles
+  ///
+  Stream<List<TrainerProfileModel>> streamTrainersList(String sessionType){
+    return _firestore.collection(Config.users)
+       .where(Config.sessionType,isEqualTo:sessionType )
+        .snapshots()
+        .map((list) =>
+    list.documents.map((doc) => TrainerProfileModel.fromFirestore(doc)).toList());
+
+
+
+  }
 
   /// Get a stream of a single trainer profile document
   Stream<TrainerProfileModel> streamTrainerUserProfile(String userId) {

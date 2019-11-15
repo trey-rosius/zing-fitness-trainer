@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_screen.dart';
 import 'package:zing_fitnes_trainer/screens/bookings_active/bookings_active.dart';
 import 'package:zing_fitnes_trainer/screens/home/zoom_scaffold.dart';
 
@@ -73,7 +74,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ],
           ),
 
-          body: BookingsPage()
+          body: BookingsPage(),
+          floatingActionButton: FloatingActionButton(onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewBookingScreen(widget.userId),
+
+              ),
+            );
+          },child: Icon(Icons.add),),
+
 
 
           // This trailing comma makes auto-formatting nicer for build methods.

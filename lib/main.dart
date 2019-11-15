@@ -22,11 +22,11 @@ class App extends StatelessWidget {
       settings: settings,
        child: MaterialApp(
           debugShowCheckedModeBanner: false,
-         // home: HomeContainer(),
-          home: SelectUserTypeScreen(),
+          home: HomeContainer(),
+         // home: SelectUserTypeScreen(),
 
           theme: ThemeData(
-              fontFamily: "FredokaOne-Regular",
+              fontFamily: "Montserrat",
 
               primaryColor: Color(0xff01b6ff),
               primaryColorDark: Color(0xff2f00ad)
