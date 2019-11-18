@@ -77,7 +77,7 @@ class CreditCardItem extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        listCreditCards[index].cardType == "Visa"
+                        listCreditCards[index].cardType == Config.visa
                             ? Image.asset('assets/images/visa.png',color: Colors.white,)
                             : Image.asset('assets/images/mastercard.png'),
                         StreamBuilder<DocumentSnapshot>(
@@ -121,9 +121,13 @@ class CreditCardItem extends StatelessWidget {
                                           .document(userId)
                                           .setData({
                                         Config.customerId:
-                                        listCreditCards[index].customer
+                                        listCreditCards[index].customer,
+                                        Config.cardNumber:listCreditCards[index].cardNumber,
+                                        Config.cardMonth:listCreditCards[index].month,
+                                        Config.cardYear:listCreditCards[index].year,
+                                        Config.cardType:listCreditCards[index].cardType
                                       }).then((_) {
-
+/*
                                         Firestore.instance
                                             .collection(Config.users)
                                             .document(userId)
@@ -132,10 +136,11 @@ class CreditCardItem extends StatelessWidget {
                                             .setData({
                                           Config.cardDefault:
                                           true,
-                                          Config.createdOn: new DateTime.now().toString(),
+                                          Config.createdOn:  DateTime.now().toString(),
                                         },merge: true).then((_) {
                                           //  showInSnackBar("Credit Card Info Saved");
                                         });
+                                        */
                                         //  showInSnackBar("Credit Card Info Saved");
                                       });
                                     },
@@ -160,10 +165,14 @@ class CreditCardItem extends StatelessWidget {
                                           .document(userId)
                                           .setData({
                                         Config.customerId:
-                                        listCreditCards[index].customer
+                                        listCreditCards[index].customer,
+                                        Config.cardNumber:listCreditCards[index].cardNumber,
+                                        Config.cardMonth:listCreditCards[index].month,
+                                        Config.cardYear:listCreditCards[index].year,
+                                        Config.cardType:listCreditCards[index].cardType
                                       }).then((_) {
 
-
+                                     /*
                                         Firestore.instance
                                             .collection(Config.users)
                                             .document(userId)
@@ -176,6 +185,7 @@ class CreditCardItem extends StatelessWidget {
                                         },merge: true).then((_) {
                                           //  showInSnackBar("Credit Card Info Saved");
                                         });
+                                        */
                                         //  showInSnackBar("Credit Card Info Saved");
                                       });
                                     },
@@ -330,9 +340,13 @@ class CreditCardItem extends StatelessWidget {
                                           .document(userId)
                                           .setData({
                                         Config.customerId:
-                                        listCreditCards[index].customer
+                                        listCreditCards[index].customer,
+                                        Config.cardNumber:listCreditCards[index].cardNumber,
+                                        Config.cardMonth:listCreditCards[index].month,
+                                        Config.cardYear:listCreditCards[index].year,
+                                        Config.cardType:listCreditCards[index].cardType
                                       }).then((_) {
-
+/*
                                         Firestore.instance
                                             .collection(Config.users)
                                             .document(userId)
@@ -345,6 +359,7 @@ class CreditCardItem extends StatelessWidget {
                                         },merge: true).then((_) {
                                           //  showInSnackBar("Credit Card Info Saved");
                                         });
+                                        */
                                         //  showInSnackBar("Credit Card Info Saved");
                                       });
                                     },
@@ -369,10 +384,14 @@ class CreditCardItem extends StatelessWidget {
                                           .document(userId)
                                           .setData({
                                         Config.customerId:
-                                        listCreditCards[index].customer
+                                        listCreditCards[index].customer,
+                                        Config.cardNumber:listCreditCards[index].cardNumber,
+                                        Config.cardMonth:listCreditCards[index].month,
+                                        Config.cardYear:listCreditCards[index].year,
+                                        Config.cardType:listCreditCards[index].cardType
                                       }).then((_) {
 
-
+/*
                                         Firestore.instance
                                             .collection(Config.users)
                                             .document(userId)
@@ -385,6 +404,7 @@ class CreditCardItem extends StatelessWidget {
                                         },merge: true).then((_) {
                                           //  showInSnackBar("Credit Card Info Saved");
                                         });
+                                        */
                                         //  showInSnackBar("Credit Card Info Saved");
                                       });
                                     },
@@ -470,7 +490,7 @@ class CreditCardItem extends StatelessWidget {
       );
 
     },
-    itemCount: listCreditCards.length,);
+    itemCount: listCreditCards.length);
 
 
 

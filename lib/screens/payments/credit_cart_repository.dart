@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_card_model.dart';
+import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 class CreditCardRepository  extends ChangeNotifier{
@@ -34,6 +35,23 @@ class CreditCardRepository  extends ChangeNotifier{
 
 
 
+  }
+
+  /// stream single credit card document
+  Stream<DefaultCreditCardModel> streamDefaultCreditCard(String userId) {
+    return _firestore
+        .collection(Config.users)
+        .document(userId)
+        .collection(Config.cardDefault)
+
+        .document(userId)
+
+        .snapshots()
+
+        .map((snap) {
+      print(snap.data.toString());
+      return DefaultCreditCardModel.fromFirestore(snap);
+    });
   }
 
 
