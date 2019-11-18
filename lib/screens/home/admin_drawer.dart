@@ -9,6 +9,7 @@ import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/home/zoom_scaffold.dart';
+import 'package:zing_fitnes_trainer/screens/payments/credit_cards.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 class AdminDrawer extends StatelessWidget {
@@ -201,15 +202,15 @@ class AdminDrawer extends StatelessWidget {
                       )),
                   InkWell(
                       onTap: () {
-                        /*
+
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
 
-                                          builder: (context) => OrdersScreen(admin: admin,userId:userId),
+                                          builder: (context) => CreditCardScreen(userId:userId),
                                         ),
                                       );
-                                      */
+
                       },
                       child: ListTile(
                         leading: Icon(FontAwesomeIcons.creditCard,

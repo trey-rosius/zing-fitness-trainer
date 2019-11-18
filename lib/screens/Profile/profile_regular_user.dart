@@ -1,6 +1,6 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dotted_border/dotted_border.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/components/MyDrawer.dart';
@@ -54,14 +54,7 @@ class ProfileRegularUser extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    DottedBorder(
-                      //the image with the dotted border here
-                      borderType: BorderType.Circle,
-                      padding: EdgeInsets.all(8),
-                      color: MyColors().deepBlue,
-                      strokeWidth: 2,
-                      dashPattern: [5, 8],
-                      child:  ClipRRect(
+                     ClipRRect(
                           borderRadius:
                           BorderRadius.circular(60),
                           child: CachedNetworkImage(
@@ -73,8 +66,8 @@ class ProfileRegularUser extends StatelessWidget {
                              CircularProgressIndicator(),
                             errorWidget: (context, url, ex) =>
                              Icon(Icons.error),
-                          ))
-                    ),
+                          )),
+
 
                     //the name and age here in a column
 

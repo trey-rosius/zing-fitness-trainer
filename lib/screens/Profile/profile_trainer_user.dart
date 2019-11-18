@@ -1,14 +1,14 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dotted_border/dotted_border.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zing_fitnes_trainer/components/MyDrawer.dart';
+
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/edit_profile_trainer.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/pFootbg.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/profileTabBar.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/modules/profileup.dart';
+
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/views/tabBarviews.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';

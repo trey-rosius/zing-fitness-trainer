@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/trainers_screen.dart';
 
 
-class BookingModel{
-  String date;
-  String startTime;
-  String endTime;
-
-  BookingModel({this.date, this.startTime, this.endTime});
-
-}
 
 class NewBookingScreen extends StatefulWidget {
   NewBookingScreen(this.userId);
@@ -46,10 +39,20 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
   String arrivalMonth = "arrivalMonth";
   String arrivalYear = "arrivalYear";
   DateTime _dateTime;
+  int day,month,year;
+  int startHr,startMin;
+  int endHr,endMin;
   var selectDateController = TextEditingController();
   var startTimeController = TextEditingController();
   var endTimeController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("user Id"+widget.userId);
+  }
   void showInSnackBar(String value) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(
       content: new Text(
@@ -84,6 +87,9 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
           arrivalDay = dateTime.day.toString();
           arrivalMonth = _dateTime.month.toString();
           arrivalYear  = _dateTime.year.toString();
+          day = dateTime.day;
+          month = dateTime.month;
+          year = dateTime.year;
           selectDateController.text = arrivalDay+"/"+arrivalMonth+"/"+arrivalYear;
           print(_dateTime.toString());
           print(_dateTime.day.toString() +" / "+_dateTime.month.toString() +" / "+ _dateTime.year.toString());
@@ -97,6 +103,9 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
           arrivalMonth = _dateTime.month.toString();
           arrivalYear  = _dateTime.year.toString();
 
+          day = dateTime.day;
+          month = dateTime.month;
+          year = dateTime.year;
           selectDateController.text = arrivalDay+"/"+arrivalMonth+"/"+arrivalYear;
           _dateTime = dateTime;
           print(_dateTime.day.toString() +" / "+_dateTime.month.toString() +" / "+ _dateTime.year.toString());
@@ -104,6 +113,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
       },
     );
   }
+
 
   /// Display time picker.
   void _showEndTimePicker() {
@@ -139,9 +149,13 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
         setState(() {
           _dateTime = dateTime;
 
+
           departureDateTime = dateTime.toString();
           departureHour = dateTime.hour.toString();
           departureMinute = dateTime.minute.toString();
+          endHr = dateTime.hour;
+          endMin = dateTime.minute;
+
           endTimeController.text = departureHour+":"+departureMinute;
 
         });
@@ -153,6 +167,8 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
           departureDateTime = dateTime.toString();
           departureHour = dateTime.hour.toString();
           departureMinute = dateTime.minute.toString();
+          endHr = dateTime.hour;
+          endMin = dateTime.minute;
           endTimeController.text = departureHour+":"+departureMinute;
         });
       },
@@ -198,6 +214,8 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
           print(_dateTime.toString());
           arrivalHour = dateTime.hour.toString();
           arrivalMinute = dateTime.minute.toString();
+          startHr = dateTime.hour;
+          startMin = dateTime.minute;
           startTimeController.text = arrivalHour+":"+arrivalMinute;
 
         });
@@ -210,7 +228,8 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
           arrivalDateTime = dateTime.toString();
           arrivalHour = dateTime.hour.toString();
           arrivalMinute = dateTime.minute.toString();
-
+          startHr = dateTime.hour;
+          startMin = dateTime.minute;
          startTimeController.text = arrivalHour+":"+arrivalMinute;
         });
       },
@@ -358,10 +377,18 @@ Center(
             showInSnackBar("Please Select Date, start and end time");
           }else
             {
-              BookingModel bookingModel = BookingModel(
+              NewBookingModel bookingModel = NewBookingModel(
                 date: selectDateController.text,
                 startTime: startTimeController.text,
-                endTime: endTimeController.text
+                endTime: endTimeController.text,
+                day: day,
+                month: month,
+                year: year,
+                startHr: startHr,
+                startMin: startMin,
+                endHr: endHr,
+                endMin: endMin,
+                sessionType :sessionType
               );
               Navigator.push(
                 context,
@@ -372,7 +399,7 @@ Center(
                       catchError: (context, error) {
                         print(error);
                       },
-                      child: TrainersScreen(widget.userId));
+                      child: TrainersScreen(widget.userId,bookingModel));
                   //  child: ProfileRegularUser();
                 }),
               );

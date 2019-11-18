@@ -1,63 +1,78 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
 class BookingsCard extends StatelessWidget {
+  BookingsCard(this.userId,this.trainerInfo,this.bookingModel);
+  final String userId;
+  final TrainerProfileModel trainerInfo;
+  final NewBookingModel bookingModel;
+
   @override
   Widget build(BuildContext context) {
     var colors = MyColors();
     var size = MediaQuery.of(context).size;
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: <Widget>[
-        Positioned(
-          top: 0,
-          child: Container(
-            decoration: BoxDecoration(
-                color: colors.gray,
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            padding: EdgeInsets.only(top: 10, bottom: 30, left: 10, right: 10),
-            width: size.width * 0.75,
-            child: Text("Booking Details",
-                style: TextStyle(color: colors.deepBlue, fontSize: 13)),
-          ),
-        ),
+    return
         Transform.translate(
           offset: Offset(0, 35),
           child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
             decoration: BoxDecoration(
                 color: colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            width: size.width,
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            width: size.width-50,
             child: Column(
               children: <Widget>[
-                _cardListItem(
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: ClipRRect(
+                          borderRadius:
+                          BorderRadius.circular(60),
+                          child: CachedNetworkImage(
+                            width: 40.0,
+                            height: 40.0,
+                            fit: BoxFit.cover,
+                            imageUrl: trainerInfo.profilePicUrl??"",
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, ex) =>
+                                Icon(Icons.error),
+                          )),
+                    ),
+                    Expanded(child: Text(trainerInfo.name,style: TextStyle(fontSize: 20,),))
+                  ],
+                ),
+                Divider(),
+
+                Container(
+                  child: ListTile(
                     leading: Icon(
                       Icons.location_on,
                       color: colors.deepBlue,
-                      size: 29,
+                      size: 30,
                     ),
-                    title: "California",
-                    subtitle: '548 Market St, San Francisco'),
-                Divider(),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.calendar_today,
-                        color: colors.deepBlue,
-                        size: 25,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5),
-                        child: Text("24/08/2019"),
-                      ),
-                    ],
+                    title: Text(trainerInfo.location),
                   ),
                 ),
                 Divider(),
-                otherInfo("Session type", "Body Sculpting"),
-                otherInfo("Speciality", "Cardio"),
+                Container(
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.calendar_today,
+                      color: colors.deepBlue,
+                      size: 30,
+                    ),
+                    title: Text(bookingModel.date),
+                  ),
+                ),
+
+                Divider(),
+                otherInfo("Session type", bookingModel.sessionType),
+                otherInfo("Speciality", trainerInfo.speciality),
                 Container(
                   decoration: BoxDecoration(
                       color: colors.gray,
@@ -69,10 +84,10 @@ class BookingsCard extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                         text: "Session Cost :",
-                        style: TextStyle(fontSize: 15, color: colors.textBlack),
+                        style: TextStyle(fontSize: 20, color: colors.textBlack),
                         children: [
                           TextSpan(
-                              text: "\$45",
+                              text: '\$'+trainerInfo.sessionRate,
                               style: TextStyle(
                                   color: colors.deepBlue,
                                   fontWeight: FontWeight.w900))
@@ -82,9 +97,8 @@ class BookingsCard extends StatelessWidget {
               ],
             ),
           ),
-        )
-      ],
-    );
+        );
+
   }
 }
 

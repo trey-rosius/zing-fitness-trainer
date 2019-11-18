@@ -11,6 +11,10 @@ class BookingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // var size = MediaQuery.of(context).size;
+  //  var myColor = Colors.green;
+  //  var hex = '#${myColor.value.toRadixString(16)}';
+
+   // print(hex);
 
     return MultiProvider(
       providers: [

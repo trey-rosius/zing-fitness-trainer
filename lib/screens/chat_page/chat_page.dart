@@ -1,4 +1,4 @@
-import 'package:bubble/bubble.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -34,38 +34,7 @@ class ChatPageHome extends StatelessWidget {
             image: DecorationImage(
                 image: AssetImage("assets/images/chatBg.png"),
                 fit: BoxFit.fill)),
-        child: Stack(
-          children: <Widget>[
-            //the chat box to come here
-            //we generate chats with a listview linked to our data in the MessageData class
-            //will be replaced with a stream builder in future
-            Consumer<MessageData>(
-              builder: (context, data, _) => ListView.builder(
-                itemCount: data.messagesLength,
-                itemBuilder: (context, index) {
-                  return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
-                      child:
-                          //we use the bubble widget from the bubble package installed
-                          Bubble(
-                        //if the message is from me, the bubble is aligned to the right of the chat screen,
-                        //else it is aligned to the left of the chat screen
-                        alignment: bubbleAlign(data.getAMessage(index)["from"]),
-                        radius: Radius.circular(10),
-                        nip: getNipLocation(data.getAMessage(index)["from"]),
-                        padding: BubbleEdges.all(10),
-                        child: _messageContent(index, data),
-                        color: bubbleColor(data.getAMessage(index)["from"]),
-                      ));
-                },
-              ),
-            ),
-
-            //we align the chat Bar at the bottom of the stack with the align widget
-            Align(alignment: Alignment.bottomCenter, child: ChatBar())
-          ],
-        ),
+        child: Container()
       ),
     );
   }
@@ -73,13 +42,7 @@ class ChatPageHome extends StatelessWidget {
 
 //the set of functions below generate properties corresponding to the person who sent the message(you or the other person)
 
-BubbleNip getNipLocation(from) {
-  if (from == "me") {
-    return BubbleNip.rightTop;
-  } else {
-    return BubbleNip.leftTop;
-  }
-}
+
 
 Color bubbleColor(from) {
   if (from == "me") {
