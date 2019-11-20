@@ -153,6 +153,34 @@ class Config{
 
 
 
+  static final String trainerUserId = "trainerUserId";
+
+
+
+  static final String bookings = "bookings";
+  static final String bookingDate = "bookingDate";
+  static final String bookingDay = "bookingDay";
+  static final String bookingStartHr = "bookingStartHr";
+  static final String bookingEndHr = "bookingEndHr";
+  static final String bookingEndMin = "bookingEndMin";
+  static final String bookingStartMin= "bookingStartMin";
+  static final String bookingStartTime = "bookingStartTime";
+  static final String bookingEndTime = "bookingEndTime";
+  static final String bookingMonth= "bookings";
+  static final String bookingStatus = "bookingStatus";
+  static final String bookingsId = "bookingsId";
+  static final String userBookings = "userBookings";
+  static final String approved = "approved";
+  static final String pendingApproval = "pendingApproval";
+
+
+
+
+
+
+
+
+
 
   static final String country= "country";
   static final String pk_key= "pk_test_3NcEyxbZTpX24vEi3KpuQUef00h81LUz94";

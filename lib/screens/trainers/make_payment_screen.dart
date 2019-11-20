@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
-
+import 'dart:async';
 class MakePaymentScreen extends StatefulWidget {
-  MakePaymentScreen(this.userId,this.bookingModel,this.trainerInfo);
+  MakePaymentScreen(this.userId, this.bookingModel, this.trainerInfo);
   final String userId;
   final TrainerProfileModel trainerInfo;
   final NewBookingModel bookingModel;
@@ -17,11 +18,10 @@ class MakePaymentScreen extends StatefulWidget {
 
 class _MakePaymentScreenState extends State<MakePaymentScreen> {
 
+  bool loading = false;
   Widget otherInfo(title, content) {
     return Container(
-
-
-      padding: EdgeInsets.symmetric(vertical: 5,horizontal: 20),
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,6 +37,26 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
       ),
     );
   }
+
+  saveBookingAfterDuration(String customerId,double amount,Map bookingsMap) async {
+
+    return  approveBookings(customerId,amount,widget.userId, bookingsMap);
+  }
+
+   approveBookings(String customerId,double amount,String userId,Map bookingMap){
+    BookingRepository.instance().makeBookingPayment(customerId,amount,widget.userId, bookingMap).then((_){
+
+      BookingRepository.instance().saveBookingDetails(widget.userId, bookingMap).then((_){
+        setState(() {
+          loading = false;
+        });
+      });
+
+
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     var colors = MyColors();
@@ -46,46 +66,53 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: Text('Payment',style: TextStyle(fontSize: 20),),
+        title: Text(
+          'Payment',
+          style: TextStyle(fontSize: 20),
+        ),
         centerTitle: true,
       ),
       body: CustomScrollView(
         slivers: <Widget>[
-
-          defaultCard == null ? SliverToBoxAdapter(
-            child: Container(),
-          )
-              :
-              SliverToBoxAdapter(
-                child:  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          defaultCard == null
+              ? SliverToBoxAdapter(
+                  child: Container(),
+                )
+              : SliverToBoxAdapter(
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                     child: Material(
                       elevation: 14.0,
                       borderRadius: BorderRadius.circular(10.0),
                       shadowColor: Color(0x802196F3),
                       child: Container(
-                        padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 10.0),
                         child: Column(
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.only(
-                                  left: 10.0, right: 5.0, top: 10.0, bottom: 30.0),
+                                  left: 10.0,
+                                  right: 5.0,
+                                  top: 10.0,
+                                  bottom: 30.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   defaultCard.cardType == Config.visa
                                       ? Image.asset('assets/images/visa.png')
-                                      : Image.asset('assets/images/mastercard.png'),
-
+                                      : Image.asset(
+                                          'assets/images/mastercard.png'),
                                 ],
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20.0),
-                              child: Text("####,####,"+defaultCard.cardNumber,
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 20.0),
+                              child: Text("####,####," + defaultCard.cardNumber,
                                   style: TextStyle(
-
                                       color: Theme.of(context).primaryColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 26.0)),
@@ -93,7 +120,8 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                             Padding(
                               padding: const EdgeInsets.only(top: 20.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text("CARD HOLDER",
                                       style: TextStyle(
@@ -115,16 +143,17 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                               ),
                             ),
                             Padding(
-                              padding:
-                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, bottom: 10.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Expanded(
                                     child: Text("Owner",
                                         style: TextStyle(
-
-                                            color: Theme.of(context).primaryColor,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 14.0)),
                                   ),
@@ -133,7 +162,6 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                                           "/" +
                                           defaultCard.cardYear.toString(),
                                       style: TextStyle(
-
                                           color: Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18.0)),
@@ -145,101 +173,168 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                       ),
                     ),
                   ),
-
-              ),
-
+                ),
           SliverToBoxAdapter(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                   Text(widget.trainerInfo.name,style: TextStyle(fontSize: 20,)),
-
-                   Container(
-                     child: ListTile(
-                       leading: Icon(
-                         Icons.location_on,
-                         color: colors.deepBlue,
-                         size: 30,
-                       ),
-                       title: Text(widget.trainerInfo.location),
-                     ),
-                   ),
-                   Divider(),
-                   Container(
-                     child: ListTile(
-                       leading: Icon(
-                         Icons.calendar_today,
-                         color: colors.deepBlue,
-                         size: 30,
-                       ),
-                       title: Text(widget.bookingModel.date),
-                     ),
-                   ),
-
-                   Divider(),
-                   otherInfo("Session type", widget.bookingModel.sessionType),
-                   Divider(),
-                   otherInfo("Speciality", widget.trainerInfo.speciality),
-                   Divider(),
-    Container(
-
-
-    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 20),
-    child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-    Text("Session Cost",
-    style: TextStyle(fontSize: 20, color: MyColors().textBlack)),
-    Text('\$'+widget.trainerInfo.sessionRate,
-    style: TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.w900,
-    color:Colors.red))
-    ],
-    ),
-    ),
-
+                  Text(widget.trainerInfo.name,
+                      style: TextStyle(
+                        fontSize: 20,
+                      )),
                   Container(
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.location_on,
+                        color: colors.deepBlue,
+                        size: 30,
+                      ),
+                      title: Text(widget.trainerInfo.location),
+                    ),
+                  ),
+                  Divider(),
+                  Container(
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.calendar_today,
+                        color: colors.deepBlue,
+                        size: 30,
+                      ),
+                      title: Text(widget.bookingModel.date),
+                    ),
+                  ),
+                  Divider(),
+                  otherInfo("Session type", widget.bookingModel.sessionType),
+                  Divider(),
+                  otherInfo("Speciality", widget.trainerInfo.speciality),
+                  Divider(),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text("Session Cost",
+                            style: TextStyle(
+                                fontSize: 20, color: MyColors().textBlack)),
+                        Text('\$' + widget.trainerInfo.sessionRate,
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.red))
+                      ],
+                    ),
+                  ),
+             loading?   Container(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ) : Container(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
                           height: 60,
-                          width: size.width/2.5,
+                          width: size.width / 2.5,
                           child: RaisedButton(
                             color: Theme.of(context).primaryColorDark,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                            onPressed: (){
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            onPressed: () {
 
-                          },
-                          child: Text("Approve",style: TextStyle(fontSize: 20,color: Colors.white),),),
+
+
+                              Map bookingMap = Map<String,dynamic>();
+                              bookingMap[Config.bookingDate] = widget.bookingModel.date;
+                              bookingMap[Config.bookingDay] = widget.bookingModel.day;
+                              bookingMap[Config.bookingMonth] = widget.bookingModel.month;
+                              bookingMap[Config.bookingStartHr] = widget.bookingModel.startHr;
+                              bookingMap[Config.bookingStartTime] = widget.bookingModel.startTime;
+                              bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
+                              bookingMap[Config.bookingEndHr] = widget.bookingModel.endHr;
+                              bookingMap[Config.bookingEndTime] = widget.bookingModel.endTime;
+                              bookingMap[Config.bookingEndMin] = widget.bookingModel.endMin;
+                              bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
+                              bookingMap[Config.bookingStatus] = Config.approved;
+                              bookingMap[Config.trainerUserId] = widget.trainerInfo.userId;
+                              bookingMap[Config.sessionType] = widget.trainerInfo.sessionType;
+
+                              bookingMap[Config.sessionRate] = widget.trainerInfo.sessionRate;
+
+                              print(' amount is '+widget.trainerInfo.sessionRate);
+                              setState(() {
+                                loading = true;
+                              });
+                              saveBookingAfterDuration(defaultCard.customerId,double.parse(widget.trainerInfo.sessionRate), bookingMap);
+
+
+
+
+                            },
+                            child: Text(
+                              "Approve",
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                          ),
                         ),
                         Container(
                           height: 60,
-                          width: size.width/2.5,
+                          width: size.width / 2.5,
                           child: RaisedButton(
                             color: Theme.of(context).primaryColor,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                            onPressed: (){
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            onPressed: () {
+                              Map bookingMap = Map<String,dynamic>();
+                              bookingMap[Config.bookingDate] = widget.bookingModel.date;
+                              bookingMap[Config.bookingDay] = widget.bookingModel.day;
+                              bookingMap[Config.bookingMonth] = widget.bookingModel.month;
+                              bookingMap[Config.bookingStartHr] = widget.bookingModel.startHr;
+                              bookingMap[Config.bookingStartTime] = widget.bookingModel.startTime;
+                              bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
+                              bookingMap[Config.bookingEndHr] = widget.bookingModel.endHr;
+                              bookingMap[Config.bookingEndTime] = widget.bookingModel.endTime;
+                              bookingMap[Config.bookingEndMin] = widget.bookingModel.endMin;
+                              bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
+                              bookingMap[Config.bookingStatus] = Config.pendingApproval;
+                              bookingMap[Config.trainerUserId] = widget.trainerInfo.userId;
+                              bookingMap[Config.sessionType] = widget.trainerInfo.sessionType;
 
-                          },
-                            child: Text("Pay Later",style: TextStyle(fontSize: 20,color: Colors.white),),),
+                              bookingMap[Config.sessionRate] = widget.trainerInfo.sessionRate;
+
+                              setState(() {
+                                loading = true;
+                              });
+                              BookingRepository.instance().saveBookingDetails(widget.userId, bookingMap).then((_){
+
+                                setState(() {
+                                  loading = false;
+                                });
+                              });
+
+
+
+
+                            },
+                            child: Text(
+                              "Pay Later",
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                          ),
                         )
                       ],
                     ),
                   )
-
                 ],
               ),
             ),
           )
-
-
         ],
       ),
     );
