@@ -8,6 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/conversation_list/ConversationItemRepository.dart';
+import 'package:zing_fitnes_trainer/screens/conversation_list/conversation_item_model.dart';
+import 'package:zing_fitnes_trainer/screens/conversation_list/conversation_list_screen.dart';
 import 'package:zing_fitnes_trainer/screens/home/zoom_scaffold.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_cards.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
@@ -225,15 +228,26 @@ class AdminDrawer extends StatelessWidget {
                       )),
                   InkWell(
                       onTap: () {
-                        /*
+
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
 
-                                          builder: (context) => OrdersScreen(admin: admin,userId:userId),
+                                          builder: (context) {
+                                            return StreamProvider<List<ConversationItemModel>>.value(value: ConversationItemRepository.instance().streamUserConversationList(userId),
+                                            catchError: (context,error){
+                                             print(error);
+                                             return null;
+                                            },child: ConversationListScreen(userId),);
+
+
+                                          }
+
+
+
                                         ),
                                       );
-                                      */
+
                       },
                       child: ListTile(
                         leading:

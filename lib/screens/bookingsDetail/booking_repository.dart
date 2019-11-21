@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/user_bookings_model.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 class BookingRepository{
@@ -39,6 +41,29 @@ class BookingRepository{
     });
 
   }
+
+
+
+  ///Stream Single Bookings
+  Stream<BookingsModel>streamSingleBooking(String bookingId){
+    return _firestore.collection(Config.bookings).document(bookingId).snapshots()
+        .map((snap){
+      print(snap.data.toString());
+      return BookingsModel.fromFirestore(snap);
+    });
+  }
+
+  /// Stream list of user bookings
+  Stream<List<UserBookingsModel>>streamListOfUserBookings(String userId){
+
+    return _firestore.collection(Config.users).document(userId).collection(Config.userBookings)
+        .snapshots()
+        .map((list)=>
+    list.documents.map((doc)=>UserBookingsModel.fromFirestore(doc)).toList());
+  }
+
+  //Stream single booking
+
 
 
 }

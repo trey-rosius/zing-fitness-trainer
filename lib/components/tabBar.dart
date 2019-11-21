@@ -37,10 +37,10 @@ class _MyTabBarState extends State<MyTabBar> {
           ),
           tabs: [
             Tab(
-              text: "Active Session",
+              text: "Active Sessions",
             ),
             Tab(
-              text: "Bookings",
+              text: "Pending Sessions",
             )
           ],
           onTap: (index) {

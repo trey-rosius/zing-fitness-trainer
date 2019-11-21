@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
@@ -252,6 +253,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                               bookingMap[Config.bookingDate] = widget.bookingModel.date;
                               bookingMap[Config.bookingDay] = widget.bookingModel.day;
                               bookingMap[Config.bookingMonth] = widget.bookingModel.month;
+                              bookingMap[Config.bookingsYear] = widget.bookingModel.year;
                               bookingMap[Config.bookingStartHr] = widget.bookingModel.startHr;
                               bookingMap[Config.bookingStartTime] = widget.bookingModel.startTime;
                               bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
@@ -294,6 +296,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                               bookingMap[Config.bookingDate] = widget.bookingModel.date;
                               bookingMap[Config.bookingDay] = widget.bookingModel.day;
                               bookingMap[Config.bookingMonth] = widget.bookingModel.month;
+                              bookingMap[Config.bookingsYear] = widget.bookingModel.year;
                               bookingMap[Config.bookingStartHr] = widget.bookingModel.startHr;
                               bookingMap[Config.bookingStartTime] = widget.bookingModel.startTime;
                               bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
@@ -304,6 +307,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                               bookingMap[Config.bookingStatus] = Config.pendingApproval;
                               bookingMap[Config.trainerUserId] = widget.trainerInfo.userId;
                               bookingMap[Config.sessionType] = widget.trainerInfo.sessionType;
+                              bookingMap[Config.createdOn] = FieldValue.serverTimestamp();
 
                               bookingMap[Config.sessionRate] = widget.trainerInfo.sessionRate;
 

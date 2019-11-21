@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import 'package:zing_fitnes_trainer/screens/Profile/general_user_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/certificate_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/user_certificate_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
@@ -96,6 +97,18 @@ class ProfileProvider extends ChangeNotifier{
     });
   }
 
+  /// Get a stream of a general user profile document
+  Stream<GeneralUserModel> streamGeneralUserModel(String userId) {
+    return _firestore
+        .collection(Config.users).document(userId)
+
+        .snapshots()
+
+        .map((snap) {
+      print(snap.data.toString());
+      return GeneralUserModel.fromFirestore(snap);
+    });
+  }
 
   /// Get a stream of all user certificates
   Stream<List<UserCertificateModel>> streamUserCerts(String userId){

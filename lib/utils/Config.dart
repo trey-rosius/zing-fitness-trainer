@@ -156,6 +156,28 @@ class Config{
   static final String trainerUserId = "trainerUserId";
 
 
+  //chats
+
+  static final String chats= "chats";
+  static final String typing= "typing...";
+  static final String imageUrl= "imageUrl";
+  static final String messageType= "messageType";
+  static final String messageId= "messageId";
+  static final String lastMessage = "lastMessage";
+
+  static final String notifications = "notifications";
+  static final String notificationId = "notificationId";
+  static final String notificationType= "notificationType";
+  static final String notificationText = "notificationText";
+  static final String senderId = "senderId";
+  static final String receiverId = "receiverId";
+
+  static final String text= "text";
+  static final String image= "image";
+  static final String chatThread= "chatThread";
+  static final String receiver= "chatThread";
+  static final String visible= "visible";
+  static final String chatList= "chatList";
 
   static final String bookings = "bookings";
   static final String bookingDate = "bookingDate";
@@ -166,7 +188,8 @@ class Config{
   static final String bookingStartMin= "bookingStartMin";
   static final String bookingStartTime = "bookingStartTime";
   static final String bookingEndTime = "bookingEndTime";
-  static final String bookingMonth= "bookings";
+  static final String bookingMonth= "bookingsMonth";
+  static final String bookingsYear= "bookingsYear";
   static final String bookingStatus = "bookingStatus";
   static final String bookingsId = "bookingsId";
   static final String userBookings = "userBookings";

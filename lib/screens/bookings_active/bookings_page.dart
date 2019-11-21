@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zing_fitnes_trainer/providers/provider.dart';
-import 'package:zing_fitnes_trainer/components/MyDrawer.dart';
-import 'package:zing_fitnes_trainer/screens/bookings_active/modules/active_session.dart';
-import 'package:zing_fitnes_trainer/screens/bookings_active/modules/bookings.dart';
-import 'package:zing_fitnes_trainer/utils/myColors.dart';
 import 'package:zing_fitnes_trainer/components/tabBar.dart';
+import 'package:zing_fitnes_trainer/providers/provider.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/user_bookings_model.dart';
+
+import 'package:zing_fitnes_trainer/screens/bookings_active/modules/active_booking_session.dart';
+
+import 'package:zing_fitnes_trainer/utils/myColors.dart';
+
 
 class BookingsPage extends StatelessWidget {
+  BookingsPage(this.userId);
+  final String userId;
   @override
   Widget build(BuildContext context) {
     // var size = MediaQuery.of(context).size;
@@ -25,23 +30,22 @@ class BookingsPage extends StatelessWidget {
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
-
             appBar: AppBar(
               elevation: 0.0,
-              iconTheme: IconThemeData(color: MyColors().deepBlue, size: 40),
+             // iconTheme: IconThemeData(color: MyColors().deepBlue, size: 40),
+              backgroundColor: MyColors().white,
 
               bottom: PreferredSize(
-                preferredSize: Size(double.infinity, 50),
+                preferredSize: Size(double.infinity, 20),
                 child: MyTabBar(),
               ),
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {},
-                )
-              ],
+
             ),
-            body: BookingsBody(),
+            body: StreamProvider.value(value: BookingRepository.instance().streamListOfUserBookings(userId),
+            catchError: (context,error){
+              print(error);
+            },
+            child: BookingsBody(userId),)
           ),
 
       ),
@@ -50,12 +54,15 @@ class BookingsPage extends StatelessWidget {
 }
 
 class BookingsBody extends StatelessWidget {
+  BookingsBody(this.userId);
+  final String userId;
   //this will be modified later to make the list dynamic
   @override
   Widget build(BuildContext context) {
+    var userBookingsModel = Provider.of<List<UserBookingsModel>>(context);
     return TabBarView(
       physics: NeverScrollableScrollPhysics(),
-      children: <Widget>[ActiveSession(), Bookings()],
+      children: <Widget>[ActiveBookingSession(userId,userBookingsModel),ActiveBookingSession(userId,userBookingsModel)],
     );
   }
 }

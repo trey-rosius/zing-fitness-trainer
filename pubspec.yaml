@@ -28,6 +28,7 @@ dependencies:
   stripe_payment: ^0.1.1
 
   file_picker: ^1.4.2
+  timeago: ^2.0.14
   pin_code_text_field: ^1.4.0
   cloud_firestore: ^0.12.7+1
   firebase_auth: ^0.11.1+12
