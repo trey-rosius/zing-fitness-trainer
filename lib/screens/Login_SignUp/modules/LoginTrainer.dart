@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:zing_fitnes_trainer/components/passwordInput.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/edit_profile_trainer.dart';
@@ -208,6 +209,13 @@ class _LoginTrainerState extends State<LoginTrainer> {
     );
   }
 
+  _saveUserId(String userId) async {
+    final prefs =  await StreamingSharedPreferences.instance;
+
+
+    prefs.setString(Config.userId, userId);
+  }
+
   validateForm(LoginSignUpProvider data) {
     if (_formKey.currentState.validate()) {
       setState(() {
@@ -222,6 +230,8 @@ class _LoginTrainerState extends State<LoginTrainer> {
         });
         if (value == Config.loginMsg) {
           data.login().then((firebaseUserId) {
+
+            _saveUserId(firebaseUserId);
 
 /*
             Navigator.push(

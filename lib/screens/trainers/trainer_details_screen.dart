@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_cart_repository.dart';
+import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/bookingCard.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/make_payment_screen.dart';
 
@@ -99,10 +100,11 @@ class _TrainerDetailsScreenState extends State<TrainerDetailsScreen> {
                 context,
                 MaterialPageRoute(builder: (context)
                 {
-                  return StreamProvider.value(
+                  return StreamProvider<DefaultCreditCardModel>.value(
                     value:CreditCardRepository.instance().streamDefaultCreditCard(widget.userId) ,
                     catchError: (context,error){
                       print(error);
+                      return null;
                     },
                     child: MakePaymentScreen(widget.userId,  widget.bookingModel,widget.trainerInfo),
                   );

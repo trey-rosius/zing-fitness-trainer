@@ -12,7 +12,7 @@ class CreditCardRepository  extends ChangeNotifier{
   CreditCardRepository.instance() : _firestore = Firestore.instance;
 
 
-    Future<void>addCart(String userId,String token){
+    Future<void>addCard(String userId,String token){
 
      return _firestore.collection(Config.users).document(userId).collection(Config.tokens).add({
         Config.tokenId:token
@@ -35,6 +35,17 @@ class CreditCardRepository  extends ChangeNotifier{
 
 
 
+  }
+
+  Future<void>setCardAsDefault(String userId,Map defaultMap){
+      return _firestore
+          .collection(Config.users)
+          .document(userId)
+          .collection(Config.cardDefault)
+          .document(userId)
+          .setData(defaultMap).then((_) {
+
+      });
   }
 
   /// stream single credit card document

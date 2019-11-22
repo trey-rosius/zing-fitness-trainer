@@ -9,10 +9,11 @@ import 'package:zing_fitnes_trainer/screens/Profile/general_user_model.dart';
 import 'package:zing_fitnes_trainer/screens/chats/chat_screen.dart';
 import 'package:zing_fitnes_trainer/screens/chats/chats_repository.dart';
 import 'package:zing_fitnes_trainer/screens/chats/typing_model.dart';
+import 'package:zing_fitnes_trainer/screens/conversation_list/conversation_item_model.dart';
 class ConversationListItem extends StatelessWidget {
-  ConversationListItem({this.userId,this.lastMessage});
+  ConversationListItem({this.userId,this.convoItem});
   final String userId;
-  final String lastMessage;
+  final ConversationItemModel convoItem;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class ConversationListItem extends StatelessWidget {
 
             return userProfile == null ? Container() : InkWell(
               onTap: (){
+                print("pressed");
 
                   Navigator.push(
                       context,
@@ -83,33 +85,25 @@ class ConversationListItem extends StatelessWidget {
                       ),
 
                       Expanded(
-                        child: Wrap(
+                        flex: 4,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.only(right:3.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
+                              child:
                                   Text(userProfile.name,style: TextStyle(fontSize: 20.0,fontWeight:FontWeight.bold,color: Colors.black54,
                                   ),),
                                  // Text(userProfile.lastName,style: TextStyle(fontSize: 17.0,fontWeight:FontWeight.bold,color: Theme.of(context).primaryColor),),
 
-                                  Padding(
-                                    padding: const EdgeInsets.only(top:2.0),
-                                    child: Text(userProfile.createdOn == null
-                                        ? ""
-                                        :
-                                    timeago.format(
-                                        userProfile.createdOn.toDate()),style: TextStyle(),
-                                    ),
-                                  ),
 
 
-                                ],
-                              ),
+
+
                             ),
 
-                            Text(lastMessage,maxLines:1,overflow:TextOverflow.ellipsis,style: TextStyle(fontSize: 18.0,
+                            Text(convoItem.lastMessage,maxLines:1,overflow:TextOverflow.ellipsis,style: TextStyle(fontSize: 18.0,
                                 color: Colors.grey),),
 
 
@@ -117,6 +111,17 @@ class ConversationListItem extends StatelessWidget {
 
 
                           ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top:2.0),
+                          child: Text(convoItem.createdOn == null
+                              ? ""
+                              :
+                          timeago.format(
+                              convoItem.createdOn.toDate()),style: TextStyle(),
+                          ),
                         ),
                       )
 

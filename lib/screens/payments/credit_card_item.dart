@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_card_model.dart';
+import 'package:zing_fitnes_trainer/screens/payments/credit_cart_repository.dart';
 
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
@@ -37,27 +38,19 @@ class CreditCardItem extends StatelessWidget {
     return ListView.builder(itemBuilder: (context,index){
       print("last 4 "+listCreditCards[index].cardNumber);
       if(index == 0){
-        saveCardType(listCreditCards[index].cardType);
-        saveCardNumber(listCreditCards[index].cardNumber);
-        saveCardExpiry(listCreditCards[index].month.toString() +
-            "/" +
-            listCreditCards[index].year.toString());
+        Map defaultMap = Map<String,dynamic>();
+        defaultMap[Config.customerId] = listCreditCards[index].customer;
+        defaultMap[Config.cardNumber] = listCreditCards[index].cardNumber;
+        defaultMap[Config.cardMonth] = listCreditCards[index].month;
+        defaultMap[Config.cardYear] = listCreditCards[index].year;
+        defaultMap[Config.cardType] = listCreditCards[index].cardType;
+
+       CreditCardRepository.instance().setCardAsDefault(userId, defaultMap);
       }
       return index == 0 ?
       InkWell(
         onTap: () {
-          /*
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              //  builder: (context) => EditProfileScreen(userId: userId,),
-              builder: (context) => EditCreditCardScreen(
-                userId: userId,
-                cardId: document[Config.cardId],
-              ),
-            ),
-          );
-          */
+
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
@@ -113,36 +106,14 @@ class CreditCardItem extends StatelessWidget {
                                     onTap: () {
 
                                       print(listCreditCards[index].cardId);
+                                      Map defaultMap = Map<String,dynamic>();
+                                      defaultMap[Config.customerId] = listCreditCards[index].customer;
+                                      defaultMap[Config.cardNumber] = listCreditCards[index].cardNumber;
+                                      defaultMap[Config.cardMonth] = listCreditCards[index].month;
+                                      defaultMap[Config.cardYear] = listCreditCards[index].year;
+                                      defaultMap[Config.cardType] = listCreditCards[index].cardType;
 
-                                      Firestore.instance
-                                          .collection(Config.users)
-                                          .document(userId)
-                                          .collection(Config.cardDefault)
-                                          .document(userId)
-                                          .setData({
-                                        Config.customerId:
-                                        listCreditCards[index].customer,
-                                        Config.cardNumber:listCreditCards[index].cardNumber,
-                                        Config.cardMonth:listCreditCards[index].month,
-                                        Config.cardYear:listCreditCards[index].year,
-                                        Config.cardType:listCreditCards[index].cardType
-                                      }).then((_) {
-/*
-                                        Firestore.instance
-                                            .collection(Config.users)
-                                            .document(userId)
-                                            .collection(Config.cards)
-                                            .document(listCreditCards[index].customer)
-                                            .setData({
-                                          Config.cardDefault:
-                                          true,
-                                          Config.createdOn:  DateTime.now().toString(),
-                                        },merge: true).then((_) {
-                                          //  showInSnackBar("Credit Card Info Saved");
-                                        });
-                                        */
-                                        //  showInSnackBar("Credit Card Info Saved");
-                                      });
+                                      CreditCardRepository.instance().setCardAsDefault(userId, defaultMap);
                                     },
                                     child: Container(
                                         decoration: BoxDecoration(
@@ -158,36 +129,14 @@ class CreditCardItem extends StatelessWidget {
                                 return InkWell(
                                     onTap: () {
                                       print(listCreditCards[index].cardId);
-                                      Firestore.instance
-                                          .collection(Config.users)
-                                          .document(userId)
-                                          .collection(Config.cardDefault)
-                                          .document(userId)
-                                          .setData({
-                                        Config.customerId:
-                                        listCreditCards[index].customer,
-                                        Config.cardNumber:listCreditCards[index].cardNumber,
-                                        Config.cardMonth:listCreditCards[index].month,
-                                        Config.cardYear:listCreditCards[index].year,
-                                        Config.cardType:listCreditCards[index].cardType
-                                      }).then((_) {
+                                      Map defaultMap = Map<String,dynamic>();
+                                      defaultMap[Config.customerId] = listCreditCards[index].customer;
+                                      defaultMap[Config.cardNumber] = listCreditCards[index].cardNumber;
+                                      defaultMap[Config.cardMonth] = listCreditCards[index].month;
+                                      defaultMap[Config.cardYear] = listCreditCards[index].year;
+                                      defaultMap[Config.cardType] = listCreditCards[index].cardType;
 
-                                     /*
-                                        Firestore.instance
-                                            .collection(Config.users)
-                                            .document(userId)
-                                            .collection(Config.cards)
-                                            .document(listCreditCards[index].customer)
-                                            .setData({
-                                          Config.cardDefault:
-                                          true,
-                                          Config.createdOn: new DateTime.now().toString(),
-                                        },merge: true).then((_) {
-                                          //  showInSnackBar("Credit Card Info Saved");
-                                        });
-                                        */
-                                        //  showInSnackBar("Credit Card Info Saved");
-                                      });
+                                      CreditCardRepository.instance().setCardAsDefault(userId, defaultMap);
                                     },
                                     child: Container(
                                         decoration: BoxDecoration(
@@ -268,18 +217,7 @@ class CreditCardItem extends StatelessWidget {
 
           :InkWell(
         onTap: () {
-          /*
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    //  builder: (context) => EditProfileScreen(userId: userId,),
-                    builder: (context) => EditCreditCardScreen(
-                          userId: userId,
-                          cardId: listCreditCards[index].cardId,
-                        ),
-                  ),
-                );
-                */
+
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
@@ -332,36 +270,14 @@ class CreditCardItem extends StatelessWidget {
                                     onTap: () {
 
                                       print(listCreditCards[index].customer);
+                                      Map defaultMap = Map<String,dynamic>();
+                                      defaultMap[Config.customerId] = listCreditCards[index].customer;
+                                      defaultMap[Config.cardNumber] = listCreditCards[index].cardNumber;
+                                      defaultMap[Config.cardMonth] = listCreditCards[index].month;
+                                      defaultMap[Config.cardYear] = listCreditCards[index].year;
+                                      defaultMap[Config.cardType] = listCreditCards[index].cardType;
 
-                                      Firestore.instance
-                                          .collection(Config.users)
-                                          .document(userId)
-                                          .collection(Config.cardDefault)
-                                          .document(userId)
-                                          .setData({
-                                        Config.customerId:
-                                        listCreditCards[index].customer,
-                                        Config.cardNumber:listCreditCards[index].cardNumber,
-                                        Config.cardMonth:listCreditCards[index].month,
-                                        Config.cardYear:listCreditCards[index].year,
-                                        Config.cardType:listCreditCards[index].cardType
-                                      }).then((_) {
-/*
-                                        Firestore.instance
-                                            .collection(Config.users)
-                                            .document(userId)
-                                            .collection(Config.cards)
-                                            .document(listCreditCards[index].customer)
-                                            .setData({
-                                          Config.cardDefault:
-                                          true,
-                                          Config.createdOn: new DateTime.now().toString(),
-                                        },merge: true).then((_) {
-                                          //  showInSnackBar("Credit Card Info Saved");
-                                        });
-                                        */
-                                        //  showInSnackBar("Credit Card Info Saved");
-                                      });
+                                      CreditCardRepository.instance().setCardAsDefault(userId, defaultMap);
                                     },
                                     child: Container(
                                         decoration: BoxDecoration(
@@ -377,36 +293,14 @@ class CreditCardItem extends StatelessWidget {
                                 return InkWell(
                                     onTap: () {
                                       print(listCreditCards[index].cardId);
-                                      Firestore.instance
-                                          .collection(Config.users)
-                                          .document(userId)
-                                          .collection(Config.cardDefault)
-                                          .document(userId)
-                                          .setData({
-                                        Config.customerId:
-                                        listCreditCards[index].customer,
-                                        Config.cardNumber:listCreditCards[index].cardNumber,
-                                        Config.cardMonth:listCreditCards[index].month,
-                                        Config.cardYear:listCreditCards[index].year,
-                                        Config.cardType:listCreditCards[index].cardType
-                                      }).then((_) {
+                                      Map defaultMap = Map<String,dynamic>();
+                                      defaultMap[Config.customerId] = listCreditCards[index].customer;
+                                      defaultMap[Config.cardNumber] = listCreditCards[index].cardNumber;
+                                      defaultMap[Config.cardMonth] = listCreditCards[index].month;
+                                      defaultMap[Config.cardYear] = listCreditCards[index].year;
+                                      defaultMap[Config.cardType] = listCreditCards[index].cardType;
 
-/*
-                                        Firestore.instance
-                                            .collection(Config.users)
-                                            .document(userId)
-                                            .collection(Config.cards)
-                                            .document(listCreditCards[index].customer)
-                                            .setData({
-                                          Config.cardDefault:
-                                          true,
-                                          Config.createdOn: new DateTime.now().toString(),
-                                        },merge: true).then((_) {
-                                          //  showInSnackBar("Credit Card Info Saved");
-                                        });
-                                        */
-                                        //  showInSnackBar("Credit Card Info Saved");
-                                      });
+                                      CreditCardRepository.instance().setCardAsDefault(userId, defaultMap);
                                     },
                                     child: Container(
                                         decoration: BoxDecoration(

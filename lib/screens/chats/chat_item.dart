@@ -207,7 +207,7 @@ class _ChatItemState extends State<ChatItem> {
                                   createdOn
                                       .millisecondsSinceEpoch)),
                               style: TextStyle(
-                                  color: Colors.grey, fontSize: 15.0,fontFamily: 'GothamRnd'),
+                                  color: Colors.grey, fontSize: 15.0,),
                             ),
                           ],
                         ),
@@ -297,7 +297,7 @@ class _ChatItemState extends State<ChatItem> {
                             .listMessage[widget.index].createdOn
                             .millisecondsSinceEpoch)),
                 style: TextStyle(
-                    color: Colors.grey, fontSize: 15.0,fontFamily: 'GothamRnd'),
+                    color: Colors.grey, fontSize: 15.0,),
               ),
               /*
                                     Text(

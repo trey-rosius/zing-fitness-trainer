@@ -158,7 +158,7 @@ class _FormSectionState extends State<FormSection> {
       userNameController.text = widget.profileModel.name;
       phoneController.text = widget.profileModel.phoneNumber;
 
-      sessionType = widget.profileModel.sessionType;
+      sessionType = widget.profileModel.sessionType == ""? sessionType : widget.profileModel.sessionType;
       experienceController.text = widget.profileModel.experience;
       locationController.text = widget.profileModel.location;
 
@@ -415,38 +415,40 @@ class _FormSectionState extends State<FormSection> {
                         padding: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height / 50)),
 
-                    Text("Session Type",style: TextStyle(fontSize: 20,color: Colors.white),),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                      Text("Session Type",style: TextStyle(fontSize: 20,color: Colors.white),),
 
-                    DropdownButton<String>(
-                      hint: Text(sessionType,style: TextStyle(color: colors.deepBlue),),
+                      DropdownButton<String>(
+                        hint: Text(sessionType,style: TextStyle(color: colors.deepBlue),),
 
 
-                      items: <String>['Single','Groups(Maximum Count of 15 members','Classes'].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child:  Text(value,),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          sessionType = value;
-                        });
-                      },
-                    ),
+                        items: <String>['Single','Groups','Classes'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child:  Text(value,),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            sessionType = value;
+                          });
+                        },
+                      ),
+                    ],),
 
-                    Padding(
-                     padding:  EdgeInsets.all(20.0),
-                     child: Row(
+                     Row(
                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                        children: <Widget>[
-                         Text("Certificates"),
+                         Text("Certificates",style: TextStyle(fontSize: 20,color: Colors.white),),
                          _loadingPath ? CircularProgressIndicator() : IconButton(icon: Icon(Icons.add_circle,size: 40,), onPressed: (){
                          _openFileExplorer();
 
                          })
                        ],
                      ),
-                   ),
+
 
                  userCertModel != null ?   ListView.builder(
                    shrinkWrap: true,

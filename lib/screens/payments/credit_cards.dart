@@ -19,7 +19,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
   void addCard(){
     StripeSource.addSource().then((String token) {
       print("here is the token"+token);
-    CreditCardRepository.instance().addCart(widget.userId, token);
+    CreditCardRepository.instance().addCard(widget.userId, token);
     });
   }
   @override

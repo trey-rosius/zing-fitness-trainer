@@ -122,7 +122,7 @@ class ChatsRepository extends ChangeNotifier {
         .collection(Config.chats)
         .document(chatId)
         .collection(Config.chatThread)
-        .orderBy(Config.messageId, descending: true)
+        .orderBy(Config.createdOn, descending: true)
 
         .limit(10000)
         .snapshots()

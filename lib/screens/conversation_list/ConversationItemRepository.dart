@@ -22,7 +22,7 @@ class ConversationItemRepository extends ChangeNotifier {
     return  _firestore
         .collection(Config.users).document(userId)
         .collection(Config.chatList)
-        //.orderBy(Config.createdOn,descending: true)
+        .orderBy(Config.createdOn,descending: true)
         .snapshots()
 
         .map((list){
