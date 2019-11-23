@@ -7,10 +7,11 @@ import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/chats/chat_screen.dart';
 import 'package:zing_fitnes_trainer/screens/chats/chats_repository.dart';
 import 'package:zing_fitnes_trainer/screens/chats/typing_model.dart';
+import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
-class BookingsItem extends StatelessWidget {
-  BookingsItem(
+class PendingBookingsItem extends StatelessWidget {
+  PendingBookingsItem(
 
       this.bookingsModel,
       this.userId);
@@ -19,7 +20,7 @@ class BookingsItem extends StatelessWidget {
   final String userId;
   @override
   Widget build(BuildContext context) {
-    return
+    return bookingsModel.bookingStatus == Config.pendingApproval ?
 
       StreamProvider.value(
         value: ProfileProvider.instance().streamTrainerUserProfile(bookingsModel.trainerUserId),
@@ -111,14 +112,14 @@ class BookingsItem extends StatelessWidget {
                                   Row(
                                     children: <Widget>[
                                       Icon(
-                                        Icons.check_box,
+                                        Icons.check_box_outline_blank,
                                         color: MyColors().deepBlue,
                                         size: 16,
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 3),
                                         child: Text(
-                                          "Paid",
+                                          "UnPaid",
                                           style: TextStyle(fontSize: 15),
                                         ),
                                       )
@@ -149,7 +150,7 @@ class BookingsItem extends StatelessWidget {
 
           },
         ),
-      );
+      ) : Container();
 
 
 

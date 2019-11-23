@@ -57,12 +57,15 @@ class BookingRepository{
   Stream<List<UserBookingsModel>>streamListOfUserBookings(String userId){
 
     return _firestore.collection(Config.users).document(userId).collection(Config.userBookings)
+
         .snapshots()
         .map((list)=>
     list.documents.map((doc)=>UserBookingsModel.fromFirestore(doc)).toList());
   }
 
-  //Stream single booking
+
+
+//Stream single booking
 
 
 

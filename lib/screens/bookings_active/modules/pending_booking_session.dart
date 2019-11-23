@@ -3,11 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/user_bookings_model.dart';
-import 'package:zing_fitnes_trainer/screens/bookings_active/modules/approved_bookings_item.dart';
 import 'package:zing_fitnes_trainer/screens/bookings_active/modules/pending_bookings_item.dart';
 
-class ActiveBookingSession extends StatelessWidget {
-  ActiveBookingSession(this.userId,this.userBookingsModel);
+class PendingBookingSession extends StatelessWidget {
+  PendingBookingSession(this.userId,this.userBookingsModel);
   final String userId;
   final List<UserBookingsModel> userBookingsModel;
   @override
@@ -23,7 +22,7 @@ class ActiveBookingSession extends StatelessWidget {
             child: Consumer<BookingsModel>(
               builder: (key,value,child){
                return value == null ? Container() :
-                 ApprovedBookingsItem(value,userId);
+                 PendingBookingsItem(value,userId);
               },
             ),
             ),
