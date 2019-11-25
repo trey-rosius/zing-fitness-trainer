@@ -17,6 +17,7 @@ class BookingDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text('Booking Details',style: TextStyle(fontSize: 20),),
@@ -24,65 +25,179 @@ class BookingDetailsScreen extends StatelessWidget {
       ),
 
       body: SingleChildScrollView(
-        child:Column(
-          children: <Widget>[
-            Center(
-              child: Container(
-                decoration: BoxDecoration(
-                    border:
-                    Border.all(color: Colors.white, width: 2),
-                    borderRadius: BorderRadius.circular(30)),
-                child: Material(
+        child:Container(
+          padding: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
+          child: Column(
+            children: <Widget>[
+              Center(
+                child:
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+
                   child: CachedNetworkImage(
-                    placeholder: (context, url) => Container(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 1.0,
-                        valueColor:
-                        AlwaysStoppedAnimation<Color>(
-                            Theme.of(context).accentColor),
+                        placeholder: (context, url) => Container(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 1.0,
+                            valueColor:
+                            AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).accentColor),
+                          ),
+                          width: 50.0,
+                          height: 50.0,
+                          padding: EdgeInsets.all(10.0),
+                        ),
+                        imageUrl: trainerProfileModel.profilePicUrl??"",
+                        width: 120.0,
+                        height: 120.0,
+                        fit: BoxFit.cover,
                       ),
-                      width: 50.0,
-                      height: 50.0,
-                      padding: EdgeInsets.all(10.0),
+                ),
+
+                ),
+              Padding(
+                padding:  EdgeInsets.only(right:10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Icon(
+                      Icons.check_box_outline_blank,
+                      color: MyColors().deepBlue,
+                      size: 16,
                     ),
-                    imageUrl: trainerProfileModel.profilePicUrl??"",
-                    width: 50.0,
-                    height: 50.0,
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
-                  ),
-                  clipBehavior: Clip.hardEdge,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 3),
+                      child: Text(
+                        "UnPaid",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            ),
+              Container(
+                padding: EdgeInsets.only(bottom: 10),
+                child: Text(trainerProfileModel.name,style: TextStyle(fontSize: 20),),
+              ),
 
-            Padding(
-              padding:  EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Icon(
-                    Icons.check_box_outline_blank,
-                    color: MyColors().deepBlue,
-                    size: 16,
+
+
+              Padding(
+                padding:  EdgeInsets.only(right:10.0),
+                child:ListTile(
+                  title:  Text(
+                    "Experience",
+                    style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 3),
-                    child: Text(
-                      "UnPaid",
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  )
-                ],
+                  trailing: Text(
+                    trainerProfileModel.experience,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                )
+              ),
+
+      Padding(
+          padding:  EdgeInsets.only(right:10.0),
+          child:ListTile(
+            title:  Text(
+              "Date",
+              style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),
+            ),
+            trailing: Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black,width: 2)
+              ),
+              child: Text(
+                bookingsModel.bookingDate,
+                style: TextStyle(fontSize: 20),
               ),
             ),
+          )
+      ),
+              Padding(
+                  padding:  EdgeInsets.only(right:10.0),
+                  child:ListTile(
+                    title:  Text(
+                      "Session Cost",
+                      style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),
+                    ),
+                    trailing: Container(
 
-            Container(
-              child: Text(trainerProfileModel.name),
-            )
-          ],
+                      child: Text(
+                       '\$'+ bookingsModel.sessionRate,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  )
+              ),
+
+              Padding(
+                  padding:  EdgeInsets.only(right:10.0),
+                  child:ListTile(
+                    title:  Text(
+                      "Session Type",
+                      style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),
+                    ),
+                    trailing: Container(
+
+                      child: Text(
+                         bookingsModel.sessionType,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  )
+              ),
+              Padding(
+                  padding:  EdgeInsets.only(right:10.0),
+                  child:ListTile(
+                    title:  Text(
+                      "Start Time",
+                      style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),
+                    ),
+                    trailing: Container(
+
+                      child: Text(
+                        bookingsModel.bookingStartTime,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  )
+              ),
+              Padding(
+                  padding:  EdgeInsets.only(right:10.0),
+                  child:ListTile(
+                    title:  Text(
+                      "End Time",
+                      style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),
+                    ),
+                    trailing: Container(
+
+                      child: Text(
+                        bookingsModel.bookingEndTime,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  )
+              ),
+
+              Container(
+                height:size.height/10,
+                width: size.width/2,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  color: Theme.of(context).primaryColor,
+                  onPressed: (){
+
+                },
+                child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.white),),),
+              )
+
+
+
+
+
+            ],
+          ),
         ),
       ),
     );

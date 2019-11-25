@@ -115,7 +115,8 @@ class AdminDrawer extends StatelessWidget {
                                     Container(
                                       padding: EdgeInsets.all(10),
                                       // margin:EdgeInsets.only(top: 10,right: 20,left: 20) ,
-                                      child: ClipOval(
+                                      child: ClipRRect(
+                                         borderRadius: BorderRadius.circular(100),
                                           child: CachedNetworkImage(
                                               width: 80.0,
                                               height: 80.0,
@@ -155,7 +156,7 @@ class AdminDrawer extends StatelessWidget {
                                         },
                                         child: Text(
                                           profileMod.name,
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(color: Colors.white,fontSize: 18),
                                         ),
                                       ),
                                     )
