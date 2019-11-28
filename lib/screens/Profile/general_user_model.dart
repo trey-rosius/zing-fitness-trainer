@@ -6,9 +6,11 @@ class GeneralUserModel{
   String name;
   String profilePicUrl;
   String userType,email;
+  String latitude;
+  String longitude;
   Timestamp createdOn;
 
-  GeneralUserModel({this.userId, this.name, this.profilePicUrl, this.userType,this.email,this.createdOn});
+  GeneralUserModel({this.userId, this.name, this.profilePicUrl, this.userType,this.email,this.createdOn,this.longitude,this.latitude});
 
 
 
@@ -19,6 +21,8 @@ class GeneralUserModel{
       email: docSnapShot.data[Config.email],
       profilePicUrl: docSnapShot.data[Config.profilePicUrl],
       userType: docSnapShot.data[Config.userType],
+        latitude: docSnapShot.data[Config.latitude],
+        longitude: docSnapShot.data[Config.longitude],
       createdOn: docSnapShot.data[Config.createdOn]
 
     );

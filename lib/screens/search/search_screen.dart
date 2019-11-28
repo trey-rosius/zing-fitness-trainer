@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/search/search_item.dart';
 
 class SearchScreen extends StatefulWidget {
+  SearchScreen(this.userId);
+  final String userId;
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -12,11 +17,12 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var trainerUserList = Provider.of<List<TrainerProfileModel>>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-        title: Text('Seach',style: TextStyle(fontSize: 20),),
+        title: Text('Search',style: TextStyle(fontSize: 20),),
         centerTitle: true,
       ),
 
@@ -53,7 +59,10 @@ class _SearchScreenState extends State<SearchScreen> {
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10.0),
-              child: Text("This is the search screen")
+              child: trainerUserList==null ? Container() : ListView.builder(itemBuilder: (context,index){
+                return SearchItem(widget.userId,trainerUserList[index]);
+              },
+              itemCount: trainerUserList.length,)
             ),
           )
         ]),

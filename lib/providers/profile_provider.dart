@@ -60,12 +60,26 @@ class ProfileProvider extends ChangeNotifier{
 
   /// Stream trainers profiles
   ///
-  Stream<List<TrainerProfileModel>> streamTrainersList(String sessionType){
+  Stream<List<TrainerProfileModel>> streamTrainersListSessionType(String sessionType){
     return _firestore.collection(Config.users)
        .where(Config.sessionType,isEqualTo:sessionType )
         .snapshots()
         .map((list) =>
     list.documents.map((doc) => TrainerProfileModel.fromFirestore(doc)).toList());
+
+
+
+  }
+
+  /// Stream trainers profiles
+  ///
+  Stream<List<TrainerProfileModel>> streamTrainersList(){
+    return _firestore.collection(Config.users)
+          .where(Config.userType,isEqualTo: Config.trainer)
+
+        .snapshots()
+        .map((list) =>
+        list.documents.map((doc) => TrainerProfileModel.fromFirestore(doc)).toList());
 
 
 

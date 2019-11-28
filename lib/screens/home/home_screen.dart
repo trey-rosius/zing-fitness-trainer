@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
+import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_screen.dart';
 import 'package:zing_fitnes_trainer/screens/bookings_active/bookings_page.dart';
 import 'package:zing_fitnes_trainer/screens/home/zoom_scaffold.dart';
@@ -58,13 +61,27 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             elevation: 0.0,
             actions: <Widget>[
 
+
               InkWell(
                 onTap: (){
+
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
 
-                      builder: (context) => SearchScreen(),
+                        builder: (context) {
+                          return StreamProvider<List<TrainerProfileModel>>.value(value: ProfileProvider.instance().streamTrainersList(),
+                            catchError: (context,error){
+                              print(error);
+                              return null;
+                            },child: SearchScreen(widget.userId),);
+
+
+                        }
+
+
+
                     ),
                   );
                 },

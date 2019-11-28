@@ -395,7 +395,7 @@ Center(
                 MaterialPageRoute(builder: (context) {
                   return StreamProvider.value(
                       value: ProfileProvider.instance()
-                          .streamTrainersList(sessionType),
+                          .streamTrainersListSessionType(sessionType),
                       catchError: (context, error) {
                         print(error);
                       },
