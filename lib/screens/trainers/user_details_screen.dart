@@ -4,7 +4,6 @@ import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
-import 'package:zing_fitnes_trainer/screens/trainers/bookingCard.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/user_booking_card.dart';
 
 class UserDetailsScreen extends StatefulWidget {

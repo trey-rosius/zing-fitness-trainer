@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
@@ -74,6 +75,34 @@ class FormSection extends StatefulWidget {
 }
 
 class _FormSectionState extends State<FormSection> {
+  final Geolocator _geolocator = Geolocator();
+  List<String> _placemarkCoords = [];
+  String longitude;
+  String latitude;
+
+
+  Future<void> _onLookupCoordinatesPressed(BuildContext context) async {
+    final List<Placemark> placemarks = await Future(
+            () => _geolocator.placemarkFromAddress(locationController.text))
+        .catchError((onError) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(onError.toString()),
+      ));
+      return Future.value(List<Placemark>());
+    });
+
+    if (placemarks != null && placemarks.isNotEmpty) {
+      final Placemark pos = placemarks[0];
+
+
+
+        setState(() {
+          longitude = pos.position?.longitude.toString();
+          latitude = pos.position?.latitude.toString();
+        });
+
+    }
+  }
   final GlobalKey<FormState> _regularFormKey = GlobalKey<FormState>();
   String phoneNumber;
   String serviceArea;
@@ -336,12 +365,52 @@ class _FormSectionState extends State<FormSection> {
                         padding: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height / 50)),
 
-                    ProfileInputField(
-                      hintText: 'Session Area/Location',
-                      controller: locationController,
-                      icon: Icons.location_on,
-                      validator: (value){return Validator().textValidator(value);},
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                        MediaQuery.of(context).size.width / 30,
+                        5,
+                        MediaQuery.of(context).size.width / 32,
+                        0,
+                      ),
+
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: colors.inputBlue,
+                      ),
+
+
+
+
+                      child: TextFormField(
+
+
+                          validator: (value){return Validator().textValidator(value);},
+
+                          controller: locationController,
+                          maxLines: 3,
+
+
+                          decoration: InputDecoration(
+                              contentPadding: EdgeInsets.fromLTRB(
+                                  0,
+                                  MediaQuery.of(context).size.height / 40,
+                                  0,
+                                  MediaQuery.of(context).size.height / 40),
+                              alignLabelWithHint: true,
+                              icon: Icon(
+                                Icons.location_on,
+                                size: MediaQuery.of(context).size.width / 15,
+                                color: colors.deepBlue,
+                              ),
+                              labelText: 'Session Area(Full Address)',
+                              labelStyle: TextStyle(color: colors.deepBlue),
+                              border: InputBorder.none,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                borderSide: BorderSide(color: colors.inputBlue),
+                              ))),
                     ),
+
 
 
                     Padding(
@@ -402,6 +471,7 @@ class _FormSectionState extends State<FormSection> {
                           //   initialValue: initialValue,
                           controller: experienceController,
                           keyboardType: TextInputType.number,
+
 
                           decoration: InputDecoration(
 
@@ -504,6 +574,27 @@ builder: (_,value,child){
       setState(() {
         loading = true;
       });
+
+      final List<Placemark> placemarks = await Future(
+              () => _geolocator.placemarkFromAddress(locationController.text))
+          .catchError((onError) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(onError.toString()),
+        ));
+        return Future.value(List<Placemark>());
+      });
+
+      if (placemarks != null && placemarks.isNotEmpty) {
+        final Placemark pos = placemarks[0];
+
+
+
+        setState(() {
+          longitude = pos.position?.longitude.toString();
+          latitude = pos.position?.latitude.toString();
+        });
+
+      }
       if (file != null && profilePic == null) {
         var dir = await path_provider.getTemporaryDirectory();
         var targetPath = dir.absolute.path + "/temp.png";
@@ -524,6 +615,8 @@ builder: (_,value,child){
               userData[Config.location] = locationController.text;
               userData[Config.experience] =experienceController.text;
               userData[Config.sessionType] =sessionType;
+              userData[Config.longitude] =longitude;
+              userData[Config.latitude] =latitude;
 
               userData[Config.phone] = phoneController.text;
               userData[Config.sessionRate] = sessionRateController.text;
@@ -553,7 +646,8 @@ builder: (_,value,child){
               userData[Config.location] = locationController.text;
               userData[Config.experience] =experienceController.text;
               userData[Config.sessionType] =sessionType;
-
+              userData[Config.longitude] =longitude;
+              userData[Config.latitude] =latitude;
 
               userData[Config.phone] = phoneController.text;
               userData[Config.sessionRate] = sessionRateController.text;
@@ -594,7 +688,8 @@ builder: (_,value,child){
               userData[Config.location] = locationController.text;
               userData[Config.sessionType] =sessionType;
               userData[Config.experience] = experienceController.text;
-
+              userData[Config.longitude] =longitude;
+              userData[Config.latitude] =latitude;
               userData[Config.phone] = phoneController.text;
               userData[Config.sessionRate] = sessionRateController.text;
 

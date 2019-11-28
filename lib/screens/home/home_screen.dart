@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_screen.dart';
 import 'package:zing_fitnes_trainer/screens/bookings_active/bookings_page.dart';
 import 'package:zing_fitnes_trainer/screens/home/zoom_scaffold.dart';
+import 'package:zing_fitnes_trainer/screens/search/search_screen.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 
@@ -59,13 +60,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
               InkWell(
                 onTap: (){
-/*
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>  NotificationScreen(userId: widget.userId,admin: widget.admin),
-                      ));
-*/
+                    context,
+                    MaterialPageRoute(
+
+                      builder: (context) => SearchScreen(),
+                    ),
+                  );
                 },
 
                 child: Container(

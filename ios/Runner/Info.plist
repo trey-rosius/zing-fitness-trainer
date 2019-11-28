@@ -20,6 +20,12 @@
     <string>$(PRODUCT_NAME) would like to access your photo gallery for your profile photo upload. Your photos wont be shared without your permission</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>$(PRODUCT_NAME) would like to access your microphone when recording videos. Your video wont be shared without your permission</string>
+   	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>$(PRODUCT_NAME) would like to use your current location to display it on the app, also for directions and estimation of your travel times. It is secure and private.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>$(PRODUCT_NAME) would need access to location when in the background,for directions and estimation of your travel times..</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+
     <key>UIBackgroundModes</key>
     <array>
     <string>fetch</string>

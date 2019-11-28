@@ -20,6 +20,9 @@ class Config{
   static final String age= "age";
   static final String location= "location";
   static final String loginMsg = "Login Successfull";
+  static final String longitude = "longitude";
+  static final String latitude = "latitude";
+
 
 
   static final String profilePicUrl = "profilePicUrl";

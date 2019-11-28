@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zing_fitnes_trainer/components/MyDrawer.dart';
+
 import 'package:zing_fitnes_trainer/screens/Profile/edit_profile_regular.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/edit_profile_trainer.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/pFootbg.dart';
