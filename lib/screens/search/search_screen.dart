@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/search/search_filter_screen.dart';
 import 'package:zing_fitnes_trainer/screens/search/search_item.dart';
+import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen(this.userId);
+  SearchScreen(this.userId,this.longitude,this.latitude);
   final String userId;
+  final String longitude;
+  final String latitude;
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -14,16 +19,72 @@ class _SearchScreenState extends State<SearchScreen> {
 
   bool isLargeScreen = false;
   String filter;
+  bool applyFilter = false;
+  String longitude,latitude;
+  String sessionType = "Single";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("longitude is"+widget.longitude);
+    print("latitude is"+widget.latitude);
+  }
 
   @override
   Widget build(BuildContext context) {
-    var trainerUserList = Provider.of<List<TrainerProfileModel>>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
         title: Text('Search',style: TextStyle(fontSize: 20),),
         centerTitle: true,
+
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:IconButton(icon: Icon(Icons.filter_list), onPressed: ()async{
+             final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+
+                  builder: (context) => SearchFilterScreen(),
+                ),
+              );
+            if(result != null) {
+              setState(() {
+                applyFilter = true;
+                if (result[Config.hasGeo]) {
+                  sessionType = result[Config.sessionType];
+                  longitude = result[Config.longitude];
+                  latitude = result[Config.latitude];
+                  print(result);
+                  print(result[Config.longitude]);
+                  print(result[Config.latitude]);
+                  print(result[Config.sessionType]);
+                } else {
+                  print(result);
+                  sessionType = result[Config.sessionType];
+                  longitude = widget.longitude;
+                  latitude = widget.latitude;
+                  print(result[Config.sessionType]);
+                }
+              });
+            } else
+              {
+                print("nothing returned");
+              }
+
+
+
+
+
+            })
+
+
+          )
+        ],
       ),
 
       body: Stack(children: <Widget>[
@@ -56,14 +117,39 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
 
 
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 10.0),
-              child: trainerUserList==null ? Container() : ListView.builder(itemBuilder: (context,index){
-                return SearchItem(widget.userId,trainerUserList[index]);
+         applyFilter ?Expanded(
+           child: StreamProvider.value(value: ProfileProvider.instance().streamTrainersListSessionType(sessionType),
+             catchError: (context,error){
+               print(error);
+             },
+             child: Consumer<List<TrainerProfileModel>>(
+               builder: (_,value,child){
+                 return Container(
+                     padding: EdgeInsets.symmetric(vertical: 10.0),
+                     child: value==null ? Container() : ListView.builder(itemBuilder: (context,index){
+                       return SearchItem(widget.userId,value[index],longitude,latitude);
+                     },
+                       itemCount: value.length,)
+                 );
+               },
+             ),),
+         ) :
+         Expanded(
+            child: StreamProvider.value(value: ProfileProvider.instance().streamTrainersList(),
+            catchError: (context,error){
+              print(error);
+            },
+            child: Consumer<List<TrainerProfileModel>>(
+              builder: (_,value,child){
+                return Container(
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                    child: value==null ? Container() : ListView.builder(itemBuilder: (context,index){
+                      return SearchItem(widget.userId,value[index],widget.longitude,widget.latitude);
+                    },
+                      itemCount: value.length,)
+                );
               },
-              itemCount: trainerUserList.length,)
-            ),
+            ),),
           )
         ]),
       ]),

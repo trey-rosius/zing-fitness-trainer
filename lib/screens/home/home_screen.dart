@@ -13,11 +13,12 @@ import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({this.userId,this.admin,this.menuController,this.isUserAnonymous});
+  HomeScreen({this.userId,this.admin,this.menuController,this.longitude,this.latitude});
   final MenuController menuController;
   final String userId;
   final bool admin;
-  final bool isUserAnonymous;
+  final String longitude;
+  final String latitude;
 
 
 
@@ -29,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   int _selectedIndex = 0;
   PageController _pageController;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -71,11 +73,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     MaterialPageRoute(
 
                         builder: (context) {
-                          return StreamProvider<List<TrainerProfileModel>>.value(value: ProfileProvider.instance().streamTrainersList(),
-                            catchError: (context,error){
-                              print(error);
-                              return null;
-                            },child: SearchScreen(widget.userId),);
+                          return  SearchScreen(widget.userId,widget.longitude,widget.latitude);
 
 
                         }

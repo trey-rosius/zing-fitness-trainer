@@ -22,6 +22,8 @@ class Config{
   static final String loginMsg = "Login Successfull";
   static final String longitude = "longitude";
   static final String latitude = "latitude";
+  static final String hasGeo = "hasGeo";
+
 
 
 

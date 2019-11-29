@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 import 'package:zing_fitnes_trainer/components/button.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
@@ -39,6 +41,24 @@ class _EditProfileRegularState extends State<EditProfileRegular> {
   final  ageController = TextEditingController();
   final  weightController = TextEditingController();
   final  notesController = TextEditingController();
+
+  final Geolocator _geolocator = Geolocator();
+  List<String> _placemarkCoords = [];
+  String longitude;
+  String latitude;
+  _saveLongitude(String longitude) async {
+    final prefs =  await StreamingSharedPreferences.instance;
+
+
+    prefs.setString(Config.longitude, longitude);
+  }
+  _saveLatitude(String latitude) async {
+    final prefs =  await StreamingSharedPreferences.instance;
+
+
+    prefs.setString(Config.latitude, latitude);
+  }
+
 
   void _onImageButtonPressed(ImageSource source) async {
     setState(() {
@@ -262,6 +282,31 @@ class _EditProfileRegularState extends State<EditProfileRegular> {
                                   text:'Update' ,
                                   onClick: () async{
     if (_regularFormKey.currentState.validate()) {
+
+
+      final List<Placemark> placemarks = await Future(
+              () => _geolocator.placemarkFromAddress(locationController.text))
+          .catchError((onError) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(onError.toString()),
+        ));
+        return Future.value(List<Placemark>());
+      });
+
+      if (placemarks != null && placemarks.isNotEmpty) {
+        final Placemark pos = placemarks[0];
+
+
+
+        setState(() {
+          longitude = pos.position?.longitude.toString();
+          latitude = pos.position?.latitude.toString();
+
+          _saveLatitude(latitude);
+          _saveLongitude(longitude);
+        });
+
+      }
       if (file != null && profilePic == null) {
         setState(() {
           loading = true;

@@ -12,7 +12,7 @@ class ZoomScaffold extends StatefulWidget {
 
   final String userId;
   final bool admin;
-  final bool isUserAnonymous;
+  final String longitude,latitude;
 
 
 
@@ -21,7 +21,8 @@ class ZoomScaffold extends StatefulWidget {
 
     this.userId,
     this.admin,
-    this.isUserAnonymous
+    this.longitude,
+    this.latitude
 
 
   });
@@ -72,7 +73,7 @@ class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMix
     return zoomAndSlideContent(
 
 
-        HomeScreen(userId: widget.userId,admin: widget.admin,menuController: menuController,isUserAnonymous: widget.isUserAnonymous)
+        HomeScreen(userId: widget.userId,admin: widget.admin,menuController: menuController,longitude:widget.longitude,latitude:widget.latitude)
     );
   }
 

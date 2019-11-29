@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/general_user_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/certificate_model.dart';
@@ -82,6 +83,19 @@ class ProfileProvider extends ChangeNotifier{
         list.documents.map((doc) => TrainerProfileModel.fromFirestore(doc)).toList());
 
 
+
+  }
+
+  Future<double> calculateDistance(TrainerProfileModel trainerUserModel,String longitude,String latitude) async{
+    final double startLatitude = double.parse(latitude);
+    final double startLongitude = double.parse(longitude);
+    final double endLatitude = double.parse(trainerUserModel.latitude);
+    final double endLongitude = double.parse(trainerUserModel.longitude);
+
+    final double distance = await Geolocator().distanceBetween(
+        startLatitude, startLongitude, endLatitude, endLongitude);
+
+    return distance;
 
   }
 

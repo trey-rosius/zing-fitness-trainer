@@ -21,6 +21,8 @@ class HomeContainer extends StatelessWidget {
        return ZoomScaffold(
 
            userId: userId,
+           longitude: settings.longitude.getValue(),
+           latitude: settings.latitude.getValue(),
 
 
 

@@ -9,6 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:zing_fitnes_trainer/components/button.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/certificate_model.dart';
@@ -76,33 +77,23 @@ class FormSection extends StatefulWidget {
 
 class _FormSectionState extends State<FormSection> {
   final Geolocator _geolocator = Geolocator();
-  List<String> _placemarkCoords = [];
+
   String longitude;
   String latitude;
+  _saveLongitude(String longitude) async {
+    final prefs =  await StreamingSharedPreferences.instance;
 
 
-  Future<void> _onLookupCoordinatesPressed(BuildContext context) async {
-    final List<Placemark> placemarks = await Future(
-            () => _geolocator.placemarkFromAddress(locationController.text))
-        .catchError((onError) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(onError.toString()),
-      ));
-      return Future.value(List<Placemark>());
-    });
-
-    if (placemarks != null && placemarks.isNotEmpty) {
-      final Placemark pos = placemarks[0];
-
-
-
-        setState(() {
-          longitude = pos.position?.longitude.toString();
-          latitude = pos.position?.latitude.toString();
-        });
-
-    }
+    prefs.setString(Config.longitude, longitude);
   }
+  _saveLatitude(String latitude) async {
+    final prefs =  await StreamingSharedPreferences.instance;
+
+
+    prefs.setString(Config.latitude, latitude);
+  }
+
+
   final GlobalKey<FormState> _regularFormKey = GlobalKey<FormState>();
   String phoneNumber;
   String serviceArea;
@@ -592,6 +583,9 @@ builder: (_,value,child){
         setState(() {
           longitude = pos.position?.longitude.toString();
           latitude = pos.position?.latitude.toString();
+
+          _saveLatitude(latitude);
+          _saveLongitude(longitude);
         });
 
       }
