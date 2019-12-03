@@ -7,6 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
+import 'package:zing_fitnes_trainer/screens/Profile/general_user_model.dart';
+import 'package:zing_fitnes_trainer/screens/Profile/profile_regular_user.dart';
+import 'package:zing_fitnes_trainer/screens/Profile/profile_trainer_user.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/conversation_list/ConversationItemRepository.dart';
 import 'package:zing_fitnes_trainer/screens/conversation_list/conversation_item_model.dart';
@@ -16,9 +19,10 @@ import 'package:zing_fitnes_trainer/screens/payments/credit_cards.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 class AdminDrawer extends StatelessWidget {
-  AdminDrawer(this.userId, this.admin, this.menuController);
+  AdminDrawer(this.userId, this.admin, this.menuController,this.userType);
   final String userId;
   final bool admin;
+  final String userType;
 
   final MenuController menuController;
   _deletePreferences() async {
@@ -99,52 +103,49 @@ class AdminDrawer extends StatelessWidget {
               Column(
                 children: <Widget>[
                   Container(
-                      child: StreamBuilder<RegularProfileModel>(
-                          stream: ProfileProvider.instance()
-                              .streamRegularUserProfile(userId),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<RegularProfileModel> snapshot) {
-                            if (snapshot.hasData) {
-                              var profileMod = snapshot.data;
-                              //   _saveAdmin(profileMod.admin);
-                              //  print(profileMod.admin.toString()??"admin is null");
-                              return Container(
-                                padding: EdgeInsets.all(10),
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      // margin:EdgeInsets.only(top: 10,right: 20,left: 20) ,
-                                      child: ClipRRect(
-                                         borderRadius: BorderRadius.circular(100),
-                                          child: CachedNetworkImage(
-                                              width: 80.0,
-                                              height: 80.0,
-                                              fit: BoxFit.cover,
-                                              imageUrl: profileMod.profilePicUrl ?? "",
-                                              placeholder: (context, url) =>
-                                                  SpinKitHourGlass(
-                                                      color: Theme.of(context)
-                                                          .accentColor),
-                                              errorWidget: (context, url, ex) =>
-                                                  CircleAvatar(
-                                                    backgroundColor:
-                                                    Theme.of(context).accentColor,
-                                                    radius: 50.0,
-                                                    child: Icon(
-                                                      Icons.account_circle,
-                                                      color: Colors.white,
-                                                      size: 50.0,
-                                                    ),
-                                                  ))),
-                                    ),
-                                    Expanded(
-                                      child: FlatButton(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5)),
-                                        onPressed: () {
-                                          menuController.close();
-                                          /*
+                      child: StreamProvider.value(value: ProfileProvider.instance()
+              .streamGeneralUserModel(userId),catchError: (context,error){
+                        print(error.toString());
+      },
+      child: Consumer<GeneralUserModel>(
+        builder: (_,profileMod,child){
+          return profileMod == null ? Container(): Container(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(10),
+                  // margin:EdgeInsets.only(top: 10,right: 20,left: 20) ,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: CachedNetworkImage(
+                          width: 80.0,
+                          height: 80.0,
+                          fit: BoxFit.cover,
+                          imageUrl: profileMod.profilePicUrl ?? "",
+                          placeholder: (context, url) =>
+                              SpinKitHourGlass(
+                                  color: Theme.of(context)
+                                      .accentColor),
+                          errorWidget: (context, url, ex) =>
+                              CircleAvatar(
+                                backgroundColor:
+                                Theme.of(context).accentColor,
+                                radius: 50.0,
+                                child: Icon(
+                                  Icons.account_circle,
+                                  color: Colors.white,
+                                  size: 50.0,
+                                ),
+                              ))),
+                ),
+                Expanded(
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
+                    onPressed: () {
+                      menuController.close();
+                      /*
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -153,23 +154,56 @@ class AdminDrawer extends StatelessWidget {
                                         ),
                                       );
                                       */
-                                        },
-                                        child: Text(
-                                          profileMod.name,
-                                          style: TextStyle(color: Colors.white,fontSize: 18),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          })),
+                    },
+                    child: Text(
+                      profileMod.name,
+                      style: TextStyle(color: Colors.white,fontSize: 18),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      ),)),
+
+
                   InkWell(
                       onTap: () {
                         menuController.close();
+                        if(userType == Config.regularUser){
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return StreamProvider.value(
+                                value: ProfileProvider.instance()
+                                    .streamRegularUserProfile(userId),
+                                catchError: (context, error) {
+                                  print(error);
+                                },
+                                child: ProfileRegularUser(
+
+                                ),
+                              );
+                            }),
+                          );
+                        }else
+                          {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return StreamProvider.value(
+                                    value: ProfileProvider.instance()
+                                        .streamTrainerUserProfile(userId),
+                                    catchError: (context, error) {
+                                      print(error);
+                                    },
+                                    child: ProfileTrainerUser(userId: userId,));
+                                //  child: ProfileRegularUser();
+                              }),
+                            );
+                          }
                       },
                       child: ListTile(
                         leading: Icon(

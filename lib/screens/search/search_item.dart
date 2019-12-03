@@ -2,7 +2,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
+import 'package:zing_fitnes_trainer/screens/Profile/external_profile_trainer_screen.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
@@ -50,6 +52,19 @@ setState(() {
         onTap: (){
 
           print("pressed");
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return StreamProvider.value(
+                  value: ProfileProvider.instance()
+                      .streamTrainerUserProfile(widget.userId),
+                  catchError: (context, error) {
+                    print(error);
+                  },
+                  child: ExternalProfileTrainerUser(userId: widget.trainerProfileModel.userId,));
+              //  child: ProfileRegularUser();
+            }),
+          );
 
 
         },

@@ -198,7 +198,18 @@ class Config{
   static final String bookingStatus = "bookingStatus";
   static final String bookingsId = "bookingsId";
   static final String userBookings = "userBookings";
+
+  /// There are -- booking status
+  /// Requested => User requests for  a trainer
+  /// Approved => Trainer approves user request
+  /// UnApproved => Trainer rejects users requests
+  /// Paid => User pays for approved booking
+  /// unpaid => User doesn't pay
+  ///
   static final String approved = "approved";
+  static final String requested = "requested";
+  static final String unApproved = "unApproved";
+  static final String unPaid = "unPaid";
   static final String pendingApproval = "pendingApproval";
 
 

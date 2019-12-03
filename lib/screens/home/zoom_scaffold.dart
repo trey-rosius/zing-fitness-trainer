@@ -12,7 +12,7 @@ class ZoomScaffold extends StatefulWidget {
 
   final String userId;
   final bool admin;
-  final String longitude,latitude;
+  final String longitude,latitude,userType;
 
 
 
@@ -22,7 +22,8 @@ class ZoomScaffold extends StatefulWidget {
     this.userId,
     this.admin,
     this.longitude,
-    this.latitude
+    this.latitude,
+    this.userType
 
 
   });
@@ -73,7 +74,7 @@ class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMix
     return zoomAndSlideContent(
 
 
-        HomeScreen(userId: widget.userId,admin: widget.admin,menuController: menuController,longitude:widget.longitude,latitude:widget.latitude)
+        HomeScreen(userType : widget.userType,userId: widget.userId,admin: widget.admin,menuController: menuController,longitude:widget.longitude,latitude:widget.latitude)
     );
   }
 
@@ -134,7 +135,7 @@ class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMix
 
           child: Scaffold(
             backgroundColor:  Color(0xFF2f00ad),
-            body: AdminDrawer(widget.userId,widget.admin, menuController),),),
+            body: AdminDrawer(widget.userId,widget.admin, menuController,widget.userType),),),
         createContentDisplay()
       ],
     );

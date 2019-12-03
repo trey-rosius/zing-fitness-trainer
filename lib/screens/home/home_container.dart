@@ -23,6 +23,7 @@ class HomeContainer extends StatelessWidget {
            userId: userId,
            longitude: settings.longitude.getValue(),
            latitude: settings.latitude.getValue(),
+          userType:settings.userType.getValue()
 
 
 

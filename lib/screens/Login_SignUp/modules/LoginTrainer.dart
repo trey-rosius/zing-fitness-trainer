@@ -258,21 +258,7 @@ class _LoginTrainerState extends State<LoginTrainer> {
 
 
 
-/*
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) {
-                return StreamProvider.value(
-                  value: ProfileProvider.instance()
-                      .streamUserCerts(firebaseUserId),
-                  catchError: (context, error) {
-                    print(error);
-                  },
-                  child: EditProfileTrainer(userId: firebaseUserId));
-                //  child: ProfileRegularUser();
-              }),
-            );
-*/
+
             print("login was successfull");
           });
         } else {
