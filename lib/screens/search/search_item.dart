@@ -46,7 +46,7 @@ setState(() {
   Widget build(BuildContext context) {
 
 
-    return distance != null && distance <=5000 ? Container(
+    return distance != null && distance <=5000000 ? Container(
       padding: EdgeInsets.all(10),
       child: InkWell(
         onTap: (){
@@ -57,11 +57,11 @@ setState(() {
             MaterialPageRoute(builder: (context) {
               return StreamProvider.value(
                   value: ProfileProvider.instance()
-                      .streamTrainerUserProfile(widget.userId),
+                      .streamTrainerUserProfile(widget.trainerProfileModel.userId),
                   catchError: (context, error) {
                     print(error);
                   },
-                  child: ExternalProfileTrainerUser(userId: widget.trainerProfileModel.userId,));
+                  child: ExternalProfileTrainerUser(userId: widget.userId,));
               //  child: ProfileRegularUser();
             }),
           );

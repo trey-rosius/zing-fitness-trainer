@@ -58,6 +58,7 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
     // TODO: implement initState
     super.initState();
     print("user Id"+widget.userId);
+    print("trainer user Id"+widget.trainerProfileModel.userId);
   }
   void showInSnackBar(String value) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(
@@ -420,7 +421,7 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
 
 
                         bookingMap[Config.sessionRate] = widget.trainerProfileModel.sessionRate;
-                       BookingRepository.instance().saveBookingDetails(widget.userId, bookingMap).then((_){
+                       BookingRepository.instance().saveRequestedBookingDetails(widget.userId,widget.trainerProfileModel.userId, bookingMap).then((_){
                          setState(() {
                            loading = false;
                            Navigator.of(context).pop();

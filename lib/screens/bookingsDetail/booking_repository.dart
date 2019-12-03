@@ -24,6 +24,26 @@ class BookingRepository{
     });
   }
 
+  Future<void>saveRequestedBookingDetails(String userId,String trainerUserId,Map bookingsMap){
+
+    return _firestore.collection(Config.bookings).add(bookingsMap)
+        .then((DocumentReference docRef){
+
+      _firestore.collection(Config.users).document(userId).collection(Config.userBookings)
+          .document(docRef.documentID).setData({
+        Config.bookingsId:docRef.documentID,
+        Config.createdOn:FieldValue.serverTimestamp(),
+
+      }).then((_){
+        _firestore.collection(Config.users).document(trainerUserId).collection(Config.userBookings)
+            .document(docRef.documentID).setData({
+          Config.bookingsId: docRef.documentID,
+          Config.createdOn: FieldValue.serverTimestamp(),
+        });
+      });
+    });
+  }
+
 
 
   Future<void> makeBookingPayment(String customerId,double amount,String userId,Map bookingsMap){

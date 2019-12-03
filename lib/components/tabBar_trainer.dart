@@ -56,13 +56,19 @@ class _TrainerTabBarState extends State<TrainerTabBar> {
                     bottomLeft: Radius.zero);
 
                 mydata.setTitle = "Bookings";
-              } else  {
+              } else if(index == 2) {
                 activeRadius = BorderRadius.only(
                     topLeft: Radius.zero,
                     bottomLeft: Radius.zero,
                     topRight: Radius.circular(10),
                     bottomRight:Radius.circular(10));
                 mydata.setTitle = "Active";
+              }else{
+                activeRadius = BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                    topRight: Radius.zero,
+                    bottomRight: Radius.zero);
               }
             });
           },
