@@ -10,29 +10,25 @@ class BookingRepository{
 
   BookingRepository.instance() : _firestore = Firestore.instance;
 
-  Future<void>saveBookingDetails(String userId,Map bookingsMap){
 
-    return _firestore.collection(Config.bookings).add(bookingsMap)
-         .then((DocumentReference docRef){
-
-           _firestore.collection(Config.users).document(userId).collection(Config.userBookings)
-               .document(docRef.documentID).setData({
-             Config.bookingsId:docRef.documentID,
-             Config.createdOn:FieldValue.serverTimestamp(),
-
-           });
-    });
-  }
 
   Future<void>saveRequestedBookingDetails(String userId,String trainerUserId,Map bookingsMap){
 
     return _firestore.collection(Config.bookings).add(bookingsMap)
         .then((DocumentReference docRef){
 
-      _firestore.collection(Config.users).document(userId).collection(Config.userBookings)
-          .document(docRef.documentID).setData({
-        Config.bookingsId:docRef.documentID,
-        Config.createdOn:FieldValue.serverTimestamp(),
+          _firestore.collection(Config.bookings).document(docRef.documentID)
+              .updateData({
+            Config.bookingsId :docRef.documentID
+          }
+          ).then((_) {
+
+            _firestore.collection(Config.users).document(userId).collection(Config.userBookings)
+                .document(docRef.documentID).setData({
+              Config.bookingsId:docRef.documentID,
+              Config.createdOn:FieldValue.serverTimestamp(),
+          });
+
 
       }).then((_){
         _firestore.collection(Config.users).document(trainerUserId).collection(Config.userBookings)
@@ -41,6 +37,17 @@ class BookingRepository{
           Config.createdOn: FieldValue.serverTimestamp(),
         });
       });
+    });
+  }
+
+  Future<void>changeBookingStatus(String bookingId,String status){
+    return _firestore.collection(Config.bookings).document(bookingId)
+           .updateData({
+        Config.bookingStatus :status,
+
+        Config.updatedOn : FieldValue.serverTimestamp()
+    }).then((_){
+      print("updates status");
     });
   }
 

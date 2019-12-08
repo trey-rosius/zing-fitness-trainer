@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_details_screen.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/chats/chat_screen.dart';
 import 'package:zing_fitnes_trainer/screens/chats/chats_repository.dart';
@@ -20,7 +21,7 @@ class PendingBookingsItem extends StatelessWidget {
   final String userId;
   @override
   Widget build(BuildContext context) {
-    return bookingsModel.bookingStatus == Config.pendingApproval ?
+    return bookingsModel.bookingStatus == Config.approved ?
 
       StreamProvider.value(
         value: ProfileProvider.instance().streamTrainerUserProfile(bookingsModel.trainerUserId),
@@ -35,6 +36,23 @@ class PendingBookingsItem extends StatelessWidget {
                 InkWell(
                   onTap: (){
                     print("pressed");
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BookingDetailsScreen(
+
+                                bookingsModel,
+                                value,
+                                userId)
+
+
+
+
+
+
+                        ));
+                    /*
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -65,6 +83,7 @@ class PendingBookingsItem extends StatelessWidget {
 
 
                         ));
+                    */
                   },
                   child: Column(
                     children: <Widget>[

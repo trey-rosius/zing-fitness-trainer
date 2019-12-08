@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
-import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_details_screen.dart';
+
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
-import 'package:zing_fitnes_trainer/screens/chats/chat_screen.dart';
-import 'package:zing_fitnes_trainer/screens/chats/chats_repository.dart';
-import 'package:zing_fitnes_trainer/screens/chats/typing_model.dart';
+import 'package:zing_fitnes_trainer/screens/trainers/user_details_screen.dart';
+
+
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
@@ -41,16 +40,14 @@ class RequestedBookingsItem extends StatelessWidget {
                     print(bookingsModel.trainerUserId);
 
                     print("pressed");
-/*
+
 
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => BookingDetailsScreen(
+                            builder: (context) => UserDetailsScreen(userId,bookingsModel)
 
-                                bookingsModel,
-                                value,
-                                userId)
+
 
 
 
@@ -58,7 +55,7 @@ class RequestedBookingsItem extends StatelessWidget {
 
 
                         ));
-*/
+
                     /*
 
                     Navigator.push(

@@ -96,6 +96,7 @@ class _TrainerDetailsScreenState extends State<TrainerDetailsScreen> {
           color: Theme.of(context).primaryColorDark,
           
           onPressed: (){
+            /*
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context)
@@ -113,6 +114,7 @@ class _TrainerDetailsScreenState extends State<TrainerDetailsScreen> {
               //  child: ProfileRegularUser();
 
             );
+            */
 
         },
         child: Text("Request",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
@@ -9,7 +10,7 @@ class UserBookingsCard extends StatelessWidget {
   UserBookingsCard(this.userId,this.userInfo,this.bookingModel);
   final String userId;
   final RegularProfileModel userInfo;
-  final NewBookingModel bookingModel;
+  final BookingsModel bookingModel;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class UserBookingsCard extends StatelessWidget {
                       color: colors.deepBlue,
                       size: 30,
                     ),
-                    title: Text(bookingModel.date),
+                    title: Text(bookingModel.bookingDate),
                   ),
                 ),
                 Divider(),
@@ -79,14 +80,14 @@ class UserBookingsCard extends StatelessWidget {
                       size: 30,
                     ),
                     title: Text("Duration"),
-                    subtitle: Text((bookingModel.endHr-bookingModel.startHr).toString()),
+                    subtitle: Text((bookingModel.bookingEndHr-bookingModel.bookingStartHr).toString()),
 
                   ),
                 ),
 
                 Divider(),
-                otherInfo("Start Time", bookingModel.startTime),
-                otherInfo("End Time", bookingModel.endTime),
+                otherInfo("Start Time", bookingModel.bookingStartTime),
+                otherInfo("End Time", bookingModel.bookingEndTime),
                 otherInfo("Session type", bookingModel.sessionType),
 
 
@@ -140,7 +141,7 @@ Widget otherInfo(title, content) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(title,
-            style: TextStyle(fontSize: 12, color: MyColors().textBlack)),
+            style: TextStyle(fontSize: 14, color: MyColors().chatBlue,fontWeight: FontWeight.w900,)),
         Text(content,
             style: TextStyle(
                 fontSize: 16,

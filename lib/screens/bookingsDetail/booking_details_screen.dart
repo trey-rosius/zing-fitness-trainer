@@ -1,7 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
+import 'package:zing_fitnes_trainer/screens/chats/chat_screen.dart';
+import 'package:zing_fitnes_trainer/screens/chats/chats_repository.dart';
+import 'package:zing_fitnes_trainer/screens/chats/typing_model.dart';
+import 'package:zing_fitnes_trainer/screens/payments/credit_cart_repository.dart';
+import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
+import 'package:zing_fitnes_trainer/screens/trainers/make_payment_screen.dart';
+import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
 class BookingDetailsScreen extends StatelessWidget {
@@ -54,7 +62,7 @@ class BookingDetailsScreen extends StatelessWidget {
                 ),
 
                 ),
-              Padding(
+              bookingsModel.bookingStatus != Config.paid ?  Padding(
                 padding:  EdgeInsets.only(right:10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -68,6 +76,25 @@ class BookingDetailsScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 3),
                       child: Text(
                         "UnPaid",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    )
+                  ],
+                ),
+              ) :  Padding(
+                padding:  EdgeInsets.only(right:10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Icon(
+                      Icons.check_box,
+                      color: MyColors().deepBlue,
+                      size: 16,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 3),
+                      child: Text(
+                        "Paid",
                         style: TextStyle(fontSize: 15),
                       ),
                     )
@@ -180,16 +207,79 @@ class BookingDetailsScreen extends StatelessWidget {
                   )
               ),
 
-              Container(
-                height:size.height/10,
-                width: size.width/2,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: (){
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                bookingsModel.bookingStatus == Config.approved ?  Container(
+                    height:size.height/10,
+                    width: size.width/2.5,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      color: Theme.of(context).primaryColor,
+                      onPressed: (){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context)
+                            {
+                              return StreamProvider<DefaultCreditCardModel>.value(
+                                value:CreditCardRepository.instance().streamDefaultCreditCard(userId) ,
+                                catchError: (context,error){
+                                  print(error);
+                                  return null;
+                                },
+                                child: MakePaymentScreen(userId, bookingsModel,trainerProfileModel),
+                              );
+                              // return UserDetailsScreen(userId, trainerInfo, bookingModel);
+                            })
+                          //  child: ProfileRegularUser();
 
-                },
-                child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.white),),),
+                        );
+                      },
+                      child: Text("Pay",style: TextStyle(fontSize: 20,color: Colors.white),),),
+                  ) : Container(),
+                bookingsModel.bookingStatus == Config.approved || bookingsModel.bookingStatus == Config.paid ? Container(
+                    height:size.height/10,
+                    width: size.width/2.5,
+                    padding: EdgeInsets.only(left: 10),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      color: Theme.of(context).primaryColorDark,
+                      onPressed: (){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    MultiProvider(providers: [
+                                      StreamProvider<TypingModel>.value(value: ChatsRepository.instance().streamTyping(userId, trainerProfileModel.userId),catchError: (context,error){
+                                        print("error is "+error.toString());
+                                        return null;
+                                      },),
+                                      /*
+                         StreamProvider<BlockedUserModel>.value(value: BlockedRepository.instance().haveIblockedFlyer(userId, userProfile.userId),catchError: (context,error){
+                           print("error is "+error.toString());
+                           return null;
+                         },),
+                         StreamProvider<BlockedMeModel>.value(value: BlockedRepository.instance().hasFlyerblockedMe(userId, userProfile.userId),catchError: (context,error){
+                           print("error is "+error.toString());
+                           return null;
+                         },),
+                         */
+                                    ],
+                                      child: ChatScreen(
+                                          senderId: userId,
+                                          receiverId: trainerProfileModel.userId,
+                                          receiverFirstName :trainerProfileModel.name
+
+                                      ),)
+
+
+
+                            ));
+                    },
+                    child: Text("Chat",style: TextStyle(fontSize: 20,color: Colors.white),),),
+                  ) : Container(),
+                ],
               )
 
 

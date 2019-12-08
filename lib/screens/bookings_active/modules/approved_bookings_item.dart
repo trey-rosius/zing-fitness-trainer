@@ -21,7 +21,7 @@ class ApprovedBookingsItem extends StatelessWidget {
   final String userId;
   @override
   Widget build(BuildContext context) {
-    return bookingsModel.bookingStatus == Config.approved ?
+    return bookingsModel.bookingStatus == Config.paid ?
 
       StreamProvider.value(
         value: ProfileProvider.instance().streamTrainerUserProfile(bookingsModel.trainerUserId),

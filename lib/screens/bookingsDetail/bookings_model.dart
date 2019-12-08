@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 class BookingsModel{
+  String bookingId;
   String bookingDate;
   int bookingDay,bookingEndHr,bookingEndMin,bookingStartHr,bookingStartMin,bookingYear,bookingMonth;
   String bookingEndTime,bookingStartTime;
@@ -9,7 +10,7 @@ class BookingsModel{
   String trainerUserId,userId;
   Timestamp createdOn;
 
-  BookingsModel({this.bookingDate, this.bookingDay, this.bookingEndHr,
+  BookingsModel({this.bookingId,this.bookingDate, this.bookingDay, this.bookingEndHr,
       this.bookingEndMin, this.bookingStartHr, this.bookingStartMin,
       this.bookingYear, this.bookingMonth, this.bookingEndTime,
       this.bookingStartTime, this.bookingStatus, this.sessionRate,
@@ -18,6 +19,7 @@ class BookingsModel{
 
   factory BookingsModel.fromFirestore(DocumentSnapshot docSnap){
     return BookingsModel(
+        bookingId: docSnap[Config.bookingsId],
         bookingDate : docSnap[Config.bookingDate],
         bookingDay: docSnap[Config.bookingDay],
         bookingEndHr: docSnap[Config.bookingEndHr],

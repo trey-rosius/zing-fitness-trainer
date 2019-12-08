@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
+import 'package:zing_fitnes_trainer/screens/home/home_container.dart';
 import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
@@ -12,7 +14,7 @@ class MakePaymentScreen extends StatefulWidget {
   MakePaymentScreen(this.userId, this.bookingModel, this.trainerInfo);
   final String userId;
   final TrainerProfileModel trainerInfo;
-  final NewBookingModel bookingModel;
+  final BookingsModel bookingModel;
   @override
   _MakePaymentScreenState createState() => _MakePaymentScreenState();
 }
@@ -47,10 +49,15 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
    approveBookings(String customerId,double amount,String userId,Map bookingMap){
     BookingRepository.instance().makeBookingPayment(customerId,amount,widget.userId, bookingMap).then((_){
 
-      BookingRepository.instance().saveBookingDetails(widget.userId, bookingMap).then((_){
+      BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId,Config.paid).then((_){
         setState(() {
           loading = false;
         });
+
+
+
+        Navigator.of(context).pushReplacement(MaterialPageRoute(settings:  RouteSettings(name: '/HomeContainer'),
+            builder: (context) =>  HomeContainer()));
       });
 
 
@@ -204,7 +211,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                         color: colors.deepBlue,
                         size: 30,
                       ),
-                      title: Text(widget.bookingModel.date),
+                      title: Text(widget.bookingModel.bookingDate),
                     ),
                   ),
                   Divider(),
@@ -250,22 +257,10 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
 
 
                               Map bookingMap = Map<String,dynamic>();
-                              bookingMap[Config.bookingDate] = widget.bookingModel.date;
-                              bookingMap[Config.bookingDay] = widget.bookingModel.day;
-                              bookingMap[Config.bookingMonth] = widget.bookingModel.month;
-                              bookingMap[Config.bookingsYear] = widget.bookingModel.year;
-                              bookingMap[Config.bookingStartHr] = widget.bookingModel.startHr;
-                              bookingMap[Config.bookingStartTime] = widget.bookingModel.startTime;
-                              bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
-                              bookingMap[Config.bookingEndHr] = widget.bookingModel.endHr;
-                              bookingMap[Config.bookingEndTime] = widget.bookingModel.endTime;
-                              bookingMap[Config.bookingEndMin] = widget.bookingModel.endMin;
-                              bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
-                              bookingMap[Config.bookingStatus] = Config.approved;
-                              bookingMap[Config.trainerUserId] = widget.trainerInfo.userId;
-                              bookingMap[Config.sessionType] = widget.trainerInfo.sessionType;
 
-                              bookingMap[Config.sessionRate] = widget.trainerInfo.sessionRate;
+
+                              bookingMap[Config.bookingStatus] = Config.paid;
+
 
                               print(' amount is '+widget.trainerInfo.sessionRate);
                               setState(() {
@@ -278,7 +273,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
 
                             },
                             child: Text(
-                              "Approve",
+                              "Pay Now",
                               style:
                                   TextStyle(fontSize: 20, color: Colors.white),
                             ),
@@ -292,35 +287,8 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
                             onPressed: () {
-                              Map bookingMap = Map<String,dynamic>();
-                              bookingMap[Config.bookingDate] = widget.bookingModel.date;
-                              bookingMap[Config.bookingDay] = widget.bookingModel.day;
-                              bookingMap[Config.bookingMonth] = widget.bookingModel.month;
-                              bookingMap[Config.bookingsYear] = widget.bookingModel.year;
-                              bookingMap[Config.bookingStartHr] = widget.bookingModel.startHr;
-                              bookingMap[Config.bookingStartTime] = widget.bookingModel.startTime;
-                              bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
-                              bookingMap[Config.bookingEndHr] = widget.bookingModel.endHr;
-                              bookingMap[Config.bookingEndTime] = widget.bookingModel.endTime;
-                              bookingMap[Config.bookingEndMin] = widget.bookingModel.endMin;
-                              bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
-                              bookingMap[Config.bookingStatus] = Config.pendingApproval;
-                              bookingMap[Config.trainerUserId] = widget.trainerInfo.userId;
-                              bookingMap[Config.sessionType] = widget.trainerInfo.sessionType;
-                              bookingMap[Config.createdOn] = FieldValue.serverTimestamp();
 
-                              bookingMap[Config.sessionRate] = widget.trainerInfo.sessionRate;
-
-                              setState(() {
-                                loading = true;
-                              });
-                              BookingRepository.instance().saveBookingDetails(widget.userId, bookingMap).then((_){
-
-                                setState(() {
-                                  loading = false;
-                                });
-                              });
-
+                            Navigator.of(context).pop();
 
 
 

@@ -3,23 +3,40 @@ import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/user_booking_card.dart';
+import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 class UserDetailsScreen extends StatefulWidget {
-  UserDetailsScreen(this.userId,this.trainerInfo,this.bookingModel);
+  UserDetailsScreen(this.userId,this.bookingModel);
   final String userId;
-  final TrainerProfileModel trainerInfo;
-  final NewBookingModel bookingModel;
+  final BookingsModel bookingModel;
   @override
   _UserDetailsScreenState createState() => _UserDetailsScreenState();
 }
 
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  void showInSnackBar(String value) {
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(
+        value,
+        textAlign: TextAlign.center,
+        style: TextStyle( fontSize: 20.0),
+      ),
+      backgroundColor: Theme.of(context).accentColor,
+    ));
+
+    Navigator.of(context).pop();
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         elevation: 0,
@@ -93,19 +110,49 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
         },
       ),),
       bottomNavigationBar: Container(
-        width: size.width/2,
-        margin: EdgeInsets.symmetric(vertical: 10,horizontal: 40),
+       margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
         height:size.height/12 ,
 
 
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          color: Theme.of(context).primaryColorDark,
-          
-          onPressed: (){
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: size.height/12,
+              width: size.width/2.5,
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                color: Theme.of(context).primaryColorDark,
 
-        },
-        child: Text("Accept",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
+                onPressed: (){
+
+                  BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, Config.approved).then((_){
+                    showInSnackBar("Booking Approved");
+
+                  });
+
+              },
+              child: Text("Approve",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
+            ),
+            Container(
+              height: size.height/12,
+              width: size.width/2.5,
+              padding: EdgeInsets.only(left: 10),
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                color: Colors.red,
+
+                onPressed: (){
+                  BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, Config.unApproved).then((_){
+                    showInSnackBar("Booking Rejected");
+
+                  });
+                },
+                child: Text("Reject",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
+            ),
+          ],
+        ),
       ),
     );
   }
