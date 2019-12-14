@@ -8,6 +8,7 @@ import '../../utils/myColors.dart';
 
 
 class LoginSignUpRegular extends StatelessWidget {
+
   
 
   @override

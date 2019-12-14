@@ -49,7 +49,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
    approveBookings(String customerId,double amount,String userId,Map bookingMap){
     BookingRepository.instance().makeBookingPayment(customerId,amount,widget.userId, bookingMap).then((_){
 
-      BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId,Config.paid).then((_){
+      BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId,bookingMap).then((_){
         setState(() {
           loading = false;
         });
@@ -260,6 +260,8 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
 
 
                               bookingMap[Config.bookingStatus] = Config.paid;
+                              bookingMap[Config.paid] = true;
+                              bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
 
 
                               print(' amount is '+widget.trainerInfo.sessionRate);

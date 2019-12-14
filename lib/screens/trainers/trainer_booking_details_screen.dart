@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/request_booking_screen.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_cart_repository.dart';
 import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/bookingCard.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/make_payment_screen.dart';
+import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 class TrainerDetailsScreen extends StatefulWidget {
   TrainerDetailsScreen(this.userId,this.trainerInfo,this.bookingModel);
@@ -17,6 +21,8 @@ class TrainerDetailsScreen extends StatefulWidget {
 }
 
 class _TrainerDetailsScreenState extends State<TrainerDetailsScreen> {
+
+  bool _loading = false;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -85,7 +91,19 @@ class _TrainerDetailsScreenState extends State<TrainerDetailsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: _loading  ? Container(
+        width: size.width/4,
+        margin: EdgeInsets.symmetric(vertical: 10,horizontal: 40),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            CircularProgressIndicator(),
+          ],
+        ),
+      ):
+
+      Container(
         width: size.width/2,
         margin: EdgeInsets.symmetric(vertical: 10,horizontal: 40),
         height:size.height/12 ,
@@ -96,25 +114,38 @@ class _TrainerDetailsScreenState extends State<TrainerDetailsScreen> {
           color: Theme.of(context).primaryColorDark,
           
           onPressed: (){
-            /*
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context)
-                {
-                  return StreamProvider<DefaultCreditCardModel>.value(
-                    value:CreditCardRepository.instance().streamDefaultCreditCard(widget.userId) ,
-                    catchError: (context,error){
-                      print(error);
-                      return null;
-                    },
-                    child: MakePaymentScreen(widget.userId,  widget.bookingModel,widget.trainerInfo),
-                  );
-                  // return UserDetailsScreen(userId, trainerInfo, bookingModel);
-                })
-              //  child: ProfileRegularUser();
+           setState(() {
+             _loading =true;
+           });
 
-            );
-            */
+            Map bookingMap = Map<String,dynamic>();
+            bookingMap[Config.bookingDate] = widget.bookingModel.date;
+            bookingMap[Config.bookingDay] = widget.bookingModel.day;
+            bookingMap[Config.bookingMonth] = widget.bookingModel.month;
+            bookingMap[Config.bookingsYear] = widget.bookingModel.year;
+            bookingMap[Config.bookingStartHr] = widget.bookingModel.startHr;
+            bookingMap[Config.bookingStartTime] = widget.bookingModel.startTime;
+            bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
+            bookingMap[Config.bookingEndHr] = widget.bookingModel.endHr;
+            bookingMap[Config.bookingEndTime] = widget.bookingModel.endTime;
+            bookingMap[Config.bookingEndMin] = widget.bookingModel.endMin;
+            bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
+            bookingMap[Config.bookingStatus] = Config.requested;
+            bookingMap[Config.trainerUserId] = widget.trainerInfo.userId;
+            bookingMap[Config.userId] = widget.userId;
+            bookingMap[Config.paid] = false;
+
+            bookingMap[Config.sessionType] = widget.bookingModel.sessionType;
+            bookingMap[Config.createdOn] = FieldValue.serverTimestamp();
+
+
+            bookingMap[Config.sessionRate] = widget.trainerInfo.sessionRate;
+            BookingRepository.instance().saveRequestedBookingDetails(widget.userId,widget.trainerInfo.userId, bookingMap).then((_){
+              setState(() {
+                _loading = false;
+                Navigator.of(context).pop();
+              });
+            });
 
         },
         child: Text("Request",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),

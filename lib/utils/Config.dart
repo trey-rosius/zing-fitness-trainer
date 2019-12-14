@@ -178,6 +178,7 @@ class Config{
   static final String receiverId = "receiverId";
 
   static final String text= "text";
+  static final String start= "start";
   static final String image= "image";
   static final String chatThread= "chatThread";
   static final String receiver= "chatThread";
@@ -199,6 +200,7 @@ class Config{
   static final String bookingsId = "bookingsId";
   static final String userBookings = "userBookings";
 
+
   /// There are -- booking status
   /// Requested => User requests for  a trainer
   /// Approved => Trainer approves user request
@@ -210,10 +212,20 @@ class Config{
   static final String requested = "requested";
   static final String unApproved = "unApproved";
   static final String unPaid = "unPaid";
-  static final String pendingApproval = "pendingApproval";
+  static final String cancel = "cancel";
+  static final String cancelledBy = "cancelledBy";
+
+
 
 
   static final String updatedOn = "updatedOn";
+
+  //notification Strings
+
+  static final String sessionStarted = "started their session";
+  static final String sessionCancelled = "cancelled their session";
+
+
 
 
 

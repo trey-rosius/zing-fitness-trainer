@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
@@ -27,6 +28,44 @@ class _LoginTrainerState extends State<LoginTrainer> {
   final color = MyColors();
   var userAuth = UserAuth();
   bool _loading = false;
+
+  String notificationToken;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        //  _showItemDialog(message);
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        //  _navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        //  _navigateToItemDetail(message);
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      setState(() {
+        notificationToken = token;
+      });
+
+      print(notificationToken);
+
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     var formdata = Provider.of<LoginSignUpProvider>(context);
@@ -232,29 +271,27 @@ class _LoginTrainerState extends State<LoginTrainer> {
           data.login().then((firebaseUserId) {
 
             _saveUserId(firebaseUserId);
+            print(firebaseUserId);
 
-/*
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) {
-                //return ProfilePage(userId: firebaseUserId,);
-                return ProfileTrainerUser(userId: firebaseUserId,);
-              }),
-            );
-            */
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) {
-                return StreamProvider.value(
-                    value: ProfileProvider.instance()
-                        .streamTrainerUserProfile(firebaseUserId),
-                    catchError: (context, error) {
-                      print(error);
-                    },
-                    child: ProfileTrainerUser(userId: firebaseUserId,));
-                //  child: ProfileRegularUser();
-              }),
-            );
+            data.updateNotificationToken(notificationToken, firebaseUserId).then((_){
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return StreamProvider.value(
+                      value: ProfileProvider.instance()
+                          .streamTrainerUserProfile(firebaseUserId),
+                      catchError: (context, error) {
+                        print(error);
+                      },
+                      child: ProfileTrainerUser(userId: firebaseUserId,));
+                  //  child: ProfileRegularUser();
+                }),
+              );
+            });
+
+
+
 
 
 

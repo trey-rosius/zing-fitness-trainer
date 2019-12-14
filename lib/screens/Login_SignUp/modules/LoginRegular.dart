@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
@@ -23,7 +24,47 @@ class LoginRegular extends StatefulWidget {
   _LoginRegularState createState() => _LoginRegularState();
 }
 
+
+
 class _LoginRegularState extends State<LoginRegular> {
+
+  String notificationToken;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        //  _showItemDialog(message);
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        //  _navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        //  _navigateToItemDetail(message);
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      setState(() {
+        notificationToken = token;
+      });
+
+      print(notificationToken);
+
+
+    });
+  }
   final _formKey = GlobalKey<FormState>();
   final color = MyColors();
   var userAuth = UserAuth();
@@ -227,34 +268,21 @@ class _LoginRegularState extends State<LoginRegular> {
 
           data.login().then((value) {
             _saveUserId(value);
-/*
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) {
-                return StreamProvider.value(
-                  value: ProfileProvider.instance()
-                      .streamRegularUserProfile(value),
-                  catchError: (context, error) {
-                    print(error);
-                  },
-                  child: ProfileRegularUser(
+            print(value);
+            data.updateNotificationToken(notificationToken, value).then((_){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeContainer(),
 
-                  ),
-                );
-              }),
-            );
-            */
+                ),
+              );
+
+              print("login is == " + value);
+            });
 
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                 builder: (context) => HomeContainer(),
 
-              ),
-            );
-
-            print("login is == " + value);
           });
         } else {
           Scaffold.of(context).showSnackBar(SnackBar(

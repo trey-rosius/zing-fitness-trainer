@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/components/passwordInput.dart';
@@ -22,7 +23,43 @@ class _SignUpRegularState extends State<SignUpRegular> {
   bool _loading = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var userAuth =  UserAuth();
+  String notificationToken;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        //  _showItemDialog(message);
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        //  _navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        //  _navigateToItemDetail(message);
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      setState(() {
+        notificationToken = token;
+      });
 
+      print(notificationToken);
+
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +234,7 @@ class _SignUpRegularState extends State<SignUpRegular> {
 
       userAuth.createUser(userData).then((value){
         print("value is "+value);
-        formData.saveUserData(data.readSignUpNumber, data.readTrainerName,Config.regularUser).then((somevalue){
+        formData.saveUserData(data.readSignUpNumber, data.readTrainerName,Config.regularUser,notificationToken).then((somevalue){
           print(somevalue);
           setState(() {
             _loading = false;

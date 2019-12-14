@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
@@ -126,8 +127,11 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                 color: Theme.of(context).primaryColorDark,
 
                 onPressed: (){
-
-                  BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, Config.approved).then((_){
+                  Map bookingMap = Map<String,dynamic>();
+                  bookingMap[Config.bookingStatus] = Config.approved;
+                  bookingMap[Config.paid] = false;
+                  bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
+                  BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, bookingMap).then((_){
                     showInSnackBar("Booking Approved");
 
                   });
@@ -144,7 +148,14 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                 color: Colors.red,
 
                 onPressed: (){
-                  BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, Config.unApproved).then((_){
+                  Map bookingMap = Map<String,dynamic>();
+
+
+                  bookingMap[Config.bookingStatus] = Config.unApproved;
+                  bookingMap[Config.paid] = false;
+                  bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
+
+                  BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, bookingMap).then((_){
                     showInSnackBar("Booking Rejected");
 
                   });

@@ -416,6 +416,8 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
                         bookingMap[Config.bookingStatus] = Config.requested;
                         bookingMap[Config.trainerUserId] = widget.trainerProfileModel.userId;
                         bookingMap[Config.userId] = widget.userId;
+                        bookingMap[Config.paid] = false;
+
                         bookingMap[Config.sessionType] = bookingModel.sessionType;
                         bookingMap[Config.createdOn] = FieldValue.serverTimestamp();
 

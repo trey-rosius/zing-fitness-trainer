@@ -7,6 +7,7 @@ import 'package:zing_fitnes_trainer/screens/shared_preferences/app_settings_inhe
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 class LoginPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     AppSettings settings = AppSettingsInherited.of(context).settings;

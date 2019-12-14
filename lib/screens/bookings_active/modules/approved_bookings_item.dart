@@ -21,7 +21,7 @@ class ApprovedBookingsItem extends StatelessWidget {
   final String userId;
   @override
   Widget build(BuildContext context) {
-    return bookingsModel.bookingStatus == Config.paid ?
+    return  bookingsModel.bookingStatus == Config.paid ?
 
       StreamProvider.value(
         value: ProfileProvider.instance().streamTrainerUserProfile(bookingsModel.trainerUserId),
@@ -54,38 +54,7 @@ class ApprovedBookingsItem extends StatelessWidget {
 
 
                         ));
-                    /*
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                MultiProvider(providers: [
-                                  StreamProvider<TypingModel>.value(value: ChatsRepository.instance().streamTyping(userId, value.userId),catchError: (context,error){
-                                    print("error is "+error.toString());
-                                    return null;
-                                  },),
-                                  /*
-                         StreamProvider<BlockedUserModel>.value(value: BlockedRepository.instance().haveIblockedFlyer(userId, userProfile.userId),catchError: (context,error){
-                           print("error is "+error.toString());
-                           return null;
-                         },),
-                         StreamProvider<BlockedMeModel>.value(value: BlockedRepository.instance().hasFlyerblockedMe(userId, userProfile.userId),catchError: (context,error){
-                           print("error is "+error.toString());
-                           return null;
-                         },),
-                         */
-                                ],
-                                  child: ChatScreen(
-                                      senderId: userId,
-                                      receiverId: value.userId,
-                                      receiverFirstName :value.name
 
-                                  ),)
-
-
-
-                        ));
-                        */
                   },
                   child: Column(
                     children: <Widget>[
@@ -128,6 +97,11 @@ class ApprovedBookingsItem extends StatelessWidget {
                                               text: "yrs experience",
                                               style: TextStyle(color: Colors.black,fontSize: 15))
                                         ]),
+                                  ),
+
+                                  Container(
+                                    padding: EdgeInsets.only(top: 5,bottom: 5),
+                                    child:Text(bookingsModel.bookingDate, style: TextStyle(color: MyColors().deepBlue, fontSize: 16),)
                                   ),
 
                                   Row(

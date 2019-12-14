@@ -1,17 +1,16 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/components/passwordInput.dart';
 import 'package:zing_fitnes_trainer/screens/Login_SignUp/modules/LoginTrainer.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/authentication.dart';
-import 'package:zing_fitnes_trainer/utils/showdialogue.dart';
 import 'package:zing_fitnes_trainer/utils/validator.dart';
 import '../../../providers/login_SignUpProvider.dart';
 import '../../../components/button.dart';
 import '../../../components/input.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
-import './LoginRegular.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 class SignUpTrainer extends StatefulWidget {
   @override
   _SignUpTrainerState createState() => _SignUpTrainerState();
@@ -25,13 +24,43 @@ class _SignUpTrainerState extends State<SignUpTrainer> {
   var userAuth =  UserAuth();
   String userType;
 
-
+  String notificationToken;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        //  _showItemDialog(message);
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        //  _navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        //  _navigateToItemDetail(message);
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      setState(() {
+        notificationToken = token;
+      });
 
+      print(notificationToken);
+
+
+    });
 
 
   }
@@ -209,7 +238,7 @@ class _SignUpTrainerState extends State<SignUpTrainer> {
 
       userAuth.createUser(userData).then((value){
         print("value is "+value);
-        formData.saveUserData(data.readSignUpNumber, data.readTrainerName,Config.trainer).then((_){
+        formData.saveUserData(data.readSignUpNumber, data.readTrainerName,Config.trainer,notificationToken).then((_){
           print("successfully saved to DB");
           setState(() {
             _loading = false;

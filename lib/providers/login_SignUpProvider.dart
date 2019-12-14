@@ -37,8 +37,14 @@ class LoginSignUpProvider with ChangeNotifier {
     });
   }
 
+  Future<void>updateNotificationToken(String token,String userId){
+    return _firestore.collection(Config.users).document(userId).updateData({
+      Config.notificationToken:token
+    });
+  }
 
-  Future<String> saveUserData(String phoneNumber,String fullNames,String userType){
+
+  Future<String> saveUserData(String phoneNumber,String fullNames,String userType,String notificationToken){
     Future<FirebaseUser> user = firebaseAuth.currentUser();
     return user.then((FirebaseUser firebaseUser) async {
 
@@ -52,6 +58,7 @@ class LoginSignUpProvider with ChangeNotifier {
         map[Config.phone] = phoneNumber;
         map[Config.fullNames] = fullNames;
         map[Config.userType] = userType;
+        map[Config.notificationToken] = notificationToken;
 
 
 

@@ -40,13 +40,9 @@ class BookingRepository{
     });
   }
 
-  Future<void>changeBookingStatus(String bookingId,String status){
+  Future<void>changeBookingStatus(String bookingId,Map bookingMap){
     return _firestore.collection(Config.bookings).document(bookingId)
-           .updateData({
-        Config.bookingStatus :status,
-
-        Config.updatedOn : FieldValue.serverTimestamp()
-    }).then((_){
+           .updateData(bookingMap).then((_){
       print("updates status");
     });
   }

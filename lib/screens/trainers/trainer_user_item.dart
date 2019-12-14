@@ -13,7 +13,7 @@ class TrainerUserItem extends StatelessWidget {
   final NewBookingModel bookingModel;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return trainerInfo.userId ==  userId ? Container() :Container(
       padding: EdgeInsets.all(10),
       child: InkWell(
         onTap: (){

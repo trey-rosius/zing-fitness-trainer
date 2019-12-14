@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/chats/chat_screen.dart';
 import 'package:zing_fitnes_trainer/screens/chats/chats_repository.dart';
 import 'package:zing_fitnes_trainer/screens/chats/typing_model.dart';
+import 'package:zing_fitnes_trainer/screens/notifications/notifications_repository.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_cart_repository.dart';
 import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/make_payment_screen.dart';
@@ -30,6 +32,46 @@ class BookingDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Booking Details',style: TextStyle(fontSize: 20),),
         centerTitle: true,
+
+        actions: <Widget>[
+          bookingsModel.bookingStatus == Config.paid ?  IconButton(
+
+              color: Theme.of(context).primaryColorDark,
+              onPressed: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            MultiProvider(providers: [
+                              StreamProvider<TypingModel>.value(value: ChatsRepository.instance().streamTyping(userId, trainerProfileModel.userId),catchError: (context,error){
+                                print("error is "+error.toString());
+                                return null;
+                              },),
+                              /*
+                         StreamProvider<BlockedUserModel>.value(value: BlockedRepository.instance().haveIblockedFlyer(userId, userProfile.userId),catchError: (context,error){
+                           print("error is "+error.toString());
+                           return null;
+                         },),
+                         StreamProvider<BlockedMeModel>.value(value: BlockedRepository.instance().hasFlyerblockedMe(userId, userProfile.userId),catchError: (context,error){
+                           print("error is "+error.toString());
+                           return null;
+                         },),
+                         */
+                            ],
+                              child: ChatScreen(
+                                  senderId: userId,
+                                  receiverId: trainerProfileModel.userId,
+                                  receiverFirstName :trainerProfileModel.name
+
+                              ),)
+
+
+
+                    ));
+              },
+              icon: Icon(Icons.chat_bubble_outline))
+           : Container(),
+        ],
       ),
 
       body: SingleChildScrollView(
@@ -208,9 +250,10 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
 
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+
+
                 children: <Widget>[
+
                 bookingsModel.bookingStatus == Config.approved ?  Container(
                     height:size.height/10,
                     width: size.width/2.5,
@@ -238,7 +281,8 @@ class BookingDetailsScreen extends StatelessWidget {
                       },
                       child: Text("Pay",style: TextStyle(fontSize: 20,color: Colors.white),),),
                   ) : Container(),
-                bookingsModel.bookingStatus == Config.approved || bookingsModel.bookingStatus == Config.paid ? Container(
+
+                 bookingsModel.bookingStatus == Config.paid ? Container(
                     height:size.height/10,
                     width: size.width/2.5,
                     padding: EdgeInsets.only(left: 10),
@@ -246,39 +290,62 @@ class BookingDetailsScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       color: Theme.of(context).primaryColorDark,
                       onPressed: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    MultiProvider(providers: [
-                                      StreamProvider<TypingModel>.value(value: ChatsRepository.instance().streamTyping(userId, trainerProfileModel.userId),catchError: (context,error){
-                                        print("error is "+error.toString());
-                                        return null;
-                                      },),
-                                      /*
-                         StreamProvider<BlockedUserModel>.value(value: BlockedRepository.instance().haveIblockedFlyer(userId, userProfile.userId),catchError: (context,error){
-                           print("error is "+error.toString());
-                           return null;
-                         },),
-                         StreamProvider<BlockedMeModel>.value(value: BlockedRepository.instance().hasFlyerblockedMe(userId, userProfile.userId),catchError: (context,error){
-                           print("error is "+error.toString());
-                           return null;
-                         },),
-                         */
-                                    ],
-                                      child: ChatScreen(
-                                          senderId: userId,
-                                          receiverId: trainerProfileModel.userId,
-                                          receiverFirstName :trainerProfileModel.name
 
-                                      ),)
+                        Map cancelBooking = Map<String,dynamic>();
+                        cancelBooking[Config.bookingStatus] = Config.cancel;
+                        cancelBooking[Config.cancelledBy] = Config.cancelledBy;
+
+                        BookingRepository.instance().changeBookingStatus(bookingsModel.bookingId, cancelBooking).then((_){
+
+                          Map notMap = Map<String,dynamic>();
+                          notMap[Config.bookingsId] = bookingsModel.bookingId;
+                          notMap[Config.bookingStatus] = Config.start;
+                          notMap[Config.userId] = bookingsModel.userId;
+                          notMap[Config.trainerUserId] = bookingsModel.trainerUserId;
+                          notMap[Config.notificationText] = Config.sessionStarted;
 
 
 
-                            ));
+                          NotificationsRepository.instance().saveNotification(notMap).then((_){
+                            Navigator.of(context).pop();
+                          });
+                        });
+
                     },
-                    child: Text("Chat",style: TextStyle(fontSize: 20,color: Colors.white),),),
+                    child: Text("Start",style: TextStyle(fontSize: 20,color: Colors.white),),),
                   ) : Container(),
+                bookingsModel.bookingStatus == Config.paid ? Container(
+                  height:size.height/10,
+                  width: size.width/2.5,
+                  padding: EdgeInsets.only(left: 10),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    color: Theme.of(context).primaryColorDark,
+                    onPressed: (){
+                     Map cancelBooking = Map<String,dynamic>();
+                     cancelBooking[Config.bookingStatus] = Config.cancel;
+                     cancelBooking[Config.cancelledBy] = Config.cancelledBy;
+
+                     BookingRepository.instance().changeBookingStatus(bookingsModel.bookingId, cancelBooking).then((_){
+
+                       Map notMap = Map<String,dynamic>();
+                       notMap[Config.bookingsId] = bookingsModel.bookingId;
+                       notMap[Config.bookingStatus] = Config.cancel;
+                       notMap[Config.userId] = bookingsModel.userId;
+                       notMap[Config.trainerUserId] = bookingsModel.trainerUserId;
+                       notMap[Config.notificationText] = Config.sessionCancelled;
+
+
+
+                       NotificationsRepository.instance().saveNotification(notMap).then((_){
+                         Navigator.of(context).pop();
+                       });
+                     });
+                    },
+                    child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.white),),),
+                ) : Container(),
+
+
                 ],
               )
 
