@@ -56,105 +56,76 @@ class RequestedBookingsItem extends StatelessWidget {
 
                         ));
 
-                    /*
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                MultiProvider(providers: [
-                                  StreamProvider<TypingModel>.value(value: ChatsRepository.instance().streamTyping(userId, value.userId),catchError: (context,error){
-                                    print("error is "+error.toString());
-                                    return null;
-                                  },),
-                                  /*
-                         StreamProvider<BlockedUserModel>.value(value: BlockedRepository.instance().haveIblockedFlyer(userId, userProfile.userId),catchError: (context,error){
-                           print("error is "+error.toString());
-                           return null;
-                         },),
-                         StreamProvider<BlockedMeModel>.value(value: BlockedRepository.instance().hasFlyerblockedMe(userId, userProfile.userId),catchError: (context,error){
-                           print("error is "+error.toString());
-                           return null;
-                         },),
-                         */
-                                ],
-                                  child: ChatScreen(
-                                      senderId: userId,
-                                      receiverId: value.userId,
-                                      receiverFirstName :value.name
-
-                                  ),)
-
-
-
-                        ));
-                        */
                   },
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          ClipRRect(
-                              borderRadius:
-                              BorderRadius.circular(100),
-                              child: CachedNetworkImage(
-                                width: 80.0,
-                                height: 80.0,
-                                fit: BoxFit.cover,
-                                imageUrl: value.profilePicUrl??"",
-                                placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
-                                errorWidget: (context, url, ex) =>
-                                    Icon(Icons.error),
-                              )),
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5,right: 5,top: 10,bottom: 10),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            ClipRRect(
+                                borderRadius:
+                                BorderRadius.circular(100),
+                                child: CachedNetworkImage(
+                                  width: 80.0,
+                                  height: 80.0,
+                                  fit: BoxFit.cover,
+                                  imageUrl: value.profilePicUrl??"",
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, ex) =>
+                                      Icon(Icons.error),
+                                )),
 
-                          Expanded(
-                            flex: 4,
-                            child: Container(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 5),
-                                    child: Text(
-                                      value.name,
-                                      style: TextStyle(fontSize: 17),
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 5),
+                                      child: Text(
+                                        value.name,
+                                        style: TextStyle(fontSize: 17),
+                                      ),
                                     ),
-                                  ),
 
 
-                                  Row(
-                                    children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
 
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 3),
-                                        child: Text(
-                                          "Requested",
-                                          style: TextStyle(fontSize: 15,color:Theme.of(context).primaryColorDark,fontWeight: FontWeight.bold),
-                                        ),
-                                      )
-                                    ],
-                                  )
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 3),
+                                          child: Text(
+                                            "Requested",
+                                            style: TextStyle(fontSize: 15,color:Theme.of(context).primaryColorDark,fontWeight: FontWeight.bold),
+                                          ),
+                                        )
+                                      ],
+                                    )
 
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.navigate_next,
-                              color: Colors.grey,
-                              size: 30,
+                            IconButton(
+                              icon: Icon(
+                                Icons.navigate_next,
+                                color: Colors.grey,
+                                size: 30,
+                              ),
+                              onPressed: () {
+                                print("pressed");
+                              },
                             ),
-                            onPressed: () {
-                              print("pressed");
-                            },
-                          ),
-                        ],
-                      ),
-                      Divider()
-                    ],
+                          ],
+                        ),
+                        Divider()
+                      ],
+                    ),
                   ),
                 );
 

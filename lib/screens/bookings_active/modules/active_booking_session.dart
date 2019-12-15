@@ -14,9 +14,7 @@ class ActiveBookingSession extends StatelessWidget {
   Widget build(BuildContext context) {
     return userBookingsModel ==null ? Container() :
         ListView.builder(itemBuilder: (context,index){
-          return  Container(
-            padding: EdgeInsets.only(top: 20,left: 20,right: 10),
-            child: StreamProvider.value(value: BookingRepository.instance().streamSingleBooking(userBookingsModel[index].bookingsId),
+          return StreamProvider.value(value: BookingRepository.instance().streamSingleBooking(userBookingsModel[index].bookingsId),
               catchError: (context,error){
                 print(error);
               },
@@ -26,7 +24,7 @@ class ActiveBookingSession extends StatelessWidget {
                  ApprovedBookingsItem(value,userId);
               },
             ),
-            ),
+
           );
         },
         itemCount: userBookingsModel.length,);

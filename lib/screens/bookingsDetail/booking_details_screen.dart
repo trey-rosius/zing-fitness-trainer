@@ -299,7 +299,9 @@ class BookingDetailsScreen extends StatelessWidget {
 
                           Map notMap = Map<String,dynamic>();
                           notMap[Config.bookingsId] = bookingsModel.bookingId;
-                          notMap[Config.bookingStatus] = Config.start;
+
+                          notMap[Config.bookingSessionStarted] = true;
+
                           notMap[Config.userId] = bookingsModel.userId;
                           notMap[Config.trainerUserId] = bookingsModel.trainerUserId;
                           notMap[Config.notificationText] = Config.sessionStarted;
