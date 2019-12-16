@@ -58,8 +58,8 @@ class _RegularUsersBookingsPageState extends State<RegularUsersBookingsPage> wit
                 // indicatorColor: Colors.transparent,
                 isScrollable: true,
                 // unselectedLabelColor: Colors.grey,
-                // labelColor: Theme.of(context).accentColor,
-              //  labelStyle: TextStyle(),
+                 labelColor: Theme.of(context).accentColor,
+                labelStyle: TextStyle(),
 
 
                 tabs: [

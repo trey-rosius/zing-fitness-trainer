@@ -12,7 +12,7 @@ import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({this.userId,this.admin,this.menuController,this.longitude,this.latitude,this.userType});
+  HomeScreen(this.userId,this.admin,this.menuController,this.longitude,this.latitude,this.userType);
   final MenuController menuController;
   final String userId;
   final bool admin;
@@ -35,6 +35,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    print("user type is "+ widget.userType);
 
     _pageController = PageController(initialPage: _selectedIndex);
   }
@@ -92,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ],
           ),
 
-          body: widget.userType== Config.trainer ? TrainerBookingsPage(widget.userId) :RegularUsersBookingsPage(widget.userId,widget.userType) ,
+          body: widget.userType== Config.trainer ? TrainerBookingsPage(widget.userId,widget.userType) :RegularUsersBookingsPage(widget.userId,widget.userType) ,
           floatingActionButton: FloatingActionButton(onPressed: (){
             Navigator.push(
               context,

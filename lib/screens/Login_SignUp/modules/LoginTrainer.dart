@@ -8,6 +8,7 @@ import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/edit_profile_trainer.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/profile_trainer_user.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/profile_regular_user.dart';
+import 'package:zing_fitnes_trainer/screens/home/home_container.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/authentication.dart';
 import 'package:zing_fitnes_trainer/utils/showdialogue.dart';
@@ -277,16 +278,10 @@ class _LoginTrainerState extends State<LoginTrainer> {
 
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) {
-                  return StreamProvider.value(
-                      value: ProfileProvider.instance()
-                          .streamTrainerUserProfile(firebaseUserId),
-                      catchError: (context, error) {
-                        print(error);
-                      },
-                      child: ProfileTrainerUser(userId: firebaseUserId,));
-                  //  child: ProfileRegularUser();
-                }),
+                MaterialPageRoute(
+                  builder: (context) => HomeContainer(),
+
+                ),
               );
             });
 

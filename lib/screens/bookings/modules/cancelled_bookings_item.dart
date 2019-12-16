@@ -108,22 +108,10 @@ class CancelledBookingsItem extends StatelessWidget {
                                       child:Text(bookingsModel.bookingDate, style: TextStyle(color: MyColors().deepBlue, fontSize: 16),)
                                     ),
 
-                                    Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.check_box,
-                                          color: MyColors().deepBlue,
-                                          size: 16,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 3),
-                                          child: Text(
-                                            "Paid",
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        )
-                                      ],
-                                    )
+                                Container(
+                                    padding: EdgeInsets.only(top: 5,bottom: 5),
+                                  child:Text("Cancelled",style: TextStyle(color: Colors.red),)
+                                )
 
                                   ],
                                 ),

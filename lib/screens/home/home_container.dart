@@ -14,6 +14,7 @@ class HomeContainer extends StatelessWidget {
    AppSettings settings = AppSettingsInherited.of(context).settings;
    // print("admin value is"+settings.admin.getValue().toString());
     print("user Id value is"+settings.userId.getValue());
+    print("user type is"+settings.userType.getValue());
     return PreferenceBuilder<String>(
         preference:settings.userId,
         builder: (context,String userId) {

@@ -15,8 +15,9 @@ import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
 
 class TrainerBookingsPage extends StatelessWidget {
-  TrainerBookingsPage (this.userId);
+  TrainerBookingsPage (this.userId,this.userType);
   final String userId;
+  final String userType;
   @override
   Widget build(BuildContext context) {
     // var size = MediaQuery.of(context).size;
@@ -49,7 +50,7 @@ class TrainerBookingsPage extends StatelessWidget {
             catchError: (context,error){
               print(error);
             },
-            child: BookingsBody(userId),)
+            child: BookingsBody(userId,userType),)
           ),
 
       ),
@@ -58,15 +59,16 @@ class TrainerBookingsPage extends StatelessWidget {
 }
 
 class BookingsBody extends StatelessWidget {
-  BookingsBody(this.userId);
+  BookingsBody(this.userId,this.userType);
   final String userId;
+  final String userType;
   //this will be modified later to make the list dynamic
   @override
   Widget build(BuildContext context) {
     var userBookingsModel = Provider.of<List<UserBookingsModel>>(context);
     return TabBarView(
       physics: NeverScrollableScrollPhysics(),
-      children: <Widget>[ActiveBookingSession(userId,userBookingsModel),PendingBookingSession(userId,userBookingsModel),RequestedBookingSession(userId,userBookingsModel,"hf")],
+      children: <Widget>[ActiveBookingSession(userId,userBookingsModel),PendingBookingSession(userId,userBookingsModel),RequestedBookingSession(userId,userBookingsModel,userType)],
     );
   }
 }

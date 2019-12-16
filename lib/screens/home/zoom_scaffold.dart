@@ -73,9 +73,8 @@ class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMix
 
     return zoomAndSlideContent(
 
-
-        HomeScreen(userType : widget.userType,userId: widget.userId,admin: widget.admin,menuController: menuController,longitude:widget.longitude,latitude:widget.latitude)
-    );
+        HomeScreen(widget.userId, widget.admin, menuController, widget.longitude, widget.latitude, widget.userType)
+          );
   }
 
   zoomAndSlideContent(Widget content) {
