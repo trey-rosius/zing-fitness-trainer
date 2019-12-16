@@ -7,20 +7,21 @@ import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dar
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/request_booking_screen.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_cart_repository.dart';
 import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
-import 'package:zing_fitnes_trainer/screens/trainers/bookingCard.dart';
+import 'package:zing_fitnes_trainer/screens/trainers/booking_card.dart';
+import 'package:zing_fitnes_trainer/screens/trainers/trainer_details_booking_card.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/make_payment_screen.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
-class TrainerDetailsScreen extends StatefulWidget {
-  TrainerDetailsScreen(this.userId,this.trainerInfo,this.bookingModel);
+class TrainerBookingsScreen extends StatefulWidget {
+  TrainerBookingsScreen(this.userId,this.trainerInfo,this.bookingModel);
   final String userId;
   final TrainerProfileModel trainerInfo;
   final NewBookingModel bookingModel;
   @override
-  _TrainerDetailsScreenState createState() => _TrainerDetailsScreenState();
+  _TrainerBookingsScreenState createState() => _TrainerBookingsScreenState();
 }
 
-class _TrainerDetailsScreenState extends State<TrainerDetailsScreen> {
+class _TrainerBookingsScreenState extends State<TrainerBookingsScreen> {
 
   bool _loading = false;
   @override

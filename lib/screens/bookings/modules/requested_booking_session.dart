@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zing_fitnes_trainer/screens/bookings/modules/trainer_requested_bookings_item.dart';
+import 'package:zing_fitnes_trainer/screens/bookings/modules/user_requested_bookings_item.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/user_bookings_model.dart';
-import 'package:zing_fitnes_trainer/screens/bookings_active/modules/approved_bookings_item.dart';
-import 'package:zing_fitnes_trainer/screens/bookings_active/modules/pending_bookings_item.dart';
-import 'package:zing_fitnes_trainer/screens/bookings_active/modules/requested_bookings_item.dart';
+import 'package:zing_fitnes_trainer/utils/Config.dart';
+
 
 class RequestedBookingSession extends StatelessWidget {
-  RequestedBookingSession(this.userId,this.userBookingsModel);
+  RequestedBookingSession(this.userId,this.userBookingsModel,this.userType);
   final String userId;
+  final String userType;
   final List<UserBookingsModel> userBookingsModel;
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class RequestedBookingSession extends StatelessWidget {
             child: Consumer<BookingsModel>(
               builder: (key,value,child){
                return value == null ? Container() :
-               RequestedBookingsItem(value,userId);
+              userType == Config.trainer? TrainerRequestedBookingsItem(value,userId) : UserRequestedBookingsItem(value,userId);
               },
             ),
 

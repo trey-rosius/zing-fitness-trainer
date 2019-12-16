@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/components/tabBar.dart';
+import 'package:zing_fitnes_trainer/components/tabBar_trainer.dart';
 import 'package:zing_fitnes_trainer/providers/provider.dart';
+import 'package:zing_fitnes_trainer/screens/bookings/modules/active_booking_session.dart';
+import 'package:zing_fitnes_trainer/screens/bookings/modules/pending_booking_session.dart';
+import 'package:zing_fitnes_trainer/screens/bookings/modules/requested_booking_session.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/user_bookings_model.dart';
 
-import 'package:zing_fitnes_trainer/screens/bookings_active/modules/active_booking_session.dart';
-import 'package:zing_fitnes_trainer/screens/bookings_active/modules/pending_booking_session.dart';
+
 
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
 
-class BookingsPage extends StatelessWidget {
-  BookingsPage(this.userId);
+class TrainerBookingsPage extends StatelessWidget {
+  TrainerBookingsPage (this.userId);
   final String userId;
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class BookingsPage extends StatelessWidget {
         )
       ],
       child: DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
             appBar: AppBar(
               elevation: 0.0,
@@ -38,7 +41,7 @@ class BookingsPage extends StatelessWidget {
 
               bottom: PreferredSize(
                 preferredSize: Size(double.infinity, 20),
-                child: MyTabBar(),
+                child: TrainerTabBar(),
               ),
 
             ),
@@ -63,7 +66,7 @@ class BookingsBody extends StatelessWidget {
     var userBookingsModel = Provider.of<List<UserBookingsModel>>(context);
     return TabBarView(
       physics: NeverScrollableScrollPhysics(),
-      children: <Widget>[ActiveBookingSession(userId,userBookingsModel),PendingBookingSession(userId,userBookingsModel)],
+      children: <Widget>[ActiveBookingSession(userId,userBookingsModel),PendingBookingSession(userId,userBookingsModel),RequestedBookingSession(userId,userBookingsModel,"hf")],
     );
   }
 }

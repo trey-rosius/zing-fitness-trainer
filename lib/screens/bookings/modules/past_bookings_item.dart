@@ -11,8 +11,8 @@ import 'package:zing_fitnes_trainer/screens/chats/typing_model.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
-class ApprovedBookingsItem extends StatelessWidget {
-  ApprovedBookingsItem(
+class PastBookingsItem extends StatelessWidget {
+  PastBookingsItem(
 
       this.bookingsModel,
       this.userId);
@@ -21,7 +21,7 @@ class ApprovedBookingsItem extends StatelessWidget {
   final String userId;
   @override
   Widget build(BuildContext context) {
-    return  bookingsModel.bookingStatus == Config.paid ?
+    return  bookingsModel.bookingStatus == Config.completed?
 
       StreamProvider.value(
         value: ProfileProvider.instance().streamTrainerUserProfile(bookingsModel.trainerUserId),
@@ -54,6 +54,8 @@ class ApprovedBookingsItem extends StatelessWidget {
 
 
                         ));
+
+
 
                   },
                   child: Container(

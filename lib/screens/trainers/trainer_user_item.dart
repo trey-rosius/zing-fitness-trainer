@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_screen.dart';
-import 'package:zing_fitnes_trainer/screens/trainers/trainer_booking_details_screen.dart';
+import 'package:zing_fitnes_trainer/screens/trainers/trainer_booking_screen.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/user_details_screen.dart';
 
 class TrainerUserItem extends StatelessWidget {
@@ -21,7 +21,7 @@ class TrainerUserItem extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context)
           {
-           return TrainerDetailsScreen(userId, trainerInfo, bookingModel);
+           return TrainerBookingsScreen(userId, trainerInfo, bookingModel);
            // return UserDetailsScreen(userId, trainerInfo, bookingModel);
           })
               //  child: ProfileRegularUser();

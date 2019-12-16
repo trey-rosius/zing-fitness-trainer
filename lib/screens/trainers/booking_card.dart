@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
 class BookingsCard extends StatelessWidget {
-  BookingsCard(this.userId,this.trainerInfo,this.bookingModel);
+ BookingsCard(this.userId,this.trainerInfo,this.bookingModel);
   final String userId;
   final TrainerProfileModel trainerInfo;
   final NewBookingModel bookingModel;

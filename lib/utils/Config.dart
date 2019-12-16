@@ -219,6 +219,7 @@ class Config{
 
 
   static final String updatedOn = "updatedOn";
+  static final String completed = "completed";
 
   //notification Strings
 

@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookings/regular_users/regular_users_bookings_page.dart';
+import 'package:zing_fitnes_trainer/screens/bookings/trainer_bookings_page.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_screen.dart';
-import 'package:zing_fitnes_trainer/screens/bookings_active/bookings_page.dart';
-import 'package:zing_fitnes_trainer/screens/bookings_active/trainer_bookings_page.dart';
+
 import 'package:zing_fitnes_trainer/screens/home/zoom_scaffold.dart';
 import 'package:zing_fitnes_trainer/screens/search/search_screen.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
@@ -94,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ],
           ),
 
-          body: widget.userType== Config.trainer ? TrainerBookingsPage(widget.userId) : BookingsPage(widget.userId) ,
+          body: widget.userType== Config.trainer ? TrainerBookingsPage(widget.userId) :RegularUsersBookingsPage(widget.userId,widget.userType) ,
           floatingActionButton: FloatingActionButton(onPressed: (){
             Navigator.push(
               context,
