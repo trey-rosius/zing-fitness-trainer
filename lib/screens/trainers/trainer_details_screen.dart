@@ -112,7 +112,7 @@ class _TrainerDetailsScreenState extends State<TrainerDetailsScreen> {
 
         child: RaisedButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          color: Theme.of(context).primaryColorDark,
+          color: Colors.red,
           
           onPressed: (){
            setState(() {

@@ -69,7 +69,7 @@ class BookingDetailsScreen extends StatelessWidget {
 
                     ));
               },
-              icon: Icon(Icons.chat_bubble_outline))
+              icon: Icon(Icons.chat_bubble_outline,color: Colors.white,))
            : Container(),
         ],
       ),
@@ -358,6 +358,7 @@ class BookingDetailsScreen extends StatelessWidget {
 
                       Map completedBooking = Map<String,dynamic>();
                       completedBooking[Config.bookingStatus] = Config.completed;
+                      completedBooking[Config.bookingSessionCompleted] = true;
 
                       BookingRepository.instance().changeBookingStatus(bookingsModel.bookingId, completedBooking).then((_){
 

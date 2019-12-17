@@ -57,7 +57,7 @@ class _RegularUsersBookingsPageState extends State<RegularUsersBookingsPage> wit
                 controller: _tabController,
                 // indicatorColor: Colors.transparent,
                 isScrollable: true,
-                // unselectedLabelColor: Colors.grey,
+                 unselectedLabelColor: Colors.grey,
                  labelColor: Theme.of(context).accentColor,
                 labelStyle: TextStyle(),
 
@@ -102,7 +102,7 @@ class BookingsBody extends StatelessWidget {
     return TabBarView(
 
       children: <Widget>[ActiveBookingSession(userId,userBookingsModel),
-      PendingBookingSession(userId,userBookingsModel),
+      PendingBookingSession(userId,userBookingsModel,userType),
       RequestedBookingSession(userId,userBookingsModel,userType),
       PastBookingSession(userId,userBookingsModel),
       CancelledBookingSession(userId,userBookingsModel),],

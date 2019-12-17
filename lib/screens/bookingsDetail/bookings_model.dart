@@ -7,15 +7,18 @@ class BookingsModel{
   int bookingDay,bookingEndHr,bookingEndMin,bookingStartHr,bookingStartMin,bookingYear,bookingMonth;
   String bookingEndTime,bookingStartTime;
   String bookingStatus,sessionRate,sessionType;
+  bool bookingSessionStarted,bookingSessionCompleted;
   String trainerUserId,userId;
   Timestamp createdOn;
 
-  BookingsModel({this.bookingId,this.bookingDate, this.bookingDay, this.bookingEndHr,
-      this.bookingEndMin, this.bookingStartHr, this.bookingStartMin,
-      this.bookingYear, this.bookingMonth, this.bookingEndTime,
-      this.bookingStartTime, this.bookingStatus, this.sessionRate,
-      this.sessionType, this.trainerUserId,this.createdOn,this.userId});
 
+  BookingsModel({this.bookingId, this.bookingDate, this.bookingDay,
+      this.bookingEndHr, this.bookingEndMin, this.bookingStartHr,
+      this.bookingStartMin, this.bookingYear, this.bookingMonth,
+      this.bookingEndTime, this.bookingStartTime, this.bookingStatus,
+      this.sessionRate, this.sessionType, this.bookingSessionStarted,
+      this.bookingSessionCompleted, this.trainerUserId, this.userId,
+      this.createdOn});
 
   factory BookingsModel.fromFirestore(DocumentSnapshot docSnap){
     return BookingsModel(
@@ -34,6 +37,8 @@ class BookingsModel{
       sessionRate: docSnap[Config.sessionRate],
       sessionType: docSnap[Config.sessionType],
       userId: docSnap[Config.userId],
+       bookingSessionCompleted: docSnap[Config.bookingSessionCompleted],
+      bookingSessionStarted: docSnap[Config.bookingSessionStarted],
       trainerUserId: docSnap[Config.trainerUserId],
       createdOn : docSnap[Config.createdOn]
 

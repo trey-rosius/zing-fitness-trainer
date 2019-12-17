@@ -110,7 +110,46 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
           );
         },
       ),),
-      bottomNavigationBar: Container(
+      bottomNavigationBar:
+          widget.bookingModel.bookingStatus == Config.approved ?
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+            height:size.height/12 ,
+
+
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+
+                Container(
+                  height: size.height/12,
+                  width: size.width/2.5,
+                  padding: EdgeInsets.only(left: 10),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    color: Colors.red,
+
+                    onPressed: (){
+                      Map bookingMap = Map<String,dynamic>();
+
+
+                      bookingMap[Config.bookingStatus] = Config.unApproved;
+                      bookingMap[Config.paid] = false;
+                      bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
+
+                      BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, bookingMap).then((_){
+                        showInSnackBar("Booking Rejected");
+
+                      });
+                    },
+                    child: Text("Reject",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
+                ),
+              ],
+            ),
+          ) :
+
+      Container(
        margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
         height:size.height/12 ,
 
