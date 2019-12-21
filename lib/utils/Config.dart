@@ -221,6 +221,8 @@ class Config{
   static final String updatedOn = "updatedOn";
   static final String completed = "completed";
 
+  static final String booking = "booking";
+
   //notification Strings
 
   static final String sessionStarted = "started their session";

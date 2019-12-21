@@ -282,7 +282,7 @@ class BookingDetailsScreen extends StatelessWidget {
                       child: Text("Pay",style: TextStyle(fontSize: 20,color: Colors.white),),),
                   ) : Container(),
 
-                 bookingsModel.bookingStatus == Config.paid ? Container(
+                 !bookingsModel.bookingSessionStarted  ? Container(
                     height:size.height/10,
                     width: size.width/2.5,
                     padding: EdgeInsets.only(left: 10),
@@ -301,6 +301,8 @@ class BookingDetailsScreen extends StatelessWidget {
                           notMap[Config.bookingsId] = bookingsModel.bookingId;
 
                           notMap[Config.bookingSessionStarted] = true;
+                          notMap[Config.bookingStatus] = Config.start;
+                          notMap[Config.notificationType] = Config.booking;
 
                           notMap[Config.userId] = bookingsModel.userId;
                           notMap[Config.trainerUserId] = bookingsModel.trainerUserId;
@@ -347,41 +349,7 @@ class BookingDetailsScreen extends StatelessWidget {
                     child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.white),),),
                 ) : Container(),
 
-                bookingsModel.bookingStatus == Config.bookingSessionStarted ? Container(
-                  height:size.height/10,
-                  width: size.width/2.5,
-                  padding: EdgeInsets.only(left: 10),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    color: Theme.of(context).primaryColorDark,
-                    onPressed: (){
 
-                      Map completedBooking = Map<String,dynamic>();
-                      completedBooking[Config.bookingStatus] = Config.completed;
-                      completedBooking[Config.bookingSessionCompleted] = true;
-
-                      BookingRepository.instance().changeBookingStatus(bookingsModel.bookingId, completedBooking).then((_){
-
-                        Map notMap = Map<String,dynamic>();
-                        notMap[Config.bookingsId] = bookingsModel.bookingId;
-
-                        notMap[Config.bookingSessionStarted] = true;
-                        notMap[Config.bookingSessionCompleted] = true;
-
-                        notMap[Config.userId] = bookingsModel.userId;
-                        notMap[Config.trainerUserId] = bookingsModel.trainerUserId;
-                        notMap[Config.notificationText] = Config.bookingSessionCompleted;
-
-
-
-                        NotificationsRepository.instance().saveNotification(notMap).then((_){
-                          Navigator.of(context).pop();
-                        });
-                      });
-
-                    },
-                    child: Text("Completed",style: TextStyle(fontSize: 20,color: Colors.white),),),
-                ) : Container()
 
 
                 ],

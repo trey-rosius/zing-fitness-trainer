@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zing_fitnes_trainer/screens/bookings/modules/approved_bookings_item.dart';
+import 'package:zing_fitnes_trainer/screens/bookings/modules/regular_approved_bookings_item.dart';
+import 'package:zing_fitnes_trainer/screens/bookings/modules/trainers_approved_bookings_item.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/user_bookings_model.dart';
+import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 
 class ActiveBookingSession extends StatelessWidget {
-  ActiveBookingSession(this.userId,this.userBookingsModel);
+  ActiveBookingSession(this.userId,this.userBookingsModel,this.userType);
   final String userId;
+  final String userType;
   final List<UserBookingsModel> userBookingsModel;
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class ActiveBookingSession extends StatelessWidget {
             child: Consumer<BookingsModel>(
               builder: (key,value,child){
                return value == null ? Container() :
-                 ApprovedBookingsItem(value,userId);
+               userType == Config.trainer? TrainersApprovedBookingsItem(value,userId) : RegularUserApprovedBookingsItem(value,userId);
               },
             ),
 

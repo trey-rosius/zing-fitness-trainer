@@ -11,6 +11,7 @@ import 'package:zing_fitnes_trainer/screens/Profile/general_user_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/profile_regular_user.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/profile_trainer_user.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/conversation_list/ConversationItemRepository.dart';
 import 'package:zing_fitnes_trainer/screens/conversation_list/conversation_item_model.dart';
 import 'package:zing_fitnes_trainer/screens/conversation_list/conversation_list_screen.dart';
@@ -18,13 +19,20 @@ import 'package:zing_fitnes_trainer/screens/home/zoom_scaffold.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_cards.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
-class AdminDrawer extends StatelessWidget {
-  AdminDrawer(this.userId, this.admin, this.menuController,this.userType);
+class TrainerAdminDrawer extends StatefulWidget {
+  TrainerAdminDrawer(this.userId, this.admin, this.menuController,this.userType);
   final String userId;
   final bool admin;
   final String userType;
 
   final MenuController menuController;
+
+  @override
+  _TrainerAdminDrawerState createState() => _TrainerAdminDrawerState();
+}
+
+class _TrainerAdminDrawerState extends State<TrainerAdminDrawer> {
+  bool isSwitched = true;
   _deletePreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(Config.userId);
@@ -104,63 +112,78 @@ class AdminDrawer extends StatelessWidget {
                 children: <Widget>[
                   Container(
                       child: StreamProvider.value(value: ProfileProvider.instance()
-              .streamGeneralUserModel(userId),catchError: (context,error){
+              .streamTrainerUserProfile(widget.userId),catchError: (context,error){
                         print(error.toString());
       },
-      child: Consumer<GeneralUserModel>(
+      child: Consumer<TrainerProfileModel>(
         builder: (_,profileMod,child){
           return profileMod == null ? Container(): Container(
             padding: EdgeInsets.all(10),
-            child: Row(
+            child: Column(
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(10),
-                  // margin:EdgeInsets.only(top: 10,right: 20,left: 20) ,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: CachedNetworkImage(
-                          width: 80.0,
-                          height: 80.0,
-                          fit: BoxFit.cover,
-                          imageUrl: profileMod.profilePicUrl ?? "",
-                          placeholder: (context, url) =>
-                              SpinKitHourGlass(
-                                  color: Theme.of(context)
-                                      .accentColor),
-                          errorWidget: (context, url, ex) =>
-                              CircleAvatar(
-                                backgroundColor:
-                                Theme.of(context).accentColor,
-                                radius: 50.0,
-                                child: Icon(
-                                  Icons.account_circle,
-                                  color: Colors.white,
-                                  size: 50.0,
-                                ),
-                              ))),
-                ),
-                Expanded(
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    onPressed: () {
-                      menuController.close();
-                      /*
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          //  builder: (context) => HomeScreen(userId: widget.userId,admin: false,),
-                                          builder: (context) => EditProfileScreen(userId),
-                                        ),
-                                      );
-                                      */
-                    },
-                    child: Text(
-                      profileMod.name,
-                      style: TextStyle(color: Colors.white,fontSize: 18),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      // margin:EdgeInsets.only(top: 10,right: 20,left: 20) ,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: CachedNetworkImage(
+                              width: 80.0,
+                              height: 80.0,
+                              fit: BoxFit.cover,
+                              imageUrl: profileMod.profilePicUrl ?? "",
+                              placeholder: (context, url) =>
+                                  SpinKitHourGlass(
+                                      color: Theme.of(context)
+                                          .accentColor),
+                              errorWidget: (context, url, ex) =>
+                                  CircleAvatar(
+                                    backgroundColor:
+                                    Theme.of(context).accentColor,
+                                    radius: 50.0,
+                                    child: Icon(
+                                      Icons.account_circle,
+                                      color: Colors.white,
+                                      size: 50.0,
+                                    ),
+                                  ))),
                     ),
-                  ),
-                )
+                    Expanded(
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        onPressed: () {
+                          widget.menuController.close();
+                          /*
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              //  builder: (context) => HomeScreen(userId: widget.userId,admin: false,),
+                                              builder: (context) => EditProfileScreen(userId),
+                                            ),
+                                          );
+                                          */
+                        },
+                        child: Text(
+                          profileMod.name,
+                          style: TextStyle(color: Colors.white,fontSize: 18),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                Switch(
+                  value: isSwitched,
+                  onChanged: (value) {
+                    setState(() {
+                      isSwitched = value;
+                    });
+                  },
+                  activeTrackColor: Colors.lightGreenAccent,
+                  activeColor: Colors.green,
+                ),
               ],
             ),
           );
@@ -170,15 +193,15 @@ class AdminDrawer extends StatelessWidget {
 
                   InkWell(
                       onTap: () {
-                        menuController.close();
-                        if(userType == Config.regularUser){
+                        widget.menuController.close();
+                        if(widget.userType == Config.regularUser){
 
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) {
                               return StreamProvider.value(
                                 value: ProfileProvider.instance()
-                                    .streamRegularUserProfile(userId),
+                                    .streamRegularUserProfile(widget.userId),
                                 catchError: (context, error) {
                                   print(error);
                                 },
@@ -195,11 +218,11 @@ class AdminDrawer extends StatelessWidget {
                               MaterialPageRoute(builder: (context) {
                                 return StreamProvider.value(
                                     value: ProfileProvider.instance()
-                                        .streamTrainerUserProfile(userId),
+                                        .streamTrainerUserProfile(widget.userId),
                                     catchError: (context, error) {
                                       print(error);
                                     },
-                                    child: ProfileTrainerUser(userId: userId,));
+                                    child: ProfileTrainerUser(userId: widget.userId,));
                                 //  child: ProfileRegularUser();
                               }),
                             );
@@ -245,7 +268,7 @@ class AdminDrawer extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
 
-                                          builder: (context) => CreditCardScreen(userId:userId),
+                                          builder: (context) => CreditCardScreen(userId:widget.userId),
                                         ),
                                       );
 
@@ -269,11 +292,11 @@ class AdminDrawer extends StatelessWidget {
                                         MaterialPageRoute(
 
                                           builder: (context) {
-                                            return StreamProvider<List<ConversationItemModel>>.value(value: ConversationItemRepository.instance().streamUserConversationList(userId),
+                                            return StreamProvider<List<ConversationItemModel>>.value(value: ConversationItemRepository.instance().streamUserConversationList(widget.userId),
                                             catchError: (context,error){
                                              print(error);
                                              return null;
-                                            },child: ConversationListScreen(userId),);
+                                            },child: ConversationListScreen(widget.userId),);
 
 
                                           }
@@ -292,6 +315,7 @@ class AdminDrawer extends StatelessWidget {
                           style: TextStyle(color: Colors.white,  fontSize: 17),
                         ),
                       )),
+
 
 
 

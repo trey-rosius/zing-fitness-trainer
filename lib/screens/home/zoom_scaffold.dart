@@ -2,8 +2,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zing_fitnes_trainer/screens/home/admin_drawer.dart';
+import 'package:zing_fitnes_trainer/screens/home/regular_user_admin_drawer.dart';
 import 'package:zing_fitnes_trainer/screens/home/home_screen.dart';
+import 'package:zing_fitnes_trainer/screens/home/trainer_admin_drawer.dart';
+import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 
 class ZoomScaffold extends StatefulWidget {
@@ -134,7 +136,8 @@ class _ZoomScaffoldState extends State<ZoomScaffold> with TickerProviderStateMix
 
           child: Scaffold(
             backgroundColor:  Color(0xFF2f00ad),
-            body: AdminDrawer(widget.userId,widget.admin, menuController,widget.userType),),),
+            body:widget.userType == Config.trainer? TrainerAdminDrawer(widget.userId,widget.admin, menuController,widget.userType) :
+            RegularUserAdminDrawer(widget.userId,widget.admin, menuController,widget.userType)),),
         createContentDisplay()
       ],
     );

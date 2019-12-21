@@ -101,7 +101,7 @@ class BookingsBody extends StatelessWidget {
     var userBookingsModel = Provider.of<List<UserBookingsModel>>(context);
     return TabBarView(
 
-      children: <Widget>[ActiveBookingSession(userId,userBookingsModel),
+      children: <Widget>[ActiveBookingSession(userId,userBookingsModel,userType),
       PendingBookingSession(userId,userBookingsModel,userType),
       RequestedBookingSession(userId,userBookingsModel,userType),
       PastBookingSession(userId,userBookingsModel),
