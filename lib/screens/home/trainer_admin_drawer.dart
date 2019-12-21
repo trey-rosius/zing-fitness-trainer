@@ -174,15 +174,25 @@ class _TrainerAdminDrawerState extends State<TrainerAdminDrawer> {
                   ],
                 ),
 
-                Switch(
-                  value: isSwitched,
-                  onChanged: (value) {
-                    setState(() {
-                      isSwitched = value;
-                    });
-                  },
-                  activeTrackColor: Colors.lightGreenAccent,
-                  activeColor: Colors.green,
+                Row(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left: 60),
+                      child: Text(profileMod.userPresence?"Online":"Offline",style: TextStyle(fontSize: 20,color: Colors.white),),
+                    ),
+                    Switch(
+                      value: profileMod.userPresence,
+                      onChanged: (value) {
+                        setState(() {
+
+                          ProfileProvider.instance().updateAdminPresence(widget.userId, value);
+                       //  isSwitched = value;
+                        });
+                      },
+                      activeTrackColor: Colors.lightGreenAccent,
+                      activeColor: Colors.green,
+                    ),
+                  ],
                 ),
               ],
             ),

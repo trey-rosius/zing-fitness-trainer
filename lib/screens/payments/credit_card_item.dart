@@ -50,7 +50,7 @@ class CreditCardItem extends StatelessWidget {
       return index == 0 ?
       InkWell(
         onTap: () {
-
+          print(listCreditCards[index].customer);
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
@@ -217,7 +217,7 @@ class CreditCardItem extends StatelessWidget {
 
           :InkWell(
         onTap: () {
-
+          print(listCreditCards[index].customer);
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),

@@ -118,7 +118,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
 
          applyFilter ?Expanded(
-           child: StreamProvider.value(value: ProfileProvider.instance().streamTrainersListSessionType(sessionType),
+           child: StreamProvider.value(value: ProfileProvider.instance().streamOnlineTrainersListSessionType(sessionType),
              catchError: (context,error){
                print(error);
              },

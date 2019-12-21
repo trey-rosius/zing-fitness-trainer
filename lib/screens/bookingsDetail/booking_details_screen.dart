@@ -305,6 +305,8 @@ class BookingDetailsScreen extends StatelessWidget {
                           notMap[Config.notificationType] = Config.booking;
 
                           notMap[Config.userId] = bookingsModel.userId;
+                          notMap[Config.senderId] = bookingsModel.userId;
+                          notMap[Config.receiverId] = bookingsModel.trainerUserId;
                           notMap[Config.trainerUserId] = bookingsModel.trainerUserId;
                           notMap[Config.notificationText] = Config.sessionStarted;
 
@@ -336,6 +338,9 @@ class BookingDetailsScreen extends StatelessWidget {
                        notMap[Config.bookingsId] = bookingsModel.bookingId;
                        notMap[Config.bookingStatus] = Config.cancel;
                        notMap[Config.userId] = bookingsModel.userId;
+                       notMap[Config.senderId] = bookingsModel.userId;
+                       notMap[Config.receiverId] = bookingsModel.trainerUserId;
+
                        notMap[Config.trainerUserId] = bookingsModel.trainerUserId;
                        notMap[Config.notificationText] = Config.sessionCancelled;
 

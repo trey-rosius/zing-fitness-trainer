@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:zing_fitnes_trainer/screens/notifications/notification_model.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 class NotificationsRepository extends ChangeNotifier{
@@ -16,6 +17,18 @@ class NotificationsRepository extends ChangeNotifier{
         Config.notificationId:documentReference.documentID
       })
     });
+  }
+
+  Stream<List<NotificationModel>> streamAllNotifications(String userId){
+    return _firestore.collection(Config.notificationId)
+        .where(Config.receiverId,isEqualTo:userId)
+       
+        .snapshots()
+        .map((list) =>
+        list.documents.map((doc) => NotificationModel.fromFirestore(doc)).toList());
+
+
+
   }
 
 

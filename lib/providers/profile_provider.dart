@@ -52,6 +52,16 @@ class ProfileProvider extends ChangeNotifier{
 
   }
 
+  Future<void> updateAdminPresence(String userId,bool value){
+
+    return  _firestore.collection(Config.users).document(userId).updateData({
+      Config.presence:value
+    });
+
+
+  }
+
+
   Future<void> saveUserData(String userId,Map userDataMap){
 
     return _firestore.collection(Config.users).document(userId).setData(userDataMap,merge: true).then((_){
@@ -67,6 +77,20 @@ class ProfileProvider extends ChangeNotifier{
         .snapshots()
         .map((list) =>
     list.documents.map((doc) => TrainerProfileModel.fromFirestore(doc)).toList());
+
+
+
+  }
+
+  /// Stream online trainers profiles
+  ///
+  Stream<List<TrainerProfileModel>> streamOnlineTrainersListSessionType(String sessionType){
+    return _firestore.collection(Config.users)
+        .where(Config.sessionType,isEqualTo:sessionType)
+        .where(Config.presence,isEqualTo: true)
+        .snapshots()
+        .map((list) =>
+        list.documents.map((doc) => TrainerProfileModel.fromFirestore(doc)).toList());
 
 
 

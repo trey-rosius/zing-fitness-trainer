@@ -7,6 +7,7 @@ import 'package:zing_fitnes_trainer/screens/bookings/trainer_bookings_page.dart'
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_screen.dart';
 
 import 'package:zing_fitnes_trainer/screens/home/zoom_scaffold.dart';
+import 'package:zing_fitnes_trainer/screens/notifications/notifications_screen.dart';
 import 'package:zing_fitnes_trainer/screens/search/search_screen.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
@@ -89,6 +90,30 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 child: Container(
                     margin: EdgeInsets.only(right: 10,left: 10),
                     child: Icon(FontAwesomeIcons.search)),
+              ),
+              InkWell(
+                onTap: (){
+
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+
+                        builder: (context) {
+                          return  NotificationsScreen(widget.userId);
+
+
+                        }
+
+
+
+                    ),
+                  );
+                },
+
+                child: Container(
+                    margin: EdgeInsets.only(right: 10,left: 10),
+                    child: Icon(FontAwesomeIcons.bell)),
               )
 
             ],

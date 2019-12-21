@@ -222,6 +222,7 @@ class Config{
   static final String completed = "completed";
 
   static final String booking = "booking";
+  static final String presence = "presence";
 
   //notification Strings
 
