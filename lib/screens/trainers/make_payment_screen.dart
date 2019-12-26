@@ -4,12 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
-import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/screens/home/home_container.dart';
 import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
-import 'dart:async';
+
 class MakePaymentScreen extends StatefulWidget {
   MakePaymentScreen(this.userId, this.bookingModel, this.trainerInfo);
   final String userId;
@@ -255,12 +254,14 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                             onPressed: () {
 
 
+                              print("default card is"+defaultCard.customerId);
 
                               Map bookingMap = Map<String,dynamic>();
 
 
                               bookingMap[Config.bookingStatus] = Config.paid;
                               bookingMap[Config.paid] = true;
+                              bookingMap[Config.customer] = defaultCard.customerId;
                               bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
 
 

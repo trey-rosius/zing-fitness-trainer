@@ -6,14 +6,11 @@ import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_details_screen.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/pending_booking_details_screen.dart';
-import 'package:zing_fitnes_trainer/screens/chats/chat_screen.dart';
-import 'package:zing_fitnes_trainer/screens/chats/chats_repository.dart';
-import 'package:zing_fitnes_trainer/screens/chats/typing_model.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
-class PendingBookingsItem extends StatelessWidget {
-  PendingBookingsItem(
+class CreditCardTransactionItem extends StatelessWidget {
+  CreditCardTransactionItem(
 
       this.bookingsModel,
       this.userId);
@@ -22,7 +19,7 @@ class PendingBookingsItem extends StatelessWidget {
   final String userId;
   @override
   Widget build(BuildContext context) {
-    return bookingsModel.bookingStatus == Config.approved ?
+    return
 
     StreamProvider.value(
       value: ProfileProvider.instance().streamTrainerUserProfile(bookingsModel.trainerUserId),
@@ -41,7 +38,7 @@ class PendingBookingsItem extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => PendingBookingDetailsScreen(
+                      builder: (context) => BookingDetailsScreen(
 
                           bookingsModel,
                           value,
@@ -105,43 +102,25 @@ class PendingBookingsItem extends StatelessWidget {
                                 padding: EdgeInsets.only(top: 5,bottom: 5),
                                 child: Row(
                                   children: <Widget>[
-                                    Text("Status: ",style: TextStyle(fontSize: 16,),),
-                                    Text(bookingsModel.bookingStatus,style: TextStyle(fontSize: 16,color: Theme.of(context).primaryColorDark,fontWeight: FontWeight.bold),),
+
+                                    Text(bookingsModel.bookingDate+", ",style: TextStyle(fontSize: 16,color: Theme.of(context).primaryColorDark,fontWeight: FontWeight.bold),),
+                                    Text(bookingsModel.bookingStartTime+" ",style: TextStyle(fontSize: 16,),),
+                                    Text("to ",style: TextStyle(fontSize: 16,),),
+                                    Text(bookingsModel.bookingEndTime,style: TextStyle(fontSize: 16,),),
                                   ],
                                 ),
                               ),
 
-                              Row(
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.check_box_outline_blank,
-                                    color: MyColors().deepBlue,
-                                    size: 16,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 3),
-                                    child: Text(
-                                      "UnPaid",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                  )
-                                ],
-                              )
+
 
                             ],
                           ),
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.navigate_next,
-                          color: Colors.grey,
-                          size: 30,
-                        ),
-                        onPressed: () {
-                          print("pressed");
-                        },
-                      ),
+                      Container(
+                         padding: EdgeInsets.all(5),
+                          child: Text('\$'+bookingsModel.sessionRate,style: TextStyle(fontSize: 16,color: Theme.of(context).primaryColorDark,fontWeight: FontWeight.bold),)),
+
                     ],
                   ),
                   Divider()
@@ -153,7 +132,7 @@ class PendingBookingsItem extends StatelessWidget {
 
         },
       ),
-    ): Container();
+    );
 
 
 

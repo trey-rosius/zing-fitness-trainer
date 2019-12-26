@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_card_model.dart';
 import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
@@ -46,6 +47,18 @@ class CreditCardRepository  extends ChangeNotifier{
           .setData(defaultMap).then((_) {
 
       });
+  }
+
+  ///Stream single credit card transactions
+  ///
+  /// Stream list of user bookings
+  Stream<List<BookingsModel>>streamCreditCardTransactions(String cardId){
+
+    return _firestore.collection(Config.bookings).where(Config.customer,isEqualTo: cardId)
+
+        .snapshots()
+        .map((list)=>
+        list.documents.map((doc)=>BookingsModel.fromFirestore(doc)).toList());
   }
 
   /// stream single credit card document

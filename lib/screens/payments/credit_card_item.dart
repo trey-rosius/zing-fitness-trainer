@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_card_model.dart';
+import 'package:zing_fitnes_trainer/screens/payments/credit_card_transaction_screen.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_cart_repository.dart';
 
 import 'package:zing_fitnes_trainer/utils/Config.dart';
@@ -50,7 +51,22 @@ class CreditCardItem extends StatelessWidget {
       return index == 0 ?
       InkWell(
         onTap: () {
-          print(listCreditCards[index].customer);
+
+          print("credit card"+listCreditCards[index].customer);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>CreditCardTransactionScreen(listCreditCards[index].customer,userId)
+
+
+
+
+
+
+              ));
+
+
+
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
@@ -217,7 +233,19 @@ class CreditCardItem extends StatelessWidget {
 
           :InkWell(
         onTap: () {
-          print(listCreditCards[index].customer);
+          print("credit card"+listCreditCards[index].customer);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>CreditCardTransactionScreen(listCreditCards[index].customer,userId)
+
+
+
+
+
+
+              ));
+
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),

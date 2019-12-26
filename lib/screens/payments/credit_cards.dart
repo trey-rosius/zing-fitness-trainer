@@ -27,8 +27,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
     return Scaffold(
 
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Theme.of(context).accentColor),
-        backgroundColor: Colors.white,
+
         elevation: 0.0,
         centerTitle: true,
         title: Text(
