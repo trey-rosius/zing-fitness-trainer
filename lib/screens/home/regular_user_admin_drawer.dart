@@ -126,8 +126,8 @@ class _RegularUserAdminDrawerState extends State<RegularUserAdminDrawer> {
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: CachedNetworkImage(
-                          width: 80.0,
-                          height: 80.0,
+                          width: 60.0,
+                          height: 60.0,
                           fit: BoxFit.cover,
                           imageUrl: profileMod.profilePicUrl ?? "",
                           placeholder: (context, url) =>
@@ -138,11 +138,11 @@ class _RegularUserAdminDrawerState extends State<RegularUserAdminDrawer> {
                               CircleAvatar(
                                 backgroundColor:
                                 Theme.of(context).accentColor,
-                                radius: 50.0,
+                                radius: 30.0,
                                 child: Icon(
                                   Icons.account_circle,
                                   color: Colors.white,
-                                  size: 50.0,
+                                  size: 30.0,
                                 ),
                               ))),
                 ),

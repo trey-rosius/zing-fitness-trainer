@@ -20,9 +20,8 @@ class NotificationsRepository extends ChangeNotifier{
   }
 
   Stream<List<NotificationModel>> streamAllNotifications(String userId){
-    return _firestore.collection(Config.notificationId)
+    return _firestore.collection(Config.notifications)
         .where(Config.receiverId,isEqualTo:userId)
-       
         .snapshots()
         .map((list) =>
         list.documents.map((doc) => NotificationModel.fromFirestore(doc)).toList());

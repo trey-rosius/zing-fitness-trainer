@@ -156,7 +156,36 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
         },
       ),),
       bottomNavigationBar:
+      widget.bookingModel.bookingSessionStarted ?
+      Container(
+          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+          height:size.height/12 ,
+          width: size.width/1.4,
 
+          child:
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                height: size.height/12,
+                width: size.width/1.5,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  color: Theme.of(context).primaryColorDark,
+
+                  onPressed: (){
+
+
+
+                  },
+                  child: Text("Session Running",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
+              ),
+
+            ],
+          )
+      ) :
       widget.bookingModel.bookingSessionRequestToStart ?
       Container(
        margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
@@ -180,7 +209,7 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
 
 
                   Map bookingMap = Map<String,dynamic>();
-                  bookingMap[Config.bookingStatus] = Config.approved;
+
                   bookingMap[Config.bookingSessionStarted] = true;
                   bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
 
@@ -191,7 +220,7 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
                     Map notMap = Map<String,dynamic>();
                     notMap[Config.bookingsId] = widget.bookingModel.bookingId;
 
-                    notMap[Config.bookingSessionStarted] = true;
+                  //  notMap[Config.bookingSessionStarted] = true;
                     notMap[Config.bookingStatus] = Config.start;
                     notMap[Config.notificationType] = Config.booking;
 

@@ -32,7 +32,7 @@ class _EditProfileRegularState extends State<EditProfileRegular> {
   Future<File> _imageFile;
   String profilePic;
   bool loading = false;
-
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState>_regularFormKey = GlobalKey<FormState>();
   final  userNameController = TextEditingController();
   final  locationController = TextEditingController();
@@ -162,6 +162,7 @@ class _EditProfileRegularState extends State<EditProfileRegular> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      key: _scaffoldkey,
 
           appBar: AppBar(
             elevation: 0.0,
@@ -287,7 +288,7 @@ class _EditProfileRegularState extends State<EditProfileRegular> {
       final List<Placemark> placemarks = await Future(
               () => _geolocator.placemarkFromAddress(locationController.text))
           .catchError((onError) {
-        Scaffold.of(context).showSnackBar(SnackBar(
+        _scaffoldkey.currentState.showSnackBar(SnackBar(
           content: Text(onError.toString()),
         ));
         return Future.value(List<Placemark>());
@@ -407,7 +408,7 @@ class _EditProfileRegularState extends State<EditProfileRegular> {
           });
         });
       } else {
-        Scaffold.of(context).showSnackBar(SnackBar(
+        _scaffoldkey.currentState.showSnackBar(SnackBar(
           backgroundColor: Theme
               .of(context)
               .primaryColor,

@@ -23,7 +23,43 @@ class BookingDetailsScreen extends StatelessWidget {
   final BookingsModel bookingsModel;
   final TrainerProfileModel trainerProfileModel;
   final String userId;
+  Future<Null> alertText(BuildContext context) async {
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return new AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            //    title:  Text("Chicago Time",textAlign: TextAlign.center,style: TextStyle(fontSize: 22),),
+            content: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    child: Text(
+                      "Your trainer would have to turn on the timer, which would last for the duration of "
+                          "your paid session",
+                      style: TextStyle(fontSize: 20.0,),
+                    ),
+                  ),
+                  Divider(),
+                  FlatButton(
+                    onPressed: (){
+                      Navigator.of(context).pop();
 
+                    },
+                    child: Text("Ok", style: TextStyle(fontSize: 20.0,fontFamily: 'Montserrat',color: Theme.of(context).accentColor),),
+                  )
+
+                ],
+              ),
+            )
+
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -302,7 +338,7 @@ class BookingDetailsScreen extends StatelessWidget {
                          Map notMap = Map<String,dynamic>();
                          notMap[Config.bookingsId] = bookingsModel.bookingId;
 
-                         notMap[Config.bookingSessionRequestToStart] = true;
+                         notMap[Config.bookingStatus] = "paid";
                          notMap[Config.notificationType] = Config.booking;
 
                          notMap[Config.userId] = bookingsModel.userId;
@@ -314,7 +350,7 @@ class BookingDetailsScreen extends StatelessWidget {
 
 
                          NotificationsRepository.instance().saveNotification(notMap).then((_){
-                           Navigator.of(context).pop();
+                           alertText(context);
                          });
                        });
 

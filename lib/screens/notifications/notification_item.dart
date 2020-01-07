@@ -15,6 +15,7 @@ class NotificationItem extends StatelessWidget {
        builder: (_,value,child){
          return value == null ? Container():
              Container(
+               padding:EdgeInsets.symmetric(horizontal:20,vertical:10),
                child: Column(
                  mainAxisAlignment: MainAxisAlignment.start,
                  crossAxisAlignment: CrossAxisAlignment.start,
