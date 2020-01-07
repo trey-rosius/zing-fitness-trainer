@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
                 child: Container(
                     margin: EdgeInsets.only(right: 10,left: 10),
-                    child: Icon(FontAwesomeIcons.search)),
+                    child: Icon(Icons.search)),
               ),
               InkWell(
                 onTap: (){
@@ -113,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
                 child: Container(
                     margin: EdgeInsets.only(right: 10,left: 10),
-                    child: Icon(FontAwesomeIcons.bell)),
+                    child: Icon(Icons.notifications)),
               )
 
             ],

@@ -282,44 +282,45 @@ class BookingDetailsScreen extends StatelessWidget {
                       child: Text("Pay",style: TextStyle(fontSize: 20,color: Colors.white),),),
                   ) : Container(),
 
-                 !bookingsModel.bookingSessionStarted  ? Container(
-                    height:size.height/10,
-                    width: size.width/2.5,
-                    padding: EdgeInsets.only(left: 10),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      color: Theme.of(context).primaryColorDark,
-                      onPressed: (){
+                 bookingsModel.bookingSessionRequestToStart  ? Container(
 
-                        Map startBooking = Map<String,dynamic>();
-                        startBooking[Config.bookingSessionStarted] =true;
+                  ) : Container(
+                   height:size.height/10,
+                   width: size.width/2.5,
+                   padding: EdgeInsets.only(left: 10),
+                   child: RaisedButton(
+                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                     color: Theme.of(context).primaryColorDark,
+                     onPressed: (){
 
-
-                        BookingRepository.instance().changeBookingStatus(bookingsModel.bookingId, startBooking).then((_){
-
-                          Map notMap = Map<String,dynamic>();
-                          notMap[Config.bookingsId] = bookingsModel.bookingId;
-
-                          notMap[Config.bookingSessionStarted] = true;
-                          notMap[Config.bookingStatus] = Config.start;
-                          notMap[Config.notificationType] = Config.booking;
-
-                          notMap[Config.userId] = bookingsModel.userId;
-                          notMap[Config.senderId] = bookingsModel.userId;
-                          notMap[Config.receiverId] = bookingsModel.trainerUserId;
-                          notMap[Config.trainerUserId] = bookingsModel.trainerUserId;
-                          notMap[Config.notificationText] = Config.sessionStarted;
+                       Map startBooking = Map<String,dynamic>();
+                       startBooking[Config.bookingSessionRequestToStart] =true;
 
 
+                       BookingRepository.instance().changeBookingStatus(bookingsModel.bookingId, startBooking).then((_){
 
-                          NotificationsRepository.instance().saveNotification(notMap).then((_){
-                            Navigator.of(context).pop();
-                          });
-                        });
+                         Map notMap = Map<String,dynamic>();
+                         notMap[Config.bookingsId] = bookingsModel.bookingId;
 
-                    },
-                    child: Text("Start",style: TextStyle(fontSize: 20,color: Colors.white),),),
-                  ) : Container(),
+                         notMap[Config.bookingSessionRequestToStart] = true;
+                         notMap[Config.notificationType] = Config.booking;
+
+                         notMap[Config.userId] = bookingsModel.userId;
+                         notMap[Config.senderId] = bookingsModel.userId;
+                         notMap[Config.receiverId] = bookingsModel.trainerUserId;
+                         notMap[Config.trainerUserId] = bookingsModel.trainerUserId;
+                         notMap[Config.notificationText] = Config.requestedToStartSession;
+
+
+
+                         NotificationsRepository.instance().saveNotification(notMap).then((_){
+                           Navigator.of(context).pop();
+                         });
+                       });
+
+                     },
+                     child: Text("Start",style: TextStyle(fontSize: 20,color: Colors.white),),),
+                 ),
                 bookingsModel.bookingStatus == Config.paid ? Container(
                   height:size.height/10,
                   width: size.width/2.5,

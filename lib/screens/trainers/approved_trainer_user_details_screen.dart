@@ -10,6 +10,7 @@ import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dar
 import 'package:zing_fitnes_trainer/screens/chats/chat_screen.dart';
 import 'package:zing_fitnes_trainer/screens/chats/chats_repository.dart';
 import 'package:zing_fitnes_trainer/screens/chats/typing_model.dart';
+import 'package:zing_fitnes_trainer/screens/notifications/notifications_repository.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/user_booking_card.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
@@ -156,7 +157,7 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
       ),),
       bottomNavigationBar:
 
-      !widget.bookingModel.bookingSessionStarted ?
+      widget.bookingModel.bookingSessionRequestToStart ?
       Container(
        margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
         height:size.height/12 ,
@@ -176,12 +177,35 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
                 color: Theme.of(context).primaryColorDark,
 
                 onPressed: (){
+
+
                   Map bookingMap = Map<String,dynamic>();
                   bookingMap[Config.bookingStatus] = Config.approved;
-                  bookingMap[Config.paid] = false;
+                  bookingMap[Config.bookingSessionStarted] = true;
                   bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
+
+
                   BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, bookingMap).then((_){
                     showInSnackBar("Booking Approved");
+
+                    Map notMap = Map<String,dynamic>();
+                    notMap[Config.bookingsId] = widget.bookingModel.bookingId;
+
+                    notMap[Config.bookingSessionStarted] = true;
+                    notMap[Config.bookingStatus] = Config.start;
+                    notMap[Config.notificationType] = Config.booking;
+
+                    notMap[Config.userId] = widget.bookingModel.userId;
+                    notMap[Config.senderId] = widget.bookingModel.userId;
+                    notMap[Config.receiverId] = widget.bookingModel.trainerUserId;
+                    notMap[Config.trainerUserId] = widget.bookingModel.trainerUserId;
+                    notMap[Config.notificationText] = Config.sessionStarted;
+
+
+
+                    NotificationsRepository.instance().saveNotification(notMap).then((_){
+                      Navigator.of(context).pop();
+                    });
 
                   });
 
@@ -191,7 +215,34 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
 
           ],
         )
-      ) : Container(height:size.height/12),
+      ) : Container(
+          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+          height:size.height/12 ,
+
+
+          child:
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                height: size.height/12,
+                width: size.width/2.5,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  color: Theme.of(context).primaryColorDark,
+
+                  onPressed: (){
+
+                    //refund
+                  },
+                  child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
+              ),
+
+            ],
+          )
+      ),
     );
   }
 }

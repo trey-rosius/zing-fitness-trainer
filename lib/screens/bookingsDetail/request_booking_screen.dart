@@ -414,6 +414,8 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
                         bookingMap[Config.bookingEndMin] = bookingModel.endMin;
                         bookingMap[Config.bookingStartMin] = bookingModel.startMin;
                         bookingMap[Config.bookingSessionStarted] = false;
+                        bookingMap[Config.bookingSessionRequestToStart] = false;
+
                         bookingMap[Config.bookingSessionCompleted] = false;
                         bookingMap[Config.bookingStatus] = Config.requested;
                         bookingMap[Config.trainerUserId] = widget.trainerProfileModel.userId;

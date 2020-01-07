@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zing_fitnes_trainer/screens/bookings/modules/regular_approved_bookings_item.dart';
+import 'package:zing_fitnes_trainer/screens/bookings/modules/regular_user_approved_bookings_item.dart';
 import 'package:zing_fitnes_trainer/screens/bookings/modules/trainers_approved_bookings_item.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';

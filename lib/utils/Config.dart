@@ -227,10 +227,12 @@ class Config{
   //notification Strings
 
   static final String sessionStarted = "started their session";
+  static final String requestedToStartSession = "requested to start session";
   static final String sessionCancelled = "cancelled their session";
   static final String bookingSessionStarted = "bookingSessionStarted";
   static final String bookingSessionCompleted = "bookingSessionCompleted";
   static final String bookingSessionCancelled = "bookingSessionCancelled";
+  static final String bookingSessionRequestToStart = "bookingSessionRequestToStart";
 
 
 

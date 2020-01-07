@@ -46,19 +46,22 @@ class _RegularUsersBookingsPageState extends State<RegularUsersBookingsPage> wit
       length: 5,
       child: Scaffold(
           appBar: AppBar(
+
             elevation: 0.0,
+            leading: Container(),
             // iconTheme: IconThemeData(color: MyColors().deepBlue, size: 40),
-            backgroundColor: MyColors().white,
+            backgroundColor: Theme.of(context).primaryColor,
 
             bottom: PreferredSize(
               preferredSize: Size(double.infinity, 20),
               child: TabBar(
 
                 controller: _tabController,
-                // indicatorColor: Colors.transparent,
+                 indicatorPadding: EdgeInsets.all(5),
+                 indicatorColor: Colors.white,
                 isScrollable: true,
-                 unselectedLabelColor: Colors.grey,
-                 labelColor: Theme.of(context).accentColor,
+                 unselectedLabelColor: Theme.of(context).primaryColorDark,
+                 labelColor: Colors.white,
                 labelStyle: TextStyle(),
 
 

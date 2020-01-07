@@ -22,7 +22,45 @@ class TrainerBookingsScreen extends StatefulWidget {
 }
 
 class _TrainerBookingsScreenState extends State<TrainerBookingsScreen> {
+  Future<Null> alertText(BuildContext context) async {
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return new AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            //    title:  Text("Chicago Time",textAlign: TextAlign.center,style: TextStyle(fontSize: 22),),
+            content: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    child: Text(
+                      "Your Request Has been sent. All Requests are displayed on the Requested tab in the booking screen."
+                          "If the trainer accepts your request, you'll find it in the pending tab. "
+                          "If he declines, you will find it in the cancelled tab",
+                      style: TextStyle(fontSize: 20.0,),
+                    ),
+                  ),
+                  Divider(),
+                  FlatButton(
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Ok", style: TextStyle(fontSize: 20.0,fontFamily: 'Montserrat',color: Theme.of(context).accentColor),),
+                  )
 
+                ],
+              ),
+            )
+
+        );
+      },
+    );
+  }
   bool _loading = false;
   @override
   Widget build(BuildContext context) {
@@ -147,7 +185,7 @@ class _TrainerBookingsScreenState extends State<TrainerBookingsScreen> {
             BookingRepository.instance().saveRequestedBookingDetails(widget.userId,widget.trainerInfo.userId, bookingMap).then((_){
               setState(() {
                 _loading = false;
-                Navigator.of(context).pop();
+                alertText(context);
               });
             });
 

@@ -28,8 +28,11 @@ class _TrainersScreenState extends State<TrainersScreen> {
         title: Text('Trainers',style: TextStyle(fontSize: 20),),
         centerTitle: true,
 
+
       ),
-      body: trainerList == null ? Container() : ListView.builder(itemBuilder: (context,index){
+      body: trainerList == null ? Center(
+        child: CircularProgressIndicator(),
+      ) : ListView.builder(itemBuilder: (context,index){
         return TrainerUserItem(trainerInfo: trainerList[index],bookingModel:widget.bookingModel,userId: widget.userId,);
       },
       itemCount: trainerList.length,),

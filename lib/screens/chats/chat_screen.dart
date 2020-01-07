@@ -375,7 +375,8 @@ class ChatScreenState extends State<ChatScreen> {
   //  return blockedUser == null && blockedMe==null ? Scaffold(
     return  Scaffold(
 
-      appBar: new AppBar(
+      appBar:  AppBar(
+
         elevation: 0.0,
         backgroundColor: Colors.transparent,
 

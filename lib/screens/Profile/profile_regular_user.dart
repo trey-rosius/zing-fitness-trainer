@@ -45,81 +45,71 @@ class ProfileRegularUser extends StatelessWidget {
             decoration: BoxDecoration(
                 color: MyColors().gray,
                 borderRadius: BorderRadius.all(Radius.circular(10))),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child:  Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                     ClipRRect(
-                          borderRadius:
-                          BorderRadius.circular(60),
-                          child: CachedNetworkImage(
-                            width: 70.0,
-                            height: 70.0,
-                            fit: BoxFit.cover,
-                            imageUrl: regularProModel.profilePicUrl??"",
-                            placeholder: (context, url) =>
-                             CircularProgressIndicator(),
-                            errorWidget: (context, url, ex) =>
-                             Icon(Icons.error),
-                          )),
+                ClipRRect(
+                    borderRadius:
+                    BorderRadius.circular(60),
+                    child: CachedNetworkImage(
+                      width: 70.0,
+                      height: 70.0,
+                      fit: BoxFit.cover,
+                      imageUrl: regularProModel.profilePicUrl??"",
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, ex) =>
+                          Icon(Icons.error),
+                    )),
 
 
-                    //the name and age here in a column
+                //the name and age here in a column
 
-                    Padding(
-                      padding:  EdgeInsets.only(left: 26),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            regularProModel.name,
-                            style:
-                            TextStyle(color: MyColors().textBlack, fontSize: 16),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                "Age: ",
-                                style:
-                                TextStyle(color: MyColors().textBlack, fontSize: 13),
-                              ),
-                              Text(
-                                regularProModel.age,
-                                style:
-                                TextStyle(color: MyColors().textBlack, fontSize: 13),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                Expanded(
+                  child: Padding(
+                    padding:  EdgeInsets.only(left: 26),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          regularProModel.name,
+                          style:
+                          TextStyle(color: MyColors().textBlack, fontSize: 16),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              "Age: ",
+                              style:
+                              TextStyle(color: MyColors().textBlack, fontSize: 13),
+                            ),
+                            Text(
+                              regularProModel.age,
+                              style:
+                              TextStyle(color: MyColors().textBlack, fontSize: 13),
+                            ),
+                          ],
+                        ),
+                        FlatButton.icon(
+                          icon:Icon(Icons.edit),
+
+                            onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return EditProfileRegular(regularProfileModel: regularProModel,);
+                            }),
+                          );
+                        }, label: Text("Edit Profile",style: TextStyle(color: Theme.of(context).primaryColorDark),)),
+
+                      ],
                     ),
-                  ],
-                ),
-                IconButton(
-                  padding: EdgeInsets.all(3),
-                  alignment: Alignment.topRight,
-                  icon: Icon(
-                    Icons.settings,
-                    color: MyColors().deepBlue,
-                    size: 15,
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return EditProfileRegular(regularProfileModel: regularProModel,);
-                      }),
-                    );
-                  },
                 ),
               ],
             ),

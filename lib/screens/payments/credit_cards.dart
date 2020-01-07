@@ -6,7 +6,7 @@ import 'package:stripe_payment/stripe_payment.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_card_item.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_card_model.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_cart_repository.dart';
-import 'package:zing_fitnes_trainer/utils/Config.dart';
+
 class CreditCardScreen extends StatefulWidget {
   CreditCardScreen({this.userId});
   final String userId;
