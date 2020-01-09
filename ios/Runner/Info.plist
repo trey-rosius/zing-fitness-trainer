@@ -23,13 +23,14 @@
    	<key>NSLocationWhenInUseUsageDescription</key>
     <string>$(PRODUCT_NAME) would like to use your current location to display it on the app, also for directions and estimation of your travel times. It is secure and private.</string>
     <key>NSLocationAlwaysUsageDescription</key>
-    <string>$(PRODUCT_NAME) would need access to location when in the background,for directions and estimation of your travel times..</string>
+    <string>$(PRODUCT_NAME) would need access to location when in the background,for directions and estimation of your travel times</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>$(PRODUCT_NAME) would like to use your current location to display it on the app, also for directions and estimation of your travel times. It is secure and private.</string>
 
     <key>UIBackgroundModes</key>
     <array>
-    <string>fetch</string>
-    <string>remote-notification</string>
+        <string>fetch</string>
+        <string>remote-notification</string>
     </array>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>

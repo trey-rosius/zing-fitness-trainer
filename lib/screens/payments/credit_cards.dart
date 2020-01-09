@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stripe_payment/stripe_payment.dart';
+//import 'package:stripe_payment/stripe_payment.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_card_item.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_card_model.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_cart_repository.dart';
@@ -17,10 +17,14 @@ class CreditCardScreen extends StatefulWidget {
 class _CreditCardScreenState extends State<CreditCardScreen> {
 
   void addCard(){
+    /*
+    StripePayment.createSourceWithParams(options)
+
     StripeSource.addSource().then((String token) {
       print("here is the token"+token);
     CreditCardRepository.instance().addCard(widget.userId, token);
     });
+    */
   }
   @override
   Widget build(BuildContext context) {

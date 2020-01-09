@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
+//import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:geolocator/geolocator.dart';
@@ -105,7 +105,7 @@ class _FormSectionState extends State<FormSection> {
   String _extension='pdf';
   bool _loadingPath = false;
 
-  FileType _pickingType = FileType.CUSTOM;
+  //FileType _pickingType = FileType.CUSTOM;
   File file;
   var targetPath;
   Future<File> _imageFile;
@@ -125,6 +125,7 @@ class _FormSectionState extends State<FormSection> {
 
 
   void _openFileExplorer() async {
+    /*
    // if (_pickingType != FileType.CUSTOM || _hasValidMime) {
       setState(() => _loadingPath = true);
       try {
@@ -168,6 +169,7 @@ class _FormSectionState extends State<FormSection> {
         });
       });
   //  }
+  */
   }
   @override
   void initState() {
