@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zing_fitnes_trainer/components/passwordInput.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/authentication.dart';
@@ -60,7 +61,14 @@ class _SignUpRegularState extends State<SignUpRegular> {
 
     });
   }
-
+  _launchURL() async {
+    const url = 'https://www.websitepolicies.com/policies/view/RpRamNWi';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     var formdata = Provider.of<LoginSignUpProvider>(context);
@@ -206,6 +214,12 @@ class _SignUpRegularState extends State<SignUpRegular> {
 
                 }),
           ),
+          FlatButton(
+            onPressed: (){
+              _launchURL();
+            },
+            child: Text('Terms and Conditions',style: TextStyle(fontSize: 20,color: Colors.white),),
+          )
         ],
       ),
 

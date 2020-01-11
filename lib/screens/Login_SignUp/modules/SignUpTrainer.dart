@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zing_fitnes_trainer/components/passwordInput.dart';
 import 'package:zing_fitnes_trainer/screens/Login_SignUp/modules/LoginTrainer.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
@@ -63,6 +64,14 @@ class _SignUpTrainerState extends State<SignUpTrainer> {
     });
 
 
+  }
+  _launchURL() async {
+    const url = 'https://www.websitepolicies.com/policies/view/RpRamNWi';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -210,9 +219,51 @@ class _SignUpTrainerState extends State<SignUpTrainer> {
 
                 }),
           ),
+          FlatButton(
+            onPressed: (){
+              _launchURL();
+            },
+            child: Text('Terms and Conditions',style: TextStyle(fontSize: 20,color: Colors.white),),
+          )
         ],
       ),
 
+    );
+  }
+
+  Future<Null> alertText(BuildContext context,String text) async {
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return new AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            //    title:  Text("Chicago Time",textAlign: TextAlign.center,style: TextStyle(fontSize: 22),),
+            content: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    child: Text(
+                      text,
+                      style: TextStyle(fontSize: 20.0,),
+                    ),
+                  ),
+                  Divider(),
+                  FlatButton(
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Ok", style: TextStyle(fontSize: 20.0,fontFamily: 'Montserrat',color: Theme.of(context).accentColor),),
+                  )
+
+                ],
+              ),
+            )
+
+        );
+      },
     );
   }
 
@@ -243,11 +294,11 @@ class _SignUpTrainerState extends State<SignUpTrainer> {
           setState(() {
             _loading = false;
           });
-          Scaffold.of(context).showSnackBar(SnackBar(
-            backgroundColor: Theme.of(context).primaryColor,
-            content: Text('A link has been sent to your email address please confirm'),
-            duration: Duration(seconds: 3),
-          ));
+
+          alertText(context, 'A link has been sent to your email address please confirm');
+
+
+
 
           
         });

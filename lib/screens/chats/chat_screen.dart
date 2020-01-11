@@ -383,10 +383,7 @@ class ChatScreenState extends State<ChatScreen> {
         title: Text(receiverFirstName,style: TextStyle(fontSize: 20.0,fontFamily: 'GothamRnd')),
         actions: <Widget>[
 
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(icon: Icon(Icons.block,color: Theme.of(context).accentColor,), onPressed:()=>confirmBlock(context)),
-          ),
+         
 
           Padding(
             padding: const EdgeInsets.all(8.0),

@@ -5,6 +5,7 @@ import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/home/home_container.dart';
+import 'package:zing_fitnes_trainer/screens/payments/credit_cards.dart';
 import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
@@ -235,7 +236,35 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                       ],
                     ),
                   ),
-             loading?   Container(
+           defaultCard ==null ? Container(
+             margin: EdgeInsets.only(top: 10),
+    height: 60,
+    width: size.width ,
+    child: RaisedButton(
+    color: Theme.of(context).primaryColorDark,
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(10)),
+    onPressed: () {
+
+    Navigator.push(
+    context,
+    MaterialPageRoute(
+
+    builder: (context) => CreditCardScreen(userId:widget.userId),
+    ),
+    );
+
+
+
+
+    },
+    child: Text(
+    "Add Credit Card",
+    style:
+    TextStyle(fontSize: 20, color: Colors.white),
+    ),
+    ),
+    ) :  loading?   Container(
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -252,6 +281,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
                             onPressed: () {
+
 
 
                               print("default card is"+defaultCard.customerId);

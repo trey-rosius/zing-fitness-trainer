@@ -3,8 +3,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zing_fitnes_trainer/components/passwordInput.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
+import 'package:zing_fitnes_trainer/screens/Login_SignUp/forgot_password.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/edit_profile_trainer.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/profile_trainer_user.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/profile_regular_user.dart';
@@ -67,6 +69,15 @@ class _LoginTrainerState extends State<LoginTrainer> {
 
     });
   }
+  _launchURL() async {
+    const url = 'https://www.websitepolicies.com/policies/view/RpRamNWi';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var formdata = Provider.of<LoginSignUpProvider>(context);
@@ -195,7 +206,8 @@ class _LoginTrainerState extends State<LoginTrainer> {
                       validator: (value) {
                         return Validator().passwordValidator(value);
                       },
-                    )
+                    ),
+
                   ],
                 ),
               ),
@@ -208,7 +220,15 @@ class _LoginTrainerState extends State<LoginTrainer> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>ForgotPasswordScreen(),
+
+                          ),
+                        );
+                      },
                       child: Text(
                         'Forgot Password?',
                         style: TextStyle(color: color.white),
@@ -232,13 +252,14 @@ class _LoginTrainerState extends State<LoginTrainer> {
                           onClick: () {
                             validateForm(data);
 
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              content: Text('Button moved to separate widget'),
-                              duration: Duration(seconds: 3),
-                            ));
                           }),
-                    )
+                    ),
+              FlatButton(
+                onPressed: (){
+                  _launchURL();
+                },
+                child: Text('Terms and Conditions',style: TextStyle(fontSize: 20,color: Colors.white),),
+              )
               //
               //this is the second child of the inner column and it contains two inputfields
               //

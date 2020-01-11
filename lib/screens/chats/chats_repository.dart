@@ -82,6 +82,31 @@ class ChatsRepository extends ChangeNotifier {
 
   }
 
+  Future<void>blockLeftMessage(Map<String,bool> messageVisible,String chatId,String messageId){
+
+    return _firestore.collection(Config.chats).document(chatId).collection(Config.chatThread).document(messageId)
+        .updateData({
+      Config.visible:messageVisible
+    }).then((_){
+      print("done");
+      notifyListeners();
+    });
+
+
+  }
+  Future<void>unBlockLeftMessage(Map<String,bool> messageVisible,String chatId,String messageId){
+
+    return _firestore.collection(Config.chats).document(chatId).collection(Config.chatThread).document(messageId)
+        .updateData({
+      Config.visible:messageVisible
+    }).then((_){
+      print("done");
+      notifyListeners();
+    });
+
+
+  }
+
 
 
 
