@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-import 'package:zing_fitnes_trainer/screens/Splash/splash.dart';
 import 'package:zing_fitnes_trainer/screens/home/zoom_scaffold.dart';
 import 'package:zing_fitnes_trainer/screens/selectusertype/select_user_type_screen.dart';
 import 'package:zing_fitnes_trainer/screens/shared_preferences/app_settings.dart';

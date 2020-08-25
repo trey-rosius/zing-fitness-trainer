@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
-import 'package:provider/provider.dart';
-import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
+
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
@@ -22,7 +22,7 @@ const String MIN_DATETIME = '2010-05-12 00:00:00';
 const String MAX_DATETIME = '2030-11-25 23:59:10';
 const String INIT_DATETIME = '2019-05-17 18:13:15';
 class _RequestBookingScreenState extends State<RequestBookingScreen> {
-  DateTimePickerLocale _locale = DateTimePickerLocale.en_us;
+
   bool _showTitle = true;
   String _format = 'dd-MMMM-yyyy';
   String _timeFormat = 'HH:m';
@@ -74,20 +74,23 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
   void _showArrivalDatePicker() {
     DatePicker.showDatePicker(
       context,
-      pickerTheme: DateTimePickerTheme(
-        showTitle: _showTitle,
-        confirm: Text('DONE', style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold)),
-        cancel: Text('CANCEL', style: TextStyle(color: Theme.of(context).accentColor,fontWeight: FontWeight.w600)),
+      theme: DatePickerTheme(
+
+          headerColor: Colors.orange,
+          backgroundColor: Colors.blue,
+          itemStyle: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+          doneStyle: TextStyle(color: Colors.white, fontSize: 16)
       ),
-      minDateTime: DateTime.parse(MIN_DATETIME),
-      maxDateTime: DateTime.parse(MAX_DATETIME),
-      initialDateTime: _dateTime,
-      dateFormat: _format,
-      locale: _locale,
-      onCancel: () {
-        debugPrint('onCancel');
-      },
-      onChange: (dateTime, List<int> index) {
+      minTime: DateTime.parse(MIN_DATETIME),
+      maxTime: DateTime.parse(MAX_DATETIME),
+
+      currentTime: _dateTime,
+
+
+      locale:LocaleType.en,
+
+      onChanged: (dateTime) {
         setState(() {
           _dateTime = dateTime;
 
@@ -102,7 +105,7 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
           print(_dateTime.day.toString() +" / "+_dateTime.month.toString() +" / "+ _dateTime.year.toString());
         });
       },
-      onConfirm: (dateTime, List<int> index) {
+      onConfirm: (dateTime) {
         setState(() {
           _dateTime = dateTime;
 
@@ -124,35 +127,18 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
 
   /// Display time picker.
   void _showEndTimePicker() {
-    DatePicker.showDatePicker(
+    DatePicker.showTimePicker(
       context,
-      minDateTime: DateTime.parse(MIN_DATETIME),
-      maxDateTime: DateTime.parse(MAX_DATETIME),
-      initialDateTime: DateTime.parse(INIT_DATETIME),
-      dateFormat: _timeFormat,
-      pickerMode: DateTimePickerMode.time, // show TimePicker
-      pickerTheme: DateTimePickerTheme(
-        /*
-        title: Container(
-          decoration: BoxDecoration(color: Color(0xFFEFEFEF)),
-          width: double.infinity,
-          height: 56.0,
-          alignment: Alignment.center,
-          child: Text(
-            'Pick Departure Time',
-            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0,fontFamily: 'GothamRnd'),
-          ),
-        ),
-        titleHeight: 56.0,
-        */
-        // showTitle: _showTitle,
-        confirm: Text('DONE', style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold)),
-        cancel: Text('CANCEL', style: TextStyle(color: Theme.of(context).accentColor,fontWeight: FontWeight.w600)),
+     // minDateTime: DateTime.parse(MIN_DATETIME),
+     // maxDateTime: DateTime.parse(MAX_DATETIME),
+    //  initialDateTime: DateTime.parse(INIT_DATETIME),
+     // dateFormat: _timeFormat,
+    //  pickerMode: DateTimePickerMode.time, // show TimePicker
+      theme: DatePickerTheme(
+
       ),
-      onCancel: () {
-        debugPrint('onCancel');
-      },
-      onChange: (dateTime, List<int> index) {
+
+      onChanged: (dateTime) {
         setState(() {
           _dateTime = dateTime;
 
@@ -167,7 +153,7 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
 
         });
       },
-      onConfirm: (dateTime, List<int> index) {
+      onConfirm: (dateTime) {
         setState(() {
           _dateTime = dateTime;
 
@@ -183,37 +169,19 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
   }
 
   void _showStartTimePicker() {
-    DatePicker.showDatePicker(
+    DatePicker.showTimePicker(
       context,
 
-      minDateTime: DateTime.parse(MIN_DATETIME),
-      maxDateTime: DateTime.parse(MAX_DATETIME),
-      initialDateTime: DateTime.parse(INIT_DATETIME),
-      dateFormat: _timeFormat,
-      pickerMode: DateTimePickerMode.time, //
-      pickerTheme: DateTimePickerTheme(
-        /*
-        title: Container(
-          decoration: BoxDecoration(color: Color(0xFFEFEFEF)),
-          width: double.infinity,
-          height: 56.0,
-          alignment: Alignment.center,
-          child: Text(
-            'Pick Arrival Time',
-            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0,fontFamily: 'GothamRnd'),
-          ),
-        ),
-        titleHeight: 56.0,
-        showTitle: _showTitle,
-        */
-        confirm: Text('DONE', style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold)),
-        cancel: Text('CANCEL', style: TextStyle(color: Theme.of(context).accentColor,fontWeight: FontWeight.w600)),
+     // minDateTime: DateTime.parse(MIN_DATETIME),
+      //maxDateTime: DateTime.parse(MAX_DATETIME),
+     // initialDateTime: DateTime.parse(INIT_DATETIME),
+     // dateFormat: _timeFormat,
+     // pickerMode: DateTimePickerMode.time, //
+      theme: DatePickerTheme(
+
       ),// show TimePicker
 
-      onCancel: () {
-        debugPrint('onCancel');
-      },
-      onChange: (dateTime, List<int> index) {
+      onChanged: (dateTime) {
         setState(() {
           _dateTime = dateTime;
 
@@ -227,7 +195,7 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
 
         });
       },
-      onConfirm: (dateTime, List<int> index) {
+      onConfirm: (dateTime) {
         setState(() {
           _dateTime = dateTime;
           print(_dateTime.toString());

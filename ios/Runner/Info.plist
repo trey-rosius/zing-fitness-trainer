@@ -14,32 +14,31 @@
 	<string>zing_fitnes_trainer</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-    <string>$(PRODUCT_NAME) would like to access your camera. Your photos wont be shared without your permission</string>
-    <key>NSCameraUsageDescription</key>
-    <string>$(PRODUCT_NAME) would like to access your photo gallery for your profile photo upload. Your photos wont be shared without your permission</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>$(PRODUCT_NAME) would like to access your microphone when recording videos. Your video wont be shared without your permission</string>
-   	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>$(PRODUCT_NAME) would like to use your current location to display it on the app, also for directions and estimation of your travel times. It is secure and private.</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>$(PRODUCT_NAME) would need access to location when in the background,for directions and estimation of your travel times</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>$(PRODUCT_NAME) would like to use your current location to display it on the app, also for directions and estimation of your travel times. It is secure and private.</string>
-
-    <key>UIBackgroundModes</key>
-    <array>
-        <string>fetch</string>
-        <string>remote-notification</string>
-    </array>
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access your photo gallery for your profile photo upload. Your photos wont be shared without your permission</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to use your current location to display it on the app, also for directions and estimation of your travel times. It is secure and private.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>$(PRODUCT_NAME) would need access to location when in the background,for directions and estimation of your travel times</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to use your current location to display it on the app, also for directions and estimation of your travel times. It is secure and private.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access your microphone when recording videos. Your video wont be shared without your permission</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access your camera. Your photos wont be shared without your permission</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

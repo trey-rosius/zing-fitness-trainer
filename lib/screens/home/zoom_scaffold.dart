@@ -215,7 +215,7 @@ class MenuController extends ChangeNotifier {
 
   MenuController({
     this.vsync,
-  }) : _animationController = new AnimationController(vsync: vsync) {
+  }) : _animationController = AnimationController(vsync: vsync) {
     _animationController
       ..duration =  Duration(milliseconds: 250)
       ..addListener(() {
