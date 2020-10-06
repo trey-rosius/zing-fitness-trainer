@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
 
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/trainers_screen.dart';
-
+import 'package:interval_time_picker/interval_time_picker.dart';
 
 
 class NewBookingScreen extends StatefulWidget {
@@ -14,35 +14,16 @@ class NewBookingScreen extends StatefulWidget {
   @override
   _NewBookingScreenState createState() => _NewBookingScreenState();
 }
-const String MIN_DATETIME = '2010-05-12 00:00:00';
-const String MAX_DATETIME = '2030-11-25 23:59:10';
-const String INIT_DATETIME = '2019-05-17 18:13:15';
+
 class _NewBookingScreenState extends State<NewBookingScreen> {
 
-  bool _showTitle = true;
-  String _format = 'dd-MMMM-yyyy';
-  String _timeFormat = 'HH:m';
-  String departureDay = "departureDay";
-  String departureMonth = "departureMonth";
-  String departureYear = "departureYear";
-  String arrivalDateTime = "";
-  String departureDateTime ="";
-
-  String departureHour = "departureHour";
-  String departureMinute = "departureMinute";
-
-  String arrivalHour = "arrivalHour";
-  String arrivalMinute = "arrivalMinute";
-  String sessionType = "Single";
-
-
-  String arrivalDay = "arrivalDay";
-  String arrivalMonth = "arrivalMonth";
-  String arrivalYear = "arrivalYear";
-  DateTime _dateTime;
+  DateTime selectedDate = DateTime.now();
   int day,month,year;
   int startHr,startMin;
   int endHr,endMin;
+  TimeOfDay endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now());
+  TimeOfDay initialTime = TimeOfDay.fromDateTime(DateTime.now());
+  String sessionType="Single";
   var selectDateController = TextEditingController();
   var startTimeController = TextEditingController();
   var endTimeController = TextEditingController();
@@ -52,7 +33,167 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    selectDateController.text = "Select Date";
     print("user Id"+widget.userId);
+  }
+
+  Future<Null> selected15MinIncrements(BuildContext context) async{
+
+    final TimeOfDay picked = await  showIntervalTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+      interval: 15,
+
+      visibleStep: VisibleStep.Fifteenths,
+        builder: (BuildContext context, Widget child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+            child: child,
+          );
+        }
+    );
+    if(picked != null && picked != endHrTimeOfDay){
+      print(picked.minute);
+
+      setState(() {
+        if(picked.hour == 12 && picked.minute == 0)
+          {
+            endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+            startTimeController.text = '12:00';
+            endTimeController.text = '1:00';
+            startHr = 1;
+            startMin =00;
+          }else if(picked.hour == 12 && picked.minute != 0){
+          endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+          startTimeController.text = '12:${picked.minute}';
+          endTimeController.text = '1:${picked.minute}';
+          startHr = 1;
+          startMin =picked.minute;
+
+        }else if(picked.hour != 12 && picked.minute == 0){
+          endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+          startTimeController.text = '${picked.hourOfPeriod}:00';
+          endTimeController.text = '${(picked.hourOfPeriod+1)}:00';
+          startHr = picked.hourOfPeriod+1;
+          startMin =00;
+
+        }else{
+          endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+          startTimeController.text = '${picked.hourOfPeriod}:${picked.minute}';
+          endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute}';
+
+          startHr = picked.hourOfPeriod+1;
+          startMin =picked.minute;
+        }
+
+
+      });
+    }
+
+
+  }
+
+  Future<Null> selectedEndTimeOfDay(BuildContext context) async{
+
+    final TimeOfDay picked = await  showIntervalTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: startHr, minute:startMin),
+      interval: 15,
+      visibleStep: VisibleStep.Fifteenths,
+        builder: (BuildContext context, Widget child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+            child: child,
+          );
+        }
+    );
+    if(picked != null && picked != initialTime){
+
+     setState(() {
+       print(picked);
+       if(picked.hour == 12 && picked.minute == 0)
+       {
+         endTimeController.text = '1:00';
+         endHr = 1;
+         endMin =00;
+       }else if(picked.hour == 12 && picked.minute != 0){
+
+         endTimeController.text = '1:${picked.minute}';
+         endHr = 1;
+         endMin =picked.minute;
+
+       }else if(picked.hour != 12 && picked.minute == 0){
+
+         endTimeController.text = '${(picked.hourOfPeriod)}:00';
+         endHr = picked.hourOfPeriod;
+         endMin =00;
+
+       }else{
+
+         endTimeController.text = '${(picked.hourOfPeriod)}:${picked.minute}';
+
+         endHr = picked.hourOfPeriod;
+         endMin =picked.minute;
+       }
+
+
+     });
+
+      /*
+      setState(() {
+        endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 1)));
+      });
+      */
+    }
+
+
+  }
+/*
+  Future<TimeOfDay> selectedTime12Hour(BuildContext context) async {
+    final TimeOfDay picked =  await showTimePicker(
+
+      context: context,
+
+      initialTime: TimeOfDay.now(),
+
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child,
+        );
+      },
+    );
+    if(picked != null && picked != initialTime){
+
+      setState(() {
+        print(picked.hourOfPeriod);
+        endTimeController.text = '${picked.hourOfPeriod}-${picked.minute}';
+      });
+
+      /*
+      setState(() {
+        endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 1)));
+      });
+      */
+    }
+  }
+*/
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        print(picked.day.toString());
+        print(picked.month.toString());
+        print(picked.year.toString());
+        selectDateController.text = '${picked.day} / ${picked.month} / ${picked.year}';
+
+      });
   }
   void showInSnackBar(String value) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(
@@ -65,134 +206,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
       backgroundColor: Theme.of(context).accentColor,
     ));
   }
-  void _showArrivalDatePicker() {
-    DatePicker.showDatePicker(
-      context,
-      theme: DatePickerTheme(
-          headerColor: Colors.orange,
-          backgroundColor: Colors.blue,
-          itemStyle: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-          doneStyle: TextStyle(color: Colors.white, fontSize: 16)
-      ),
 
-
-      locale: LocaleType.en,
-
-      onChanged: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-
-          arrivalDay = dateTime.day.toString();
-          arrivalMonth = _dateTime.month.toString();
-          arrivalYear  = _dateTime.year.toString();
-          day = dateTime.day;
-          month = dateTime.month;
-          year = dateTime.year;
-          selectDateController.text = arrivalDay+"/"+arrivalMonth+"/"+arrivalYear;
-          print(_dateTime.toString());
-          print(_dateTime.day.toString() +" / "+_dateTime.month.toString() +" / "+ _dateTime.year.toString());
-        });
-      },
-      onConfirm: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-
-          arrivalDay = _dateTime.day.toString();
-          arrivalMonth = _dateTime.month.toString();
-          arrivalYear  = _dateTime.year.toString();
-
-          day = dateTime.day;
-          month = dateTime.month;
-          year = dateTime.year;
-          selectDateController.text = arrivalDay+"/"+arrivalMonth+"/"+arrivalYear;
-          _dateTime = dateTime;
-          print(_dateTime.day.toString() +" / "+_dateTime.month.toString() +" / "+ _dateTime.year.toString());
-        });
-      },
-    );
-  }
-
-
-  /// Display time picker.
-  void _showEndTimePicker() {
-    DatePicker.showTimePicker(
-      context,
-
-      currentTime: DateTime.parse(INIT_DATETIME),
- // show TimePicker
-      theme: DatePickerTheme(
-
-      ),
-
-      onChanged: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-
-
-          departureDateTime = dateTime.toString();
-          departureHour = dateTime.hour.toString();
-          departureMinute = dateTime.minute.toString();
-          endHr = dateTime.hour;
-          endMin = dateTime.minute;
-
-          endTimeController.text = departureHour+":"+departureMinute;
-
-        });
-      },
-      onConfirm: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-
-          departureDateTime = dateTime.toString();
-          departureHour = dateTime.hour.toString();
-          departureMinute = dateTime.minute.toString();
-          endHr = dateTime.hour;
-          endMin = dateTime.minute;
-          endTimeController.text = departureHour+":"+departureMinute;
-        });
-      },
-    );
-  }
-
-  void _showStartTimePicker() {
-    DatePicker.showTimePicker(
-      context,
-
-      theme: DatePickerTheme(
-
-      ),// show TimePicker
-
-
-      onChanged: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-
-          arrivalDateTime = dateTime.toString();
-          print(_dateTime.toString());
-          arrivalHour = dateTime.hour.toString();
-          arrivalMinute = dateTime.minute.toString();
-          startHr = dateTime.hour;
-          startMin = dateTime.minute;
-          startTimeController.text = arrivalHour+":"+arrivalMinute;
-
-        });
-      },
-      onConfirm: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-          print(_dateTime.toString());
-
-          arrivalDateTime = dateTime.toString();
-          arrivalHour = dateTime.hour.toString();
-          arrivalMinute = dateTime.minute.toString();
-          startHr = dateTime.hour;
-          startMin = dateTime.minute;
-         startTimeController.text = arrivalHour+":"+arrivalMinute;
-        });
-      },
-    );
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,9 +232,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
                       child: Text("Select Date",style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),),),
 
                     InkWell(
-                      onTap: (){
-                        _showArrivalDatePicker();
-                      },
+                      onTap: () => _selectDate(context),
                       child: Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -228,7 +240,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
                         ),
                         child: Row(
                           children: <Widget>[
-                            Text(selectDateController.text==""?"Select Date" :selectDateController.text ,style: TextStyle(fontSize: 20),),
+                            Text(selectDateController.text ,style: TextStyle(fontSize: 20),),
                             Icon(Icons.calendar_today)
                           ],
                         ),
@@ -249,7 +261,9 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
                       child: Text("Start Time",style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),),),
 
                     InkWell(
-                        onTap: _showStartTimePicker,
+
+                        onTap: ()  => selected15MinIncrements(context),
+
                       child: Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -274,7 +288,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
                       child: Text("End Time",style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),),),
 
                     InkWell(
-                      onTap: _showEndTimePicker,
+                      onTap: () => selectedEndTimeOfDay(context),
                       child: Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(

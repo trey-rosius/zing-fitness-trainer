@@ -6,11 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zing_fitnes_trainer/components/passwordInput.dart';
-import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
+
 import 'package:zing_fitnes_trainer/screens/Login_SignUp/forgot_password.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/edit_profile_trainer.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/profile_trainer_user.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/profile_regular_user.dart';
+
 import 'package:zing_fitnes_trainer/screens/home/home_container.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/authentication.dart';
@@ -323,20 +321,15 @@ class _LoginTrainerState extends State<LoginTrainer> {
            context: context,
            builder: (context) => InfoDialogue(
              title: "Login Info",
+             error: true,
              values: {
+
                "Error": error.code,
-               "Password": error.message
+               "Message": error.message
              },
            ));
 
    }
-
-
-
-
-
-
-
 
     } else {
       data.setAutovalidate = true;

@@ -1,12 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-
-
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
-import 'package:zing_fitnes_trainer/screens/trainers/trainers_screen.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 
@@ -71,145 +67,7 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
       backgroundColor: Theme.of(context).accentColor,
     ));
   }
-  void _showArrivalDatePicker() {
-    DatePicker.showDatePicker(
-      context,
-      theme: DatePickerTheme(
 
-          headerColor: Colors.orange,
-          backgroundColor: Colors.blue,
-          itemStyle: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-          doneStyle: TextStyle(color: Colors.white, fontSize: 16)
-      ),
-      minTime: DateTime.parse(MIN_DATETIME),
-      maxTime: DateTime.parse(MAX_DATETIME),
-
-      currentTime: _dateTime,
-
-
-      locale:LocaleType.en,
-
-      onChanged: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-
-          arrivalDay = dateTime.day.toString();
-          arrivalMonth = _dateTime.month.toString();
-          arrivalYear  = _dateTime.year.toString();
-          day = dateTime.day;
-          month = dateTime.month;
-          year = dateTime.year;
-          selectDateController.text = arrivalDay+"/"+arrivalMonth+"/"+arrivalYear;
-          print(_dateTime.toString());
-          print(_dateTime.day.toString() +" / "+_dateTime.month.toString() +" / "+ _dateTime.year.toString());
-        });
-      },
-      onConfirm: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-
-          arrivalDay = _dateTime.day.toString();
-          arrivalMonth = _dateTime.month.toString();
-          arrivalYear  = _dateTime.year.toString();
-
-          day = dateTime.day;
-          month = dateTime.month;
-          year = dateTime.year;
-          selectDateController.text = arrivalDay+"/"+arrivalMonth+"/"+arrivalYear;
-          _dateTime = dateTime;
-          print(_dateTime.day.toString() +" / "+_dateTime.month.toString() +" / "+ _dateTime.year.toString());
-        });
-      },
-    );
-  }
-
-
-  /// Display time picker.
-  void _showEndTimePicker() {
-    DatePicker.showTimePicker(
-      context,
-     // minDateTime: DateTime.parse(MIN_DATETIME),
-     // maxDateTime: DateTime.parse(MAX_DATETIME),
-    //  initialDateTime: DateTime.parse(INIT_DATETIME),
-     // dateFormat: _timeFormat,
-    //  pickerMode: DateTimePickerMode.time, // show TimePicker
-      theme: DatePickerTheme(
-
-      ),
-
-      onChanged: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-
-
-          departureDateTime = dateTime.toString();
-          departureHour = dateTime.hour.toString();
-          departureMinute = dateTime.minute.toString();
-          endHr = dateTime.hour;
-          endMin = dateTime.minute;
-
-          endTimeController.text = departureHour+":"+departureMinute;
-
-        });
-      },
-      onConfirm: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-
-          departureDateTime = dateTime.toString();
-          departureHour = dateTime.hour.toString();
-          departureMinute = dateTime.minute.toString();
-          endHr = dateTime.hour;
-          endMin = dateTime.minute;
-          endTimeController.text = departureHour+":"+departureMinute;
-        });
-      },
-    );
-  }
-
-  void _showStartTimePicker() {
-    DatePicker.showTimePicker(
-      context,
-
-     // minDateTime: DateTime.parse(MIN_DATETIME),
-      //maxDateTime: DateTime.parse(MAX_DATETIME),
-     // initialDateTime: DateTime.parse(INIT_DATETIME),
-     // dateFormat: _timeFormat,
-     // pickerMode: DateTimePickerMode.time, //
-      theme: DatePickerTheme(
-
-      ),// show TimePicker
-
-      onChanged: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-
-          arrivalDateTime = dateTime.toString();
-          print(_dateTime.toString());
-          arrivalHour = dateTime.hour.toString();
-          arrivalMinute = dateTime.minute.toString();
-          startHr = dateTime.hour;
-          startMin = dateTime.minute;
-          startTimeController.text = arrivalHour+":"+arrivalMinute;
-
-        });
-      },
-      onConfirm: (dateTime) {
-        setState(() {
-          _dateTime = dateTime;
-          print(_dateTime.toString());
-
-          arrivalDateTime = dateTime.toString();
-          arrivalHour = dateTime.hour.toString();
-          arrivalMinute = dateTime.minute.toString();
-          startHr = dateTime.hour;
-          startMin = dateTime.minute;
-          startTimeController.text = arrivalHour+":"+arrivalMinute;
-        });
-      },
-    );
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -236,7 +94,7 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
 
                     InkWell(
                       onTap: (){
-                        _showArrivalDatePicker();
+                       // _showArrivalDatePicker();
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
@@ -266,7 +124,7 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
                       child: Text("Start Time",style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),),),
 
                     InkWell(
-                      onTap: _showStartTimePicker,
+                     // onTap: _showStartTimePicker,
                       child: Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -291,7 +149,7 @@ class _RequestBookingScreenState extends State<RequestBookingScreen> {
                       child: Text("End Time",style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),),),
 
                     InkWell(
-                      onTap: _showEndTimePicker,
+                   //   onTap: _showEndTimePicker,
                       child: Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(

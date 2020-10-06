@@ -37,9 +37,7 @@ dependencies:
   cached_network_image: 2.2.0+1
   streaming_shared_preferences: ^1.0.1
 
-  flutter_datetime_picker:
-    git:
-      url: https://github.com/derohimat/flutter_datetime_picker.git
+  interval_time_picker: "^0.1.0"
   firebase_messaging: ^5.1.2
   font_awesome_flutter: ^8.4.0
   flutter_spinkit: "^3.1.0"

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,7 +31,7 @@ class LoginRegular extends StatefulWidget {
 
 
 class _LoginRegularState extends State<LoginRegular> {
-
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   String notificationToken;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
@@ -276,16 +278,16 @@ class _LoginRegularState extends State<LoginRegular> {
     prefs.setString(Config.userId, userId);
   }
 
-  validateForm(LoginSignUpProvider data) {
+  validateForm(LoginSignUpProvider data) async {
     if (_formKey.currentState.validate()) {
       setState(() {
         _loading = true;
       });
-      UserData userData =
-          UserData(email: data.readEmail, password: data.readloginPass);
-      userAuth.verifyUser(userData).then((value) {
-        if (value == Config.loginMsg) {
-          print("result is" + value);
+
+
+      try{
+        await firebaseAuth.signInWithEmailAndPassword(
+            email: data.readEmail.trim(), password: data.readloginPass).then((value){
           setState(() {
             _loading = false;
           });
@@ -308,42 +310,31 @@ class _LoginRegularState extends State<LoginRegular> {
 
 
           });
-        } else {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            backgroundColor: Theme.of(context).primaryColor,
-            content: Text(
-                'The information entered does not match any account, very and try again'),
-            duration: Duration(seconds: 3),
-          ));
-        }
-      }).catchError((Object onError) {
-        //    showInSnackBar(AppLocalizations.of(context).emailExist);
-        //  showInSnackBar(onError.toString());
-        print(onError.toString());
+        });
+
+      } on PlatformException catch(error){
+
         setState(() {
           _loading = false;
         });
-        Scaffold.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(
-              onError.toString(),style: TextStyle(fontSize: 20),),
-          duration: Duration(seconds: 3),
-        ));
-      });
+        showDialog(
+            context: context,
+            builder: (context) => InfoDialogue(
+              title: "Login Info",
+              error: true,
+              values: {
 
-      /*
+                "Error": error.code,
+                "Message": error.message
+              },
+            ));
 
-      showDialog(
-          context: context,
-          builder: (context) => InfoDialogue(
-                title: "Login Info",
-                values: {
-                  "Email Id": data.readEmail,
-                  "Password": data.readloginPass
-                },
-              ));
 
-      */
+      }
+
+
+
+
     } else {
       data.setAutovalidate = true;
     }
