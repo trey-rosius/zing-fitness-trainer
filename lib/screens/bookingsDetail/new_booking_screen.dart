@@ -187,6 +187,9 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
       setState(() {
+        day = picked.day;
+        month = picked.month;
+        year = picked.year;
         selectedDate = picked;
         print(picked.day.toString());
         print(picked.month.toString());
