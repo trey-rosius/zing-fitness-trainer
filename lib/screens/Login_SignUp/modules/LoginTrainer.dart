@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,6 +32,7 @@ class _LoginTrainerState extends State<LoginTrainer> {
   final color = MyColors();
   var userAuth = UserAuth();
   bool _loading = false;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   String notificationToken;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -189,7 +191,7 @@ class _LoginTrainerState extends State<LoginTrainer> {
                       },
                       hide: false,
                       validator: (value) {
-                        return Validator().emailValidator(value);
+                        return Validator().emailValidator(value.trim());
                       },
                       icon: Icons.email,
                       hintText: 'Email id',
@@ -277,73 +279,65 @@ class _LoginTrainerState extends State<LoginTrainer> {
     prefs.setString(Config.userId, userId);
   }
 
-  validateForm(LoginSignUpProvider data) {
+  validateForm(LoginSignUpProvider data) async{
     if (_formKey.currentState.validate()) {
       setState(() {
         _loading = true;
       });
-      UserData userData =
-          UserData(email: data.readEmail, password: data.readloginPass);
-      userAuth.verifyUser(userData).then((value) {
-        print("result is" + value);
-        setState(() {
-          _loading = false;
-        });
-        if (value == Config.loginMsg) {
-          data.login().then((firebaseUserId) {
-
-            _saveUserId(firebaseUserId);
-            print(firebaseUserId);
-
-            data.updateNotificationToken(notificationToken, firebaseUserId).then((_){
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeContainer(),
-
-                ),
-              );
-            });
 
 
 
 
+   try {
+     await firebaseAuth.signInWithEmailAndPassword(
+         email: data.readEmail.trim(), password: data.readloginPass).then((value) {
+       data.login().then((firebaseUserId) {
+         _saveUserId(firebaseUserId);
+         print(firebaseUserId);
+
+         data.updateNotificationToken(notificationToken, firebaseUserId)
+             .then((_) {
+           setState(() {
+             _loading = false;
+           });
+           Navigator.push(
+             context,
+             MaterialPageRoute(
+               builder: (context) => HomeContainer(),
+
+             ),
+           );
+         });
+
+
+         print("login was successfull");
+       });
+     });
+
+   } on PlatformException catch(error){
+     setState(() {
+       _loading = false;
+     });
+
+       showDialog(
+           context: context,
+           builder: (context) => InfoDialogue(
+             title: "Login Info",
+             values: {
+               "Error": error.code,
+               "Password": error.message
+             },
+           ));
+
+   }
 
 
 
-            print("login was successfull");
-          });
-        } else {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            backgroundColor: Theme.of(context).primaryColor,
-            content: Text(
-                'The information entered does not match any account, very and try again'),
-            duration: Duration(seconds: 3),
-          ));
-        }
-      }).catchError((Object onError) {
-        //    showInSnackBar(AppLocalizations.of(context).emailExist);
-        //  showInSnackBar(onError.toString());
-        print(onError.toString());
-        setState(() {
-          _loading = false;
-        });
-      });
 
-      /*
 
-      showDialog(
-          context: context,
-          builder: (context) => InfoDialogue(
-                title: "Login Info",
-                values: {
-                  "Email Id": data.readEmail,
-                  "Password": data.readloginPass
-                },
-              ));
 
-      */
+
+
     } else {
       data.setAutovalidate = true;
     }
