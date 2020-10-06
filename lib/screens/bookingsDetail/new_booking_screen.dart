@@ -19,7 +19,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
 
   DateTime selectedDate = DateTime.now();
   int day,month,year;
-  int startHr,startMin;
+  int startHr=12,startMin=30;
   int endHr,endMin;
   TimeOfDay endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now());
   TimeOfDay initialTime = TimeOfDay.fromDateTime(DateTime.now());
@@ -27,6 +27,8 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
   var selectDateController = TextEditingController();
   var startTimeController = TextEditingController();
   var endTimeController = TextEditingController();
+  var numberOfPeople = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -100,12 +102,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
       initialTime: TimeOfDay(hour: startHr, minute:startMin),
       interval: 15,
       visibleStep: VisibleStep.Fifteenths,
-        builder: (BuildContext context, Widget child) {
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-            child: child,
-          );
-        }
+
     );
     if(picked != null && picked != initialTime){
 
@@ -333,12 +330,48 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
                         onChanged: (value) {
                           setState(() {
                             sessionType = value;
+
                           });
                         },
                       ),
                     ),
+
                   ],
                 ),
+              ),
+              Container(
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                     Flexible(child:  Container(
+                       padding: EdgeInsets.symmetric(vertical: 10),
+                       child: Text("Number of People",style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),),),),
+                      Flexible(child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+
+                            Container(
+                              padding: EdgeInsets.only(left: 20),
+                              child: TextFormField(
+                                controller: numberOfPeople,
+                                keyboardType: TextInputType.number,
+                                maxLength: 3,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
+
+                              ),
+                            )
+
+                          ],
+                        ),
+                      ))
+                    ],
+                  )
               ),
 Center(
   child:   Container(
