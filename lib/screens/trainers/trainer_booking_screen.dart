@@ -95,8 +95,7 @@ class _TrainerBookingsScreenState extends State<TrainerBookingsScreen> {
                        Row(
                          children: <Widget>[
                            Text(widget.bookingModel.startTime,style: TextStyle(fontSize: 20,color:Colors.black,fontWeight: FontWeight.bold),),
-                           Text(widget.bookingModel.startHr > 12 ? "PM":"AM",style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
-                         ],
+                           ],
                        ),
 
                      ],
@@ -110,8 +109,7 @@ class _TrainerBookingsScreenState extends State<TrainerBookingsScreen> {
                      Row(
                        children: <Widget>[
                          Text(widget.bookingModel.endTime,style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
-                         Text(widget.bookingModel.endHr > 12 ? "PM":"AM",style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
-                       ],
+                         ],
                      ),
 
                    ],

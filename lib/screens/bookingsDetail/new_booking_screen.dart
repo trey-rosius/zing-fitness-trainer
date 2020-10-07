@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 
 import 'package:provider/provider.dart';
@@ -52,47 +53,97 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
     if(picked != null && picked != initialTime){
       print(picked.hour);
       print(picked.minute);
+      print( picked.period);
 
       setState(() {
-        if(picked.hour == 0 && picked.minute == 0)
+
+        if(picked.period ==DayPeriod.am)
           {
-            endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
-            startTimeController.text = '12:00';
-            endTimeController.text = '1:00';
-            startHr = 12;
-            startMin =00;
-            endHr = 1;
-            endMin=00;
+            if(picked.hour == 0 && picked.minute == 0)
+            {
+              endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+              startTimeController.text = '12:00AM';
+              endTimeController.text = '1:00'+(endHrTimeOfDay.period ==DayPeriod.am ?"AM":"PM");
+              startHr = 12;
+              startMin =00;
+              endHr = 1;
+              endMin=00;
 
-          }else if(picked.hourOfPeriod == 0 && picked.minute != 0){
-          endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
-          startTimeController.text = '12:${picked.minute}';
-          endTimeController.text = '1:${picked.minute}';
-          startHr = 12;
-          startMin =picked.minute;
-          endHr = 1;
-          endMin=picked.minute;
+            }else if(picked.hourOfPeriod == 0 && picked.minute != 0){
+              endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+              startTimeController.text = '12:${picked.minute}'+(picked.period ==DayPeriod.am ?"AM":"PM");
+              endTimeController.text = '1:${picked.minute}'+(endHrTimeOfDay.period  ==DayPeriod.am ?"AM":"PM");
+              startHr = 12;
+              startMin =picked.minute;
+              endHr = 1;
+              endMin=picked.minute;
 
-        }else if(picked.hourOfPeriod != 0 && picked.minute == 0){
-          endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
-          startTimeController.text = '${picked.hourOfPeriod}:00';
-          endTimeController.text = '${(picked.hourOfPeriod+1)}:00';
-          startHr = picked.hourOfPeriod;
-          startMin =00;
-          endHr = picked.hourOfPeriod+1;
-          endMin=00;
+            }else if(picked.hourOfPeriod != 0 && picked.minute == 0){
+              endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+              startTimeController.text = '${picked.hourOfPeriod}:00 AM';
+              endTimeController.text = '${(picked.hourOfPeriod+1)}:00 AM';
+              startHr = picked.hourOfPeriod;
+              startMin =00;
+              endHr = picked.hourOfPeriod+1;
+              endMin=00;
 
-        }else{
-          endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
-          startTimeController.text = '${picked.hourOfPeriod}:${picked.minute}';
-          endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute}';
+            }else{
+              endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+              startTimeController.text = '${picked.hourOfPeriod}:${picked.minute} AM';
+              endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute} AM';
 
-          startHr = picked.hourOfPeriod;
-          startMin =picked.minute;
+              startHr = picked.hourOfPeriod;
+              startMin =picked.minute;
 
-          endHr = picked.hourOfPeriod+1;
-          endMin=picked.minute;
-        }
+              endHr = picked.hourOfPeriod+1;
+              endMin=picked.minute;
+            }
+
+          }else
+            {
+
+              if(picked.hour == 12 && picked.minute == 0)
+              {
+                endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+                startTimeController.text = '12:00'+ (picked.period ==DayPeriod.am ?"AM":"PM");
+                endTimeController.text = '1:00'+(endHrTimeOfDay.period ==DayPeriod.am ?"AM":"PM");
+                startHr = 12;
+                startMin =00;
+                endHr = 1;
+                endMin=00;
+
+              }else if(picked.hourOfPeriod == 12 && picked.minute != 0){
+                endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+                startTimeController.text = '12:${picked.minute}'+(picked.period ==DayPeriod.am ?"AM":"PM");
+                endTimeController.text = '1:${picked.minute}'+(endHrTimeOfDay.period  ==DayPeriod.am ?"AM":"PM");
+                startHr = 12;
+                startMin =picked.minute;
+                endHr = 1;
+                endMin=picked.minute;
+
+              }else if(picked.hourOfPeriod != 12 && picked.minute == 0){
+                endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+                startTimeController.text = '${picked.hourOfPeriod}:00'+(picked.period ==DayPeriod.am ?"AM":"PM");
+                endTimeController.text = '${(picked.hourOfPeriod+1)}:00'+(endHrTimeOfDay.period  ==DayPeriod.am ?"AM":"PM");
+                startHr = picked.hourOfPeriod;
+                startMin =00;
+                endHr = picked.hourOfPeriod+1;
+                endMin=00;
+
+              }else{
+                endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+                startTimeController.text = '${picked.hourOfPeriod}:${picked.minute}'+(picked.period ==DayPeriod.am ?"AM":"PM");
+                endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute}'+(endHrTimeOfDay.period ==DayPeriod.am ?"AM":"PM");
+
+                startHr = picked.hourOfPeriod;
+                startMin =picked.minute;
+
+                endHr = picked.hourOfPeriod+1;
+                endMin=picked.minute;
+              }
+
+
+            }
 
 
       });
@@ -114,29 +165,60 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
 
      setState(() {
        print(picked);
-       if(picked.hour == 0 && picked.minute == 0)
-       {
-         endTimeController.text = '1:00';
-         endHr = 1;
-         endMin =00;
-       }else if(picked.hour == 0 && picked.minute != 0){
+       if(picked.period ==DayPeriod.am)
+         {
 
-         endTimeController.text = '1:${picked.minute}';
-         endHr = 1;
-         endMin =picked.minute;
+           if(picked.hour == 0 && picked.minute == 0)
+           {
+             endTimeController.text = '12:00'+(picked.period ==DayPeriod.am ?"AM":"PM");
+             endHr = 12;
+             endMin =00;
+           }else if(picked.hour == 0 && picked.minute != 0){
 
-       }else if(picked.hour != 0 && picked.minute == 0){
+             endTimeController.text = '12:${picked.minute}'+(picked.period ==DayPeriod.am ?"AM":"PM");
+             endHr = 12;
+             endMin =picked.minute;
 
-         endTimeController.text = '${(picked.hourOfPeriod)}:00';
-         endHr = picked.hourOfPeriod;
-         endMin =00;
+           }else if(picked.hour != 0 && picked.minute == 0){
 
-       }else{
+             endTimeController.text = '${(picked.hourOfPeriod)}:00'+(picked.period ==DayPeriod.am ?"AM":"PM");
+             endHr = picked.hourOfPeriod;
+             endMin =00;
 
-         endTimeController.text = '${(picked.hourOfPeriod)}:${picked.minute}';
+           }else{
 
-         endHr = picked.hourOfPeriod;
-         endMin =picked.minute;
+             endTimeController.text = '${(picked.hourOfPeriod)}:${picked.minute}'+(picked.period ==DayPeriod.am ?"AM":"PM");
+
+             endHr = picked.hourOfPeriod;
+             endMin =picked.minute;
+           }
+
+         }else{
+         if(picked.hour == 12 && picked.minute == 0)
+         {
+           endTimeController.text = '12:00'+(picked.period ==DayPeriod.am ?"AM":"PM");
+           endHr = 12;
+           endMin =00;
+         }else if(picked.hour == 12 && picked.minute != 0){
+
+           endTimeController.text = '12:${picked.minute}'+(picked.period ==DayPeriod.am ?"AM":"PM");
+           endHr = 12;
+           endMin =picked.minute;
+
+         }else if(picked.hour != 12 && picked.minute == 0){
+
+           endTimeController.text = '${(picked.hourOfPeriod)}:00'+(picked.period ==DayPeriod.am ?"AM":"PM");
+           endHr = picked.hourOfPeriod;
+           endMin =00;
+
+         }else{
+
+           endTimeController.text = '${(picked.hourOfPeriod)}:${picked.minute}'+(picked.period ==DayPeriod.am ?"AM":"PM");
+
+           endHr = picked.hourOfPeriod;
+           endMin =picked.minute;
+         }
+
        }
 
 
