@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
-import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_screen.dart';
+
 import 'package:zing_fitnes_trainer/screens/trainers/trainer_booking_screen.dart';
-import 'package:zing_fitnes_trainer/screens/trainers/user_details_screen.dart';
+
 
 class TrainerUserItem extends StatelessWidget {
   TrainerUserItem({this.userId,this.trainerInfo,this.bookingModel});

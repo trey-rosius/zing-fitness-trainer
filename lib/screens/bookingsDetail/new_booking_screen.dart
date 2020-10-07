@@ -19,7 +19,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
 
   DateTime selectedDate = DateTime.now();
   int day,month,year;
-  int startHr=12,startMin=30;
+  int startHr=0,startMin=0;
   int endHr,endMin;
   TimeOfDay endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now());
   TimeOfDay initialTime = TimeOfDay.fromDateTime(DateTime.now());
@@ -47,32 +47,28 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
       interval: 15,
 
       visibleStep: VisibleStep.Fifteenths,
-        builder: (BuildContext context, Widget child) {
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-            child: child,
-          );
-        }
+
     );
-    if(picked != null && picked != endHrTimeOfDay){
+    if(picked != null && picked != initialTime){
+      print(picked.hour);
       print(picked.minute);
 
       setState(() {
-        if(picked.hour == 12 && picked.minute == 0)
+        if(picked.hour == 0 && picked.minute == 0)
           {
             endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
             startTimeController.text = '12:00';
             endTimeController.text = '1:00';
-            startHr = 1;
+            startHr = 12;
             startMin =00;
-          }else if(picked.hour == 12 && picked.minute != 0){
+          }else if(picked.hourOfPeriod == 0 && picked.minute != 0){
           endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
           startTimeController.text = '12:${picked.minute}';
           endTimeController.text = '1:${picked.minute}';
-          startHr = 1;
+          startHr = 12;
           startMin =picked.minute;
 
-        }else if(picked.hour != 12 && picked.minute == 0){
+        }else if(picked.hourOfPeriod != 0 && picked.minute == 0){
           endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
           startTimeController.text = '${picked.hourOfPeriod}:00';
           endTimeController.text = '${(picked.hourOfPeriod+1)}:00';
@@ -99,7 +95,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
 
     final TimeOfDay picked = await  showIntervalTimePicker(
       context: context,
-      initialTime: TimeOfDay(hour: startHr, minute:startMin),
+      initialTime:startHr==0 ? endHrTimeOfDay : TimeOfDay(hour: startHr+1, minute:startMin),
       interval: 15,
       visibleStep: VisibleStep.Fifteenths,
 
@@ -108,18 +104,18 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
 
      setState(() {
        print(picked);
-       if(picked.hour == 12 && picked.minute == 0)
+       if(picked.hour == 0 && picked.minute == 0)
        {
          endTimeController.text = '1:00';
          endHr = 1;
          endMin =00;
-       }else if(picked.hour == 12 && picked.minute != 0){
+       }else if(picked.hour == 0 && picked.minute != 0){
 
          endTimeController.text = '1:${picked.minute}';
          endHr = 1;
          endMin =picked.minute;
 
-       }else if(picked.hour != 12 && picked.minute == 0){
+       }else if(picked.hour != 0 && picked.minute == 0){
 
          endTimeController.text = '${(picked.hourOfPeriod)}:00';
          endHr = picked.hourOfPeriod;
@@ -175,7 +171,6 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
     }
   }
 */
-
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -339,7 +334,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
                   ],
                 ),
               ),
-              Container(
+             sessionType =="Groups"? Container(
                   child:Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -372,7 +367,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
                       ))
                     ],
                   )
-              ),
+              ) : Container(),
 Center(
   child:   Container(
     height: 70,
@@ -396,7 +391,8 @@ Center(
                 startMin: startMin,
                 endHr: endHr,
                 endMin: endMin,
-                sessionType :sessionType
+                sessionType :sessionType,
+                numberOfPeople: int.parse(numberOfPeople.text)
               );
               Navigator.push(
                 context,

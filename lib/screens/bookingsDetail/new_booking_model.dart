@@ -6,9 +6,10 @@ class NewBookingModel{
   int day,month,year;
   int startHr,startMin;
   int endHr,endMin;
+  int numberOfPeople;
 
   NewBookingModel({this.date,this.sessionType, this.startTime, this.endTime, this.day, this.month,
-      this.year, this.startHr, this.startMin, this.endHr, this.endMin});
+      this.year, this.startHr, this.startMin, this.endHr, this.endMin,this.numberOfPeople});
 
 
 }
