@@ -27,7 +27,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
   var selectDateController = TextEditingController();
   var startTimeController = TextEditingController();
   var endTimeController = TextEditingController();
-  var numberOfPeople = TextEditingController();
+  var numberOfPeopleController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -61,27 +61,37 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
             endTimeController.text = '1:00';
             startHr = 12;
             startMin =00;
+            endHr = 1;
+            endMin=00;
+
           }else if(picked.hourOfPeriod == 0 && picked.minute != 0){
           endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
           startTimeController.text = '12:${picked.minute}';
           endTimeController.text = '1:${picked.minute}';
           startHr = 12;
           startMin =picked.minute;
+          endHr = 1;
+          endMin=picked.minute;
 
         }else if(picked.hourOfPeriod != 0 && picked.minute == 0){
           endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
           startTimeController.text = '${picked.hourOfPeriod}:00';
           endTimeController.text = '${(picked.hourOfPeriod+1)}:00';
-          startHr = picked.hourOfPeriod+1;
+          startHr = picked.hourOfPeriod;
           startMin =00;
+          endHr = picked.hourOfPeriod+1;
+          endMin=00;
 
         }else{
           endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
           startTimeController.text = '${picked.hourOfPeriod}:${picked.minute}';
           endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute}';
 
-          startHr = picked.hourOfPeriod+1;
+          startHr = picked.hourOfPeriod;
           startMin =picked.minute;
+
+          endHr = picked.hourOfPeriod+1;
+          endMin=picked.minute;
         }
 
 
@@ -349,7 +359,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
                             Container(
                               padding: EdgeInsets.only(left: 20),
                               child: TextFormField(
-                                controller: numberOfPeople,
+                                controller: numberOfPeopleController,
                                 keyboardType: TextInputType.number,
                                 maxLength: 3,
                                 validator: (value) {
@@ -392,7 +402,7 @@ Center(
                 endHr: endHr,
                 endMin: endMin,
                 sessionType :sessionType,
-                numberOfPeople: int.parse(numberOfPeople.text)
+                numberOfPeople: numberOfPeopleController.text.isEmpty  ? 0 : int.parse(numberOfPeopleController.text)
               );
               Navigator.push(
                 context,
