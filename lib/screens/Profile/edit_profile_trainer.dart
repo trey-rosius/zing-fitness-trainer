@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:file_picker/file_picker.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/gestures.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,19 +12,21 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zing_fitnes_trainer/components/button.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/certificate_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/pFootbg.dart';
+import 'package:zing_fitnes_trainer/screens/Profile/pdf_viewer.dart';
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/modules/profileInputField.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/modules/row_text_input.dart';
+
 
 import 'package:zing_fitnes_trainer/screens/Profile/modules/user_certificate_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 
 import 'package:zing_fitnes_trainer/utils/Config.dart';
-import 'package:zing_fitnes_trainer/utils/myColors.dart';
+
 
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:zing_fitnes_trainer/utils/validator.dart';
@@ -99,21 +103,23 @@ class _FormSectionState extends State<FormSection> {
   String serviceArea;
   String experience;
   String sessionRate;
+  FileType _pickingType = FileType.custom;
+  bool _isLoading = true;
 
-  String _path;
-  Map<String, String> _paths;
+  File _path;
   String _extension='pdf';
   bool _loadingPath = false;
-
+  bool _multiPick = false;
   //FileType _pickingType = FileType.CUSTOM;
   File file;
   var targetPath;
   Future<File> _imageFile;
   String profilePic;
   String _fileName;
+
   bool loading = false;
   String sessionType = 'Single';
-
+  String _directoryPath;
   final  userNameController = TextEditingController();
   final  locationController = TextEditingController();
   final  phoneController = TextEditingController();
@@ -123,16 +129,74 @@ class _FormSectionState extends State<FormSection> {
   final  sessionRateController = TextEditingController();
 
 
+  void _openFileExplorer() async {
+    setState(() => _loadingPath = true);
+    try {
+      _directoryPath = null;
+      _path = (await FilePicker.getFile(
+        type: _pickingType,
+
+        allowedExtensions: (_extension?.isNotEmpty ?? false)
+            ? _extension?.replaceAll(' ', '')?.split(',')
+            : null,
+      ));
+
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    } catch (ex) {
+      print(ex);
+    }
+    if (!mounted) return;
+    setState(() {
+
+      _loadingPath = true;
+      _fileName = _path != null ? _path.path.split('/').last :"certificate";
+
+
+     if(_path != null) {
+       print("file name is" + _fileName);
+       print("_path is" + _path.path.toString());
+
+       ProfileProvider.instance()
+           .uploadPdf(_path)
+           .then((value) {
+         Map userData = Map<String, dynamic>();
+
+         userData[Config.certName] = _fileName;
+         userData[Config.certUrl] = value;
+         userData[Config.userId] = widget.userId;
+         userData[Config.createdOn] = FieldValue.serverTimestamp();
+
+
+         ProfileProvider.instance()
+             .saveCertificate(widget.userId, userData)
+             .then((_) {
+           setState(() {
+             _loadingPath = false;
+           });
+           print("successfull");
+         });
+       });
+     }else
+       {
+         _loadingPath = false;
+       }
+    });
+
+  }
+/*
 
   void _openFileExplorer() async {
-    /*
-   // if (_pickingType != FileType.CUSTOM || _hasValidMime) {
+
+    if (_pickingType != FileType.custom ) {
       setState(() => _loadingPath = true);
       try {
 
           _paths = null;
-          _path = await FilePicker.getFilePath(
-              type: _pickingType, fileExtension: _extension);
+          _path = (await FilePicker.platform.pickFiles(
+              type: _pickingType,
+              allowMultiple: _multiPick
+               allowedExtensions: _extension));
 
       } on PlatformException catch (e) {
         print("Unsupported operation" + e.toString());
@@ -168,9 +232,10 @@ class _FormSectionState extends State<FormSection> {
           });
         });
       });
-  //  }
-  */
+    }
+
   }
+  */
   @override
   void initState() {
     // TODO: implement initState
@@ -284,6 +349,18 @@ class _FormSectionState extends State<FormSection> {
             );
           }
         });
+  }
+  _launchURL() async {
+
+   // const url = 'https://firebasestorage.googleapis.com/v0/b/zing-c5b81.appspot.com/o/Users%2Fprofile_ac8ccca0-0959-11eb-d55d-596a5fd68bf9.jpg?alt=media&token=f6d92d48-4034-46e2-880a-e35addc42bb6';
+    const url = 'https://www.google.com';
+    print("this is the url"+url);
+    if (await canLaunch(url)) {
+
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -522,12 +599,27 @@ class _FormSectionState extends State<FormSection> {
                         print(error);
                       }, child: Consumer<CertificateModel>(
 builder: (_,value,child){
-  return value !=null ? ListTile(
+  return value !=null ?
+
+  ListTile(
+    onTap: (){
+       Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) {
+                                    return PdfViewer(value.certUrl);
+                                    //  child: ProfileRegularUser();
+                                  }),
+                                );
+    },
+    leading: Icon(Icons.picture_as_pdf,color: Colors.white,size: 40,),
     title: Text(value.certName),
     trailing: IconButton(icon: Icon(Icons.cancel,color: Colors.red,), onPressed: (){
       ProfileProvider.instance().deleteCertificateDocument(value.certId, widget.userId);
     }),
-  ) : Container();
+  )
+
+
+  : Container();
 },
                         ),);
                     },

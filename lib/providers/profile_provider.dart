@@ -34,6 +34,20 @@ class ProfileProvider extends ChangeNotifier{
 
 
   }
+  Future<String> uploadPdf(var imageFile) async {
+
+
+    var uuid = Uuid().v1();
+    StorageReference ref = storage.ref().child(Config.users).child("profile_$uuid.pdf");
+    StorageUploadTask uploadTask = ref.putFile(imageFile);
+
+    StorageTaskSnapshot storageTask = await uploadTask.onComplete;
+    String downloadUrl = await storageTask.ref.getDownloadURL();
+    print(downloadUrl);
+    return downloadUrl;
+
+
+  }
 
   Future<void> saveCertificate(String userId,Map certDataMap){
 

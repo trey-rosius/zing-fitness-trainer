@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+
 import 'package:zing_fitnes_trainer/utils/myColors.dart';
 
 class InfoDialogue extends StatelessWidget {
