@@ -318,17 +318,30 @@ class BookingDetailsScreen extends StatelessWidget {
                       child: Text("Pay",style: TextStyle(fontSize: 20,color: Colors.white),),),
                   ) : Container(),
 
-                 bookingsModel.bookingSessionRequestToStart  ? Container(
 
-                  ) : Container(
-                   height:size.height/10,
-                   width: size.width/2.5,
-                   padding: EdgeInsets.only(left: 10),
-                   child: RaisedButton(
-                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                     color: Theme.of(context).primaryColorDark,
-                     onPressed: (){
 
+
+
+
+                ],
+              ),
+
+              bookingsModel.currentlyInSession ?  Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height:size.height/12,
+                    width: size.width/1.5,
+
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      color: Theme.of(context).primaryColorDark,
+                      onPressed: (){
+
+
+
+
+/*
                        Map startBooking = Map<String,dynamic>();
                        startBooking[Config.bookingSessionRequestToStart] =true;
 
@@ -352,53 +365,60 @@ class BookingDetailsScreen extends StatelessWidget {
                          NotificationsRepository.instance().saveNotification(notMap).then((_){
                            alertText(context);
                          });
+
                        });
+*/
+                      },
+                      child: Text("Session Running",style: TextStyle(fontSize: 20,color: Colors.white),),),
+                  )
+                ],
+              ) : Container(
 
-                     },
-                     child: Text("Start",style: TextStyle(fontSize: 20,color: Colors.white),),),
-                 ),
-                bookingsModel.bookingStatus == Config.paid ? Container(
-                  height:size.height/10,
-                  width: size.width/2.5,
-                  padding: EdgeInsets.only(left: 10),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    color: Theme.of(context).primaryColorDark,
-                    onPressed: (){
-                     Map cancelBooking = Map<String,dynamic>();
-                     cancelBooking[Config.bookingStatus] = Config.cancel;
-                     cancelBooking[Config.cancelledBy] = Config.cancelledBy;
-
-                     BookingRepository.instance().changeBookingStatus(bookingsModel.bookingId, cancelBooking).then((_){
-
-                       Map notMap = Map<String,dynamic>();
-                       notMap[Config.bookingsId] = bookingsModel.bookingId;
-                       notMap[Config.bookingStatus] = Config.cancel;
-                       notMap[Config.userId] = bookingsModel.userId;
-                       notMap[Config.senderId] = bookingsModel.userId;
-                       notMap[Config.receiverId] = bookingsModel.trainerUserId;
-
-                       notMap[Config.trainerUserId] = bookingsModel.trainerUserId;
-                       notMap[Config.notificationText] = Config.sessionCancelled;
+              ) ,
 
 
+              /*
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  bookingsModel.bookingStatus == Config.paid ? Container(
+                    height:size.height/14,
+                    width: size.width/2.5,
+                    padding: EdgeInsets.only(left: 10),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      color: Theme.of(context).primaryColorDark,
+                      onPressed: (){
+                        Map cancelBooking = Map<String,dynamic>();
+                        cancelBooking[Config.bookingStatus] = Config.cancel;
+                        cancelBooking[Config.cancelledBy] = Config.cancelledBy;
 
-                       NotificationsRepository.instance().saveNotification(notMap).then((_){
-                         Navigator.of(context).pop();
-                       });
-                     });
-                    },
-                    child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.white),),),
-                ) : Container(),
+                        BookingRepository.instance().changeBookingStatus(bookingsModel.bookingId, cancelBooking).then((_){
+
+                          Map notMap = Map<String,dynamic>();
+                          notMap[Config.bookingsId] = bookingsModel.bookingId;
+                          notMap[Config.bookingStatus] = Config.cancel;
+                          notMap[Config.userId] = bookingsModel.userId;
+                          notMap[Config.senderId] = bookingsModel.userId;
+                          notMap[Config.receiverId] = bookingsModel.trainerUserId;
+
+                          notMap[Config.trainerUserId] = bookingsModel.trainerUserId;
+                          notMap[Config.notificationText] = Config.sessionCancelled;
 
 
 
-
+                          NotificationsRepository.instance().saveNotification(notMap).then((_){
+                            Navigator.of(context).pop();
+                          });
+                        });
+                      },
+                      child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.white),),),
+                  ) : Container(),
                 ],
               )
 
 
-
+*/
 
 
             ],

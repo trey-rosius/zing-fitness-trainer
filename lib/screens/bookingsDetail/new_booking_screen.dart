@@ -59,7 +59,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
 
         if(picked.period ==DayPeriod.am)
           {
-            if(picked.hour == 0 && picked.minute == 0)
+            if(picked.hourOfPeriod == 0 && picked.minute == 0)
             {
               endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
               startTimeController.text = '12:00AM';
@@ -71,7 +71,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
 
             }else if(picked.hourOfPeriod == 0 && picked.minute != 0){
               endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
-              startTimeController.text = '12:${picked.minute}'+(picked.period ==DayPeriod.am ?"AM":"PM");
+              startTimeController.text = '12:${picked.minute}'+"AM";
               endTimeController.text = '1:${picked.minute}'+(endHrTimeOfDay.period  ==DayPeriod.am ?"AM":"PM");
               startHr = 12;
               startMin =picked.minute;
@@ -81,7 +81,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
             }else if(picked.hourOfPeriod != 0 && picked.minute == 0){
               endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
               startTimeController.text = '${picked.hourOfPeriod}:00 AM';
-              endTimeController.text = '${(picked.hourOfPeriod+1)}:00 AM';
+              endTimeController.text = '${(picked.hourOfPeriod+1)}:00' +(endHrTimeOfDay.period  ==DayPeriod.am ?"AM":"PM");
               startHr = picked.hourOfPeriod;
               startMin =00;
               endHr = picked.hourOfPeriod+1;
@@ -90,7 +90,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
             }else{
               endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
               startTimeController.text = '${picked.hourOfPeriod}:${picked.minute} AM';
-              endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute} AM';
+              endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute} '+(endHrTimeOfDay.period  ==DayPeriod.am ?"AM":"PM");
 
               startHr = picked.hourOfPeriod;
               startMin =picked.minute;
@@ -102,7 +102,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
           }else
             {
 
-              if(picked.hour == 12 && picked.minute == 0)
+              if(picked.hourOfPeriod == 12 && picked.minute == 0)
               {
                 endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
                 startTimeController.text = '12:00'+ (picked.period ==DayPeriod.am ?"AM":"PM");
@@ -123,8 +123,8 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
 
               }else if(picked.hourOfPeriod != 12 && picked.minute == 0){
                 endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
-                startTimeController.text = '${picked.hourOfPeriod}:00'+(picked.period ==DayPeriod.am ?"AM":"PM");
-                endTimeController.text = '${(picked.hourOfPeriod+1)}:00'+(endHrTimeOfDay.period  ==DayPeriod.am ?"AM":"PM");
+                startTimeController.text = '${picked.hourOfPeriod}:00'+"PM";
+                endTimeController.text = '${(picked.hourOfPeriod+1)}:00'+"PM";
                 startHr = picked.hourOfPeriod;
                 startMin =00;
                 endHr = picked.hourOfPeriod+1;
@@ -132,8 +132,8 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
 
               }else{
                 endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
-                startTimeController.text = '${picked.hourOfPeriod}:${picked.minute}'+(picked.period ==DayPeriod.am ?"AM":"PM");
-                endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute}'+(endHrTimeOfDay.period ==DayPeriod.am ?"AM":"PM");
+                startTimeController.text = '${picked.hourOfPeriod}:${picked.minute}'+"PM";
+                endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute}'+"PM";
 
                 startHr = picked.hourOfPeriod;
                 startMin =picked.minute;

@@ -184,6 +184,7 @@ class Config{
   static final String receiver= "chatThread";
   static final String visible= "visible";
   static final String chatList= "chatList";
+  static final String currentlyInSession = "currentlyInSession";
 
   static final String bookings = "bookings";
   static final String bookingDate = "bookingDate";

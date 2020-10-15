@@ -5,12 +5,12 @@ import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
 
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
-import 'package:zing_fitnes_trainer/screens/trainers/trainer_booking_screen.dart';
+
 import 'package:zing_fitnes_trainer/screens/trainers/user_details_screen.dart';
 
 
 import 'package:zing_fitnes_trainer/utils/Config.dart';
-import 'package:zing_fitnes_trainer/utils/myColors.dart';
+
 
 class TrainerRequestedBookingsItem extends StatelessWidget {
   TrainerRequestedBookingsItem(

@@ -39,6 +39,45 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
 
     Navigator.of(context).pop();
   }
+
+  Future<Null> sessionAlert(BuildContext context) async {
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return new AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            //    title:  Text("Chicago Time",textAlign: TextAlign.center,style: TextStyle(fontSize: 22),),
+            content: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    child: Text(
+                      "You can't end this session Now. Please wait for session duration to elapse",
+                      style: TextStyle(fontSize: 20.0,),
+                    ),
+                  ),
+                  Divider(),
+                  FlatButton(
+                    onPressed: (){
+                      Navigator.of(context).pop();
+
+                    },
+                    child: Text("Ok", style: TextStyle(fontSize: 20.0,fontFamily: 'Montserrat',color: Theme.of(context).accentColor),),
+                  )
+
+                ],
+              ),
+            )
+
+        );
+      },
+    );
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -156,7 +195,7 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
         },
       ),),
       bottomNavigationBar:
-      widget.bookingModel.bookingSessionStarted ?
+      widget.bookingModel.currentlyInSession ?
       Container(
           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
           height:size.height/12 ,
@@ -165,9 +204,15 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
           child:
 
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              Container(
+
+                child:IconButton(icon: Icon(Icons.timelapse,size: 40,), onPressed: (){
+
+                })
+              ),
               Container(
                 height: size.height/12,
                 width: size.width/1.5,
@@ -178,15 +223,79 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
                   onPressed: (){
 
 
+                    TimeOfDay nowTime = TimeOfDay.fromDateTime(DateTime.now());
 
+                    double _doubleYourTime = widget.bookingModel.bookingEndHr.toDouble() +
+                        (widget.bookingModel.bookingEndMin.toDouble() / 60);
+                    double _doubleNowTime = nowTime.hour.toDouble() +
+                        (nowTime.minute.toDouble() / 60);
+                    if(_doubleNowTime  > _doubleYourTime){
+                      print("start time"+widget.bookingModel.bookingStartTime);
+                      print("Time passed");
+
+
+
+                    }else if(_doubleNowTime  < _doubleYourTime){
+                      print("start time"+widget.bookingModel.bookingStartTime);
+
+                      print("time hasn't reached");
+
+                      sessionAlert(context);
+
+
+                    }else{
+                      print("activate");
+                      print("start time"+widget.bookingModel.bookingStartTime);
+
+
+                    }
+
+/*
+                    Map bookingMap = Map<String,dynamic>();
+
+                    bookingMap[Config.bookingSessionCompleted] = true;
+                    bookingMap[Config.bookingStatus] = Config.completed;
+
+                    bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
+                    bookingMap[Config.currentlyInSession] = false;
+
+                    BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, bookingMap).then((_){
+                      showInSnackBar("Booking Approved");
+
+                      Map notMap = Map<String,dynamic>();
+                      notMap  [Config.bookingsId] = widget.bookingModel.bookingId;
+
+                      //  notMap[Config.bookingSessionStarted] = true;
+                      notMap[Config.bookingStatus] = Config.completed;
+                      notMap[Config.notificationType] = Config.booking;
+                      notMap[Config.currentlyInSession] = false;
+
+                      notMap[Config.userId] = widget.bookingModel.userId;
+                      notMap[Config.senderId] = widget.bookingModel.userId;
+                      notMap[Config.receiverId] = widget.bookingModel.trainerUserId;
+                      notMap[Config.trainerUserId] = widget.bookingModel.trainerUserId;
+                      notMap[Config.notificationText] = Config.sessionStarted;
+
+                      //update trainer current session status
+                      ProfileProvider.instance().updateTrainerSession(widget.userId, false);
+
+                      NotificationsRepository.instance().saveNotification(notMap).then((_){
+                        setState(() {
+
+                        });
+                      });
+
+                    });
+*/
                   },
-                  child: Text("Session Running",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
+                  child: Text("Complete",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
               ),
+
 
             ],
           )
       ) :
-      widget.bookingModel.bookingSessionRequestToStart ?
+
       Container(
        margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
         height:size.height/12 ,
@@ -206,72 +315,97 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
                 color: Theme.of(context).primaryColorDark,
 
                 onPressed: (){
+              DateTime bookingDateTime = DateTime(widget.bookingModel.bookingYear,widget.bookingModel.bookingMonth,widget.bookingModel.bookingDay);
+                  DateTime selectedDate = DateTime.now();
+
+    if(selectedDate.compareTo(bookingDateTime) ==0 ){
+      print("dates are equal. D-day");
+    } else if(selectedDate.compareTo(bookingDateTime) >=1 ){
+
+      print("selected date is after booking date");
+      print("Can't start this session anymore.Booking date has past.");
+
+    } else{
+      print("Booking date hasn't reached");
+      print("selected date is before book date");
+      TimeOfDay nowTime = TimeOfDay.fromDateTime(DateTime.now());
+
+      double _doubleYourTime = widget.bookingModel.bookingStartHr.toDouble() +
+          (widget.bookingModel.bookingStartMin.toDouble() / 60);
+      double _doubleNowTime = nowTime.hour.toDouble() +
+          (nowTime.minute.toDouble() / 60);
+      if(_doubleNowTime  > _doubleYourTime){
+        print("start time"+widget.bookingModel.bookingStartTime);
+        print("Time passed");
+
+        Map bookingMap = Map<String,dynamic>();
+
+        bookingMap[Config.bookingSessionStarted] = true;
+        bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
+        bookingMap[Config.currentlyInSession] = true;
+
+        BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, bookingMap).then((_){
+          showInSnackBar("Booking Approved");
+
+          Map notMap = Map<String,dynamic>();
+          notMap  [Config.bookingsId] = widget.bookingModel.bookingId;
+
+          //  notMap[Config.bookingSessionStarted] = true;
+          notMap[Config.bookingStatus] = Config.start;
+          notMap[Config.notificationType] = Config.booking;
+          notMap[Config.currentlyInSession] = true;
+
+          notMap[Config.userId] = widget.bookingModel.userId;
+          notMap[Config.senderId] = widget.bookingModel.userId;
+          notMap[Config.receiverId] = widget.bookingModel.trainerUserId;
+          notMap[Config.trainerUserId] = widget.bookingModel.trainerUserId;
+          notMap[Config.notificationText] = Config.sessionStarted;
+
+          //update trainer current session status
+          ProfileProvider.instance().updateTrainerSession(widget.userId, true);
+
+          NotificationsRepository.instance().saveNotification(notMap).then((_){
+            setState(() {
+
+            });
+          });
+
+        });
+
+      }else if(_doubleNowTime  < _doubleYourTime){
+        print("start time"+widget.bookingModel.bookingStartTime);
+
+        print("time hasn't reached");
 
 
-                  Map bookingMap = Map<String,dynamic>();
-
-                  bookingMap[Config.bookingSessionStarted] = true;
-                  bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
-
-
-                  BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, bookingMap).then((_){
-                    showInSnackBar("Booking Approved");
-
-                    Map notMap = Map<String,dynamic>();
-                    notMap[Config.bookingsId] = widget.bookingModel.bookingId;
-
-                  //  notMap[Config.bookingSessionStarted] = true;
-                    notMap[Config.bookingStatus] = Config.start;
-                    notMap[Config.notificationType] = Config.booking;
-
-                    notMap[Config.userId] = widget.bookingModel.userId;
-                    notMap[Config.senderId] = widget.bookingModel.userId;
-                    notMap[Config.receiverId] = widget.bookingModel.trainerUserId;
-                    notMap[Config.trainerUserId] = widget.bookingModel.trainerUserId;
-                    notMap[Config.notificationText] = Config.sessionStarted;
 
 
 
-                    NotificationsRepository.instance().saveNotification(notMap).then((_){
-                      Navigator.of(context).pop();
-                    });
 
-                  });
+
+
+
+      }else{
+        print("activate");
+        print("start time"+widget.bookingModel.bookingStartTime);
+
+
+      }
+
+
+    }
+
+
+
 
               },
-              child: Text("Accept",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
+              child: Text("Start",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
             ),
 
           ],
         )
-      ) : Container(
-          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
-          height:size.height/12 ,
+      )
 
-
-          child:
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                height: size.height/12,
-                width: size.width/2.5,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  color: Theme.of(context).primaryColorDark,
-
-                  onPressed: (){
-
-                    //refund
-                  },
-                  child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
-              ),
-
-            ],
-          )
-      ),
     );
   }
 }

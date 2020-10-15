@@ -8,11 +8,6 @@ import 'package:zing_fitnes_trainer/screens/bookings/modules/requested_booking_s
 
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/user_bookings_model.dart';
-
-
-import 'package:zing_fitnes_trainer/utils/myColors.dart';
-
-
 class RegularUsersBookingsPage extends StatefulWidget {
   RegularUsersBookingsPage(this.userId,this.userType);
   final String userId;
@@ -104,7 +99,8 @@ class BookingsBody extends StatelessWidget {
     var userBookingsModel = Provider.of<List<UserBookingsModel>>(context);
     return TabBarView(
 
-      children: <Widget>[ActiveBookingSession(userId,userBookingsModel,userType),
+      children: <Widget>[
+        ActiveBookingSession(userId,userBookingsModel,userType),
       PendingBookingSession(userId,userBookingsModel,userType),
       RequestedBookingSession(userId,userBookingsModel,userType),
       PastBookingSession(userId,userBookingsModel),

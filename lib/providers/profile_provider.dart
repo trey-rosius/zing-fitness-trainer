@@ -75,6 +75,16 @@ class ProfileProvider extends ChangeNotifier{
 
   }
 
+  //update trainers session status
+  Future<void> updateTrainerSession(String userId,bool value){
+
+    return  _firestore.collection(Config.users).document(userId).updateData({
+      Config.currentlyInSession:value
+    });
+
+
+  }
+
 
   Future<void> saveUserData(String userId,Map userDataMap){
 
