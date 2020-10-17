@@ -233,6 +233,42 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
                       print("start time"+widget.bookingModel.bookingStartTime);
                       print("Time passed");
 
+                      Map bookingMap = Map<String,dynamic>();
+
+                      bookingMap[Config.bookingSessionCompleted] = true;
+                      bookingMap[Config.bookingStatus] = Config.completed;
+
+                      bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
+                      bookingMap[Config.currentlyInSession] = false;
+
+                      BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, bookingMap).then((_){
+                        showInSnackBar("Booking Approved");
+
+                        Map notMap = Map<String,dynamic>();
+                        notMap  [Config.bookingsId] = widget.bookingModel.bookingId;
+
+                        //  notMap[Config.bookingSessionStarted] = true;
+                        notMap[Config.bookingStatus] = Config.completed;
+                        notMap[Config.notificationType] = Config.booking;
+                        notMap[Config.currentlyInSession] = false;
+
+                        notMap[Config.userId] = widget.bookingModel.userId;
+                        notMap[Config.senderId] = widget.bookingModel.userId;
+                        notMap[Config.receiverId] = widget.bookingModel.trainerUserId;
+                        notMap[Config.trainerUserId] = widget.bookingModel.trainerUserId;
+                        notMap[Config.notificationText] = Config.sessionStarted;
+
+                        //update trainer current session status
+                        ProfileProvider.instance().updateTrainerSession(widget.userId, false);
+
+                        NotificationsRepository.instance().saveNotification(notMap).then((_){
+                          setState(() {
+
+                          });
+                        });
+
+                      });
+
 
 
                     }else if(_doubleNowTime  < _doubleYourTime){
@@ -247,46 +283,45 @@ class _ApprovedUserDetailsScreenState extends State<ApprovedUserDetailsScreen> {
                       print("activate");
                       print("start time"+widget.bookingModel.bookingStartTime);
 
+                      Map bookingMap = Map<String,dynamic>();
+
+                      bookingMap[Config.bookingSessionCompleted] = true;
+                      bookingMap[Config.bookingStatus] = Config.completed;
+
+                      bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
+                      bookingMap[Config.currentlyInSession] = false;
+
+                      BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, bookingMap).then((_){
+                        showInSnackBar("Booking Approved");
+
+                        Map notMap = Map<String,dynamic>();
+                        notMap  [Config.bookingsId] = widget.bookingModel.bookingId;
+
+                        //  notMap[Config.bookingSessionStarted] = true;
+                        notMap[Config.bookingStatus] = Config.completed;
+                        notMap[Config.notificationType] = Config.booking;
+                        notMap[Config.currentlyInSession] = false;
+
+                        notMap[Config.userId] = widget.bookingModel.userId;
+                        notMap[Config.senderId] = widget.bookingModel.userId;
+                        notMap[Config.receiverId] = widget.bookingModel.trainerUserId;
+                        notMap[Config.trainerUserId] = widget.bookingModel.trainerUserId;
+                        notMap[Config.notificationText] = Config.sessionStarted;
+
+                        //update trainer current session status
+                        ProfileProvider.instance().updateTrainerSession(widget.userId, false);
+
+                        NotificationsRepository.instance().saveNotification(notMap).then((_){
+                          setState(() {
+
+                          });
+                        });
+
+                      });
 
                     }
 
-/*
-                    Map bookingMap = Map<String,dynamic>();
 
-                    bookingMap[Config.bookingSessionCompleted] = true;
-                    bookingMap[Config.bookingStatus] = Config.completed;
-
-                    bookingMap[Config.updatedOn] = FieldValue.serverTimestamp();
-                    bookingMap[Config.currentlyInSession] = false;
-
-                    BookingRepository.instance().changeBookingStatus(widget.bookingModel.bookingId, bookingMap).then((_){
-                      showInSnackBar("Booking Approved");
-
-                      Map notMap = Map<String,dynamic>();
-                      notMap  [Config.bookingsId] = widget.bookingModel.bookingId;
-
-                      //  notMap[Config.bookingSessionStarted] = true;
-                      notMap[Config.bookingStatus] = Config.completed;
-                      notMap[Config.notificationType] = Config.booking;
-                      notMap[Config.currentlyInSession] = false;
-
-                      notMap[Config.userId] = widget.bookingModel.userId;
-                      notMap[Config.senderId] = widget.bookingModel.userId;
-                      notMap[Config.receiverId] = widget.bookingModel.trainerUserId;
-                      notMap[Config.trainerUserId] = widget.bookingModel.trainerUserId;
-                      notMap[Config.notificationText] = Config.sessionStarted;
-
-                      //update trainer current session status
-                      ProfileProvider.instance().updateTrainerSession(widget.userId, false);
-
-                      NotificationsRepository.instance().saveNotification(notMap).then((_){
-                        setState(() {
-
-                        });
-                      });
-
-                    });
-*/
                   },
                   child: Text("Complete",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),),
               ),

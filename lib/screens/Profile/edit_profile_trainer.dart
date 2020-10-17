@@ -106,6 +106,14 @@ class _FormSectionState extends State<FormSection> {
   FileType _pickingType = FileType.custom;
   bool _isLoading = true;
 
+  bool _isSingle = false;
+  bool _isGroups = false;
+  bool _isClasses = false;
+  String _single = 'Single';
+
+ String _groups = "Groups";
+ String _classes ="Classes";
+
   File _path;
   String _extension='pdf';
   bool _loadingPath = false;
@@ -118,7 +126,7 @@ class _FormSectionState extends State<FormSection> {
   String _fileName;
 
   bool loading = false;
-  String sessionType = 'Single';
+  Set<String> sessionType = Set<String>();
   String _directoryPath;
   final  userNameController = TextEditingController();
   final  locationController = TextEditingController();
@@ -245,7 +253,7 @@ class _FormSectionState extends State<FormSection> {
       userNameController.text = widget.profileModel.name;
       phoneController.text = widget.profileModel.phoneNumber;
 
-      sessionType = widget.profileModel.sessionType == ""? sessionType : widget.profileModel.sessionType;
+      //sessionType = widget.profileModel.sessionType == ""? sessionType : widget.profileModel.sessionType;
       experienceController.text = widget.profileModel.experience;
       locationController.text = widget.profileModel.location;
 
@@ -560,6 +568,9 @@ class _FormSectionState extends State<FormSection> {
                       children: <Widget>[
                       Text("Session Type",style: TextStyle(fontSize: 20,color: Colors.white),),
 
+
+
+/*
                       DropdownButton<String>(
                         hint: Text(sessionType,style: TextStyle(color: colors.deepBlue),),
 
@@ -576,7 +587,66 @@ class _FormSectionState extends State<FormSection> {
                           });
                         },
                       ),
+    */
                     ],),
+
+    CheckboxListTile(
+    title: Text(_single),
+    value: _isSingle, onChanged: (bool value){
+    if(value){
+    setState(() {
+    sessionType.add(_single);
+    _isSingle = value;
+    print(sessionType.toString());
+
+    });
+    }else{
+    setState(() {
+      _isSingle = value;
+    sessionType.remove(_single);
+    print(sessionType.toString());
+
+    });
+    }
+    }),
+    CheckboxListTile(
+    title: Text(_groups),
+    value: _isGroups, onChanged: (bool value){
+    if(value){
+    setState(() {
+      _isGroups = value;
+    sessionType.add(_groups);
+    print(sessionType.toString());
+
+    });
+    }else{
+    setState(() {
+      _isGroups = value;
+    sessionType.remove(_groups);
+    print(sessionType.toString());
+
+    });
+    }
+    }),
+    CheckboxListTile(
+    title: Text(_classes),
+    value: _isClasses, onChanged: (bool value){
+    if(value){
+    setState(() {
+      _isClasses = value;
+    sessionType.add(_classes);
+    print(sessionType.toString());
+
+    });
+    }else{
+    setState(() {
+      _isClasses = value;
+    sessionType.remove(_classes);
+    print(sessionType.toString());
+
+    });
+    }
+    }),
 
                      Row(
                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -625,194 +695,178 @@ builder: (_,value,child){
                     },
                     itemCount: userCertModel.length,) : Container(),
 
-                    Padding(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 50)),
 
+                    Container(
+                      padding: EdgeInsets.only(top: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          loading ?Center(
+                            child: CircularProgressIndicator(),
+                          ) :   Button(
+                              text: 'Update',
+                              onClick: () async {
+                                if (_regularFormKey.currentState.validate()) {
+                                  setState(() {
+                                    loading = true;
+                                  });
 
-                    Padding(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 50)),
+                                  final List<Placemark> placemarks = await Future(
+                                          () => _geolocator.placemarkFromAddress(locationController.text))
+                                      .catchError((onError) {
+                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                      content: Text(onError.toString()),
+                                    ));
+                                    return Future.value(List<Placemark>());
+                                  });
 
-
-                    Padding(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 50)),
-
-
-                    Padding(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 50)),
-
-                    //Notes(hintText:'Notes'),
-
-                    Padding(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 50)),
-
-                loading ?Center(
-                  child: CircularProgressIndicator(),
-                ) :   Button(
-                        text: 'Update',
-                        onClick: () async {
-    if (_regularFormKey.currentState.validate()) {
-      setState(() {
-        loading = true;
-      });
-
-      final List<Placemark> placemarks = await Future(
-              () => _geolocator.placemarkFromAddress(locationController.text))
-          .catchError((onError) {
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text(onError.toString()),
-        ));
-        return Future.value(List<Placemark>());
-      });
-
-      if (placemarks != null && placemarks.isNotEmpty) {
-        final Placemark pos = placemarks[0];
+                                  if (placemarks != null && placemarks.isNotEmpty) {
+                                    final Placemark pos = placemarks[0];
 
 
 
-        setState(() {
-          longitude = pos.position?.longitude.toString();
-          latitude = pos.position?.latitude.toString();
+                                    setState(() {
+                                      longitude = pos.position?.longitude.toString();
+                                      latitude = pos.position?.latitude.toString();
 
-          _saveLatitude(latitude);
-          _saveLongitude(longitude);
-        });
+                                      _saveLatitude(latitude);
+                                      _saveLongitude(longitude);
+                                    });
 
-      }
-      if (file != null && profilePic == null) {
-        var dir = await path_provider.getTemporaryDirectory();
-        var targetPath = dir.absolute.path + "/temp.png";
+                                  }
+                                  if (file != null && profilePic == null) {
+                                    var dir = await path_provider.getTemporaryDirectory();
+                                    var targetPath = dir.absolute.path + "/temp.png";
 
-        print("file image is" + file.path);
-        compressAndGetFile(file, targetPath)
-              .then((File result) {
-            print("result is" + result.path);
+                                    print("file image is" + file.path);
+                                    compressAndGetFile(file, targetPath)
+                                        .then((File result) {
+                                      print("result is" + result.path);
 
-            ProfileProvider.instance()
-                .uploadImage(result)
-                .then((value) {
-              Map userData = Map<String, dynamic>();
-
-
-              userData[Config.profilePicUrl] = value;
-              userData[Config.fullNames] = userNameController.text;
-              userData[Config.location] = locationController.text;
-              userData[Config.experience] =experienceController.text;
-              userData[Config.sessionType] =sessionType;
-              userData[Config.longitude] =longitude;
-              userData[Config.latitude] =latitude;
-
-              userData[Config.phone] = phoneController.text;
-              userData[Config.sessionRate] = sessionRateController.text;
+                                      ProfileProvider.instance()
+                                          .uploadImage(result)
+                                          .then((value) {
+                                        Map userData = Map<String, dynamic>();
 
 
+                                        userData[Config.profilePicUrl] = value;
+                                        userData[Config.fullNames] = userNameController.text;
+                                        userData[Config.location] = locationController.text;
+                                        userData[Config.experience] =experienceController.text;
+                                        userData[Config.sessionType] =sessionType;
+                                        userData[Config.longitude] =longitude;
+                                        userData[Config.latitude] =latitude;
 
-              ProfileProvider.instance()
-                  .saveUserData(widget.userId, userData)
-                  .then((_) {
-                print("successfull");
-
-                setState(() {
-                  loading = false;
-                });
-
-                Navigator.of(context).pop();
-              });
-            });
-        });
-      } else if(file == null && profilePic != null){
-
-              Map userData = Map<String, dynamic>();
-
-
-              userData[Config.profilePicUrl] = profilePic;
-              userData[Config.fullNames] = userNameController.text;
-              userData[Config.location] = locationController.text;
-              userData[Config.experience] =experienceController.text;
-              userData[Config.sessionType] =sessionType;
-              userData[Config.longitude] =longitude;
-              userData[Config.latitude] =latitude;
-
-              userData[Config.phone] = phoneController.text;
-              userData[Config.sessionRate] = sessionRateController.text;
+                                        userData[Config.phone] = phoneController.text;
+                                        userData[Config.sessionRate] = sessionRateController.text;
 
 
 
-              ProfileProvider.instance()
-                  .saveUserData(widget.userId, userData)
-                  .then((_) {
-                print("successfull");
+                                        ProfileProvider.instance()
+                                            .saveUserData(widget.userId, userData)
+                                            .then((_) {
+                                          print("successfull");
 
-                setState(() {
-                  loading = false;
-                });
-                Navigator.of(context).pop();
-              });
+                                          setState(() {
+                                            loading = false;
+                                          });
 
+                                          Navigator.of(context).pop();
+                                        });
+                                      });
+                                    });
+                                  } else if(file == null && profilePic != null){
 
-
-      } else if(file == null && profilePic != null){
-
-        var dir = await path_provider.getTemporaryDirectory();
-        var targetPath = dir.absolute.path + "/temp.png";
-
-        print("file image is" + file.path);
-        compressAndGetFile(file, targetPath)
-              .then((File result) {
-            print("result is" + result.path);
-
-            ProfileProvider.instance()
-                .uploadImage(result)
-                .then((value) {
-              Map userData = Map<String, dynamic>();
+                                    Map userData = Map<String, dynamic>();
 
 
-              userData[Config.profilePicUrl] = value;
-              userData[Config.fullNames] = userNameController.text;
-              userData[Config.location] = locationController.text;
-              userData[Config.sessionType] =sessionType;
-              userData[Config.experience] = experienceController.text;
-              userData[Config.longitude] =longitude;
-              userData[Config.latitude] =latitude;
-              userData[Config.phone] = phoneController.text;
-              userData[Config.sessionRate] = sessionRateController.text;
+                                    userData[Config.profilePicUrl] = profilePic;
+                                    userData[Config.fullNames] = userNameController.text;
+                                    userData[Config.location] = locationController.text;
+                                    userData[Config.experience] =experienceController.text;
+                                    userData[Config.sessionType] =sessionType;
+                                    userData[Config.longitude] =longitude;
+                                    userData[Config.latitude] =latitude;
+
+                                    userData[Config.phone] = phoneController.text;
+                                    userData[Config.sessionRate] = sessionRateController.text;
 
 
-              ProfileProvider.instance()
-                  .saveUserData(widget.userId, userData)
-                  .then((_) {
-                print("successfull");
 
-                setState(() {
-                  loading = false;
-                });
-                Navigator.of(context).pop();
-              });
-            });
-        });
+                                    ProfileProvider.instance()
+                                        .saveUserData(widget.userId, userData)
+                                        .then((_) {
+                                      print("successfull");
 
-      }else
-        {
-            setState(() {
-              loading = false;
-            });
+                                      setState(() {
+                                        loading = false;
+                                      });
+                                      Navigator.of(context).pop();
+                                    });
 
-            Scaffold.of(context).showSnackBar(SnackBar(
-              backgroundColor: Theme.of(context).primaryColor,
-              content: Text(
-                  'Please add a profile picture'),
-              duration: Duration(seconds: 3),
-            ));
-        }
 
-    }
-                        })
-                        ,
 
+                                  } else if(file == null && profilePic != null){
+
+                                    var dir = await path_provider.getTemporaryDirectory();
+                                    var targetPath = dir.absolute.path + "/temp.png";
+
+                                    print("file image is" + file.path);
+                                    compressAndGetFile(file, targetPath)
+                                        .then((File result) {
+                                      print("result is" + result.path);
+
+                                      ProfileProvider.instance()
+                                          .uploadImage(result)
+                                          .then((value) {
+                                        Map userData = Map<String, dynamic>();
+
+
+                                        userData[Config.profilePicUrl] = value;
+                                        userData[Config.fullNames] = userNameController.text;
+                                        userData[Config.location] = locationController.text;
+                                        userData[Config.sessionType] =sessionType;
+                                        userData[Config.experience] = experienceController.text;
+                                        userData[Config.longitude] =longitude;
+                                        userData[Config.latitude] =latitude;
+                                        userData[Config.phone] = phoneController.text;
+                                        userData[Config.sessionRate] = sessionRateController.text;
+
+
+                                        ProfileProvider.instance()
+                                            .saveUserData(widget.userId, userData)
+                                            .then((_) {
+                                          print("successfull");
+
+                                          setState(() {
+                                            loading = false;
+                                          });
+                                          Navigator.of(context).pop();
+                                        });
+                                      });
+                                    });
+
+                                  }else
+                                  {
+                                    setState(() {
+                                      loading = false;
+                                    });
+
+                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                      backgroundColor: Theme.of(context).primaryColor,
+                                      content: Text(
+                                          'Please add a profile picture'),
+                                      duration: Duration(seconds: 3),
+                                    ));
+                                  }
+
+                                }
+                              })
+                        ],
+                      )
+
+                    ),
                     Padding(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height / 15),

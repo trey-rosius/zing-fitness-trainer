@@ -73,7 +73,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
+
         title: Text(
           'Payment',
           style: TextStyle(fontSize: 20),
@@ -271,11 +271,11 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                 ) : Container(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
                           height: 60,
-                          width: size.width / 2.5,
+                          width: size.width / 1.5,
                           child: RaisedButton(
                             color: Theme.of(context).primaryColorDark,
                             shape: RoundedRectangleBorder(
@@ -312,27 +312,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                             ),
                           ),
                         ),
-                        Container(
-                          height: 60,
-                          width: size.width / 2.5,
-                          child: RaisedButton(
-                            color: Theme.of(context).primaryColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            onPressed: () {
 
-                            Navigator.of(context).pop();
-
-
-
-                            },
-                            child: Text(
-                              "Pay Later",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            ),
-                          ),
-                        )
                       ],
                     ),
                   )

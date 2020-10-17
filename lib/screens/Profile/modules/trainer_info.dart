@@ -67,7 +67,22 @@ class TrainerInfo extends StatelessWidget {
                 Divider(
                   color: MyColors().gray,
                 ),
-                detailItem("Session type", profileModel.sessionType),
+                Column(
+                  children: [
+                    Text("Session Type"),
+
+                    Container(
+                      height: 60,
+                      child:Column(
+                        children: [
+                         // for (var i in profileModel.sessionType) Text(i.toString())
+                        ],
+                      ) ,
+                    )
+
+                  ],
+                ),
+               // detailItem("Session type", profileModel.sessionType),
                 Divider(
                   color: MyColors().gray,
                 ),
