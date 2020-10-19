@@ -126,13 +126,15 @@ class _FormSectionState extends State<FormSection> {
   String _fileName;
 
   bool loading = false;
-  Set<String> sessionType = Set<String>();
+
+  Set sessionType = Set();
   String _directoryPath;
   final  userNameController = TextEditingController();
   final  locationController = TextEditingController();
   final  phoneController = TextEditingController();
   final  experienceController = TextEditingController();
   final  sessionTypeController = TextEditingController();
+  final  classScheduleController = TextEditingController();
 
   final  sessionRateController = TextEditingController();
 
@@ -192,68 +194,58 @@ class _FormSectionState extends State<FormSection> {
     });
 
   }
-/*
-
-  void _openFileExplorer() async {
-
-    if (_pickingType != FileType.custom ) {
-      setState(() => _loadingPath = true);
-      try {
-
-          _paths = null;
-          _path = (await FilePicker.platform.pickFiles(
-              type: _pickingType,
-              allowMultiple: _multiPick
-               allowedExtensions: _extension));
-
-      } on PlatformException catch (e) {
-        print("Unsupported operation" + e.toString());
-      }
-      if (!mounted) return;
-      setState(() {
-
-        _fileName = _path != null
-            ? _path.split('/').last
-            : _paths != null ? _paths.keys.toString() : '...';
-
-        print("file name is"+ _fileName);
-        print("file path is"+ _path);
-
-        ProfileProvider.instance()
-            .uploadImage(File(_path))
-            .then((value) {
-          Map userData = Map<String, dynamic>();
-
-          userData[Config.certName] = _fileName;
-          userData[Config.certUrl] = value;
-          userData[Config.userId] = widget.userId;
-          userData[Config.createdOn] = FieldValue.serverTimestamp();
 
 
-          ProfileProvider.instance()
-              .saveCertificate(widget.userId, userData)
-              .then((_) {
-                setState(() {
-                  _loadingPath = false;
-                });
-            print("successfull");
-          });
-        });
-      });
-    }
+void getLocation() async{
+  final List<Placemark> placemarks = await Future(
+          () => _geolocator.placemarkFromAddress(locationController.text))
+      .catchError((onError) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(onError.toString()),
+    ));
+    return Future.value(List<Placemark>());
+  });
+
+  if (placemarks != null && placemarks.isNotEmpty) {
+    final Placemark pos = placemarks[0];
+
+
+
+    setState(() {
+      longitude = pos.position?.longitude.toString();
+      latitude = pos.position?.latitude.toString();
+
+      print("longitude"+longitude);
+      print("latitude"+latitude);
+
+      _saveLatitude(latitude);
+      _saveLongitude(longitude);
+    });
 
   }
-  */
+}
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    getLocation();
     setState(() {
       profilePic = widget.profileModel.profilePicUrl;
       userNameController.text = widget.profileModel.name;
       phoneController.text = widget.profileModel.phoneNumber;
+      classScheduleController.text = widget.profileModel.classSchedule;
 
-      //sessionType = widget.profileModel.sessionType == ""? sessionType : widget.profileModel.sessionType;
+      sessionType = widget.profileModel.sessionType.isEmpty? sessionType : widget.profileModel.sessionType;
+      if(sessionType.contains(_single)){
+        _isSingle = true;
+      }
+      if(sessionType.contains(_classes)){
+        _isClasses = true;
+      }
+      if(sessionType.contains(_groups)){
+        _isGroups = true;
+      }
       experienceController.text = widget.profileModel.experience;
       locationController.text = widget.profileModel.location;
 
@@ -277,6 +269,7 @@ class _FormSectionState extends State<FormSection> {
 
     sessionTypeController.dispose();
     experienceController.dispose();
+    classScheduleController.dispose();
 
     sessionRateController.dispose();
 
@@ -570,29 +563,11 @@ class _FormSectionState extends State<FormSection> {
 
 
 
-/*
-                      DropdownButton<String>(
-                        hint: Text(sessionType,style: TextStyle(color: colors.deepBlue),),
-
-
-                        items: <String>['Single','Groups','Classes'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child:  Text(value,),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            sessionType = value;
-                          });
-                        },
-                      ),
-    */
                     ],),
 
     CheckboxListTile(
     title: Text(_single),
-    value: _isSingle, onChanged: (bool value){
+    value:_isSingle, onChanged: (bool value){
     if(value){
     setState(() {
     sessionType.add(_single);
@@ -648,6 +623,38 @@ class _FormSectionState extends State<FormSection> {
     }
     }),
 
+              _isClasses ?      Container   (
+                      padding: EdgeInsets.fromLTRB(
+                        MediaQuery.of(context).size.width / 30,
+                        5,
+                        MediaQuery.of(context).size.width / 32,
+                        0,
+                      ),
+
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: colors.inputBlue,
+                      ),
+
+                      child: TextFormField(
+                          onChanged: ((value){
+
+                          }),
+                          validator: (value){return Validator().textValidator(value);},
+                          //   initialValue: initialValue,
+                          controller: classScheduleController,
+                          maxLines: 5,
+
+
+
+                          decoration: InputDecoration(
+
+                            labelText: "Class Schedule",
+                            labelStyle: TextStyle(color: colors.deepBlue),
+                            border: InputBorder.none,
+                          )),
+                    ) : Container(),
+
                      Row(
                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                        children: <Widget>[
@@ -658,6 +665,8 @@ class _FormSectionState extends State<FormSection> {
                          })
                        ],
                      ),
+
+
 
 
                  userCertModel != null ?   ListView.builder(
@@ -712,29 +721,7 @@ builder: (_,value,child){
                                     loading = true;
                                   });
 
-                                  final List<Placemark> placemarks = await Future(
-                                          () => _geolocator.placemarkFromAddress(locationController.text))
-                                      .catchError((onError) {
-                                    Scaffold.of(context).showSnackBar(SnackBar(
-                                      content: Text(onError.toString()),
-                                    ));
-                                    return Future.value(List<Placemark>());
-                                  });
 
-                                  if (placemarks != null && placemarks.isNotEmpty) {
-                                    final Placemark pos = placemarks[0];
-
-
-
-                                    setState(() {
-                                      longitude = pos.position?.longitude.toString();
-                                      latitude = pos.position?.latitude.toString();
-
-                                      _saveLatitude(latitude);
-                                      _saveLongitude(longitude);
-                                    });
-
-                                  }
                                   if (file != null && profilePic == null) {
                                     var dir = await path_provider.getTemporaryDirectory();
                                     var targetPath = dir.absolute.path + "/temp.png";
@@ -754,9 +741,11 @@ builder: (_,value,child){
                                         userData[Config.fullNames] = userNameController.text;
                                         userData[Config.location] = locationController.text;
                                         userData[Config.experience] =experienceController.text;
-                                        userData[Config.sessionType] =sessionType;
+                                        userData[Config.sessionType] =sessionType.toList();
                                         userData[Config.longitude] =longitude;
                                         userData[Config.latitude] =latitude;
+                                        userData[Config.classSchedule] = classScheduleController.text;
+
 
                                         userData[Config.phone] = phoneController.text;
                                         userData[Config.sessionRate] = sessionRateController.text;
@@ -785,10 +774,10 @@ builder: (_,value,child){
                                     userData[Config.fullNames] = userNameController.text;
                                     userData[Config.location] = locationController.text;
                                     userData[Config.experience] =experienceController.text;
-                                    userData[Config.sessionType] =sessionType;
+                                    userData[Config.sessionType] =sessionType.toList();
                                     userData[Config.longitude] =longitude;
                                     userData[Config.latitude] =latitude;
-
+                                    userData[Config.classSchedule] = classScheduleController.text;
                                     userData[Config.phone] = phoneController.text;
                                     userData[Config.sessionRate] = sessionRateController.text;
 
@@ -826,10 +815,12 @@ builder: (_,value,child){
                                         userData[Config.profilePicUrl] = value;
                                         userData[Config.fullNames] = userNameController.text;
                                         userData[Config.location] = locationController.text;
-                                        userData[Config.sessionType] =sessionType;
+                                        userData[Config.sessionType] =sessionType.toList();
                                         userData[Config.experience] = experienceController.text;
                                         userData[Config.longitude] =longitude;
                                         userData[Config.latitude] =latitude;
+                                        userData[Config.classSchedule] = classScheduleController.text;
+
                                         userData[Config.phone] = phoneController.text;
                                         userData[Config.sessionRate] = sessionRateController.text;
 

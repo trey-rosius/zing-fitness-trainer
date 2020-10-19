@@ -27,7 +27,7 @@ class ProfileTrainerUser extends StatelessWidget {
           appBar: AppBar(
             elevation: 0.0,
             iconTheme: IconThemeData(color: MyColors().deepBlue, size: 40),
-            backgroundColor: MyColors().white,
+
             title:  Text(
                 "Profile",
                 style: TextStyle(

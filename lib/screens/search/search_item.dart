@@ -22,7 +22,7 @@ class SearchItem extends StatefulWidget {
 
 class _SearchItemState extends State<SearchItem> {
 
-  var distance;
+ // var distance;
 
 
   @override
@@ -30,7 +30,7 @@ class _SearchItemState extends State<SearchItem> {
     // TODO: implement initState
     super.initState();
 
-
+/*
     print("longitude is"+widget.longitude);
     print("latitude is"+widget.latitude);
     ProfileProvider.instance().calculateDistance(widget.trainerProfileModel, widget.longitude, widget.latitude).then((distanceInMeters){
@@ -40,13 +40,18 @@ setState(() {
 });
 
     });
+    */
 
   }
   @override
   Widget build(BuildContext context) {
 
+/*
+distance != null && distance <=5000000 ?
+ */
+    return
 
-    return distance != null && distance <=5000000 ? Container(
+    Container(
       padding: EdgeInsets.all(10),
       child: InkWell(
         onTap: (){
@@ -124,6 +129,6 @@ setState(() {
           ],
         ),
       )
-    ) : Container();
+    ) ;
   }
 }

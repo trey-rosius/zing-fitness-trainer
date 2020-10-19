@@ -97,7 +97,7 @@ class ProfileProvider extends ChangeNotifier{
   ///
   Stream<List<TrainerProfileModel>> streamTrainersListSessionType(String sessionType){
     return _firestore.collection(Config.users)
-       .where(Config.sessionType,isEqualTo:sessionType )
+       .where(Config.sessionType,arrayContains:sessionType )
         .snapshots()
         .map((list) =>
     list.documents.map((doc) => TrainerProfileModel.fromFirestore(doc)).toList());
@@ -110,7 +110,7 @@ class ProfileProvider extends ChangeNotifier{
   ///
   Stream<List<TrainerProfileModel>> streamOnlineTrainersListSessionType(String sessionType){
     return _firestore.collection(Config.users)
-        .where(Config.sessionType,isEqualTo:sessionType)
+        .where(Config.sessionType,arrayContains:sessionType)
         .where(Config.presence,isEqualTo: true)
         .snapshots()
         .map((list) =>

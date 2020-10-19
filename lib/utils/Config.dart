@@ -185,6 +185,7 @@ class Config{
   static final String visible= "visible";
   static final String chatList= "chatList";
   static final String currentlyInSession = "currentlyInSession";
+  static final String classSchedule = "classSchedule";
 
   static final String bookings = "bookings";
   static final String bookingDate = "bookingDate";

@@ -7,10 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/general_user_model.dart';
+
 import 'package:zing_fitnes_trainer/screens/Profile/profile_regular_user.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/profile_trainer_user.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
+
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/conversation_list/ConversationItemRepository.dart';
 import 'package:zing_fitnes_trainer/screens/conversation_list/conversation_item_model.dart';

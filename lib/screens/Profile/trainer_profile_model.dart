@@ -13,12 +13,13 @@ class TrainerProfileModel{
   String email,location;
   String longitude,latitude;
   bool userPresence;
- // List<String> sessionType;
+  Set sessionType;
+  String classSchedule;
 
 
-  TrainerProfileModel({this.userId, this.name, this.phoneNumber,
+  TrainerProfileModel({this.userId, this.name, this.phoneNumber,this.sessionType,
       this.serviceArea, this.experience, this.sessionRate, this.profilePicUrl,
-      this.speciality, this.userPresence,this.email,this.location,this.latitude,this.longitude});
+      this.speciality, this.userPresence, this.classSchedule,this.email,this.location,this.latitude,this.longitude});
 
   factory TrainerProfileModel.fromFirestore(DocumentSnapshot docSnapShot){
 
@@ -31,8 +32,9 @@ class TrainerProfileModel{
       profilePicUrl: docSnapShot.data[Config.profilePicUrl]??null,
       latitude: docSnapShot.data[Config.latitude],
       longitude: docSnapShot.data[Config.longitude],
+     classSchedule: docSnapShot.data[Config.classSchedule] ?? "",
 
-     //sessionType: docSnapShot.data[Config.sessionType]??"",
+     sessionType: docSnapShot.data[Config.sessionType]==null ?[].toSet() : docSnapShot.data[Config.sessionType].toSet(),
 
       speciality: docSnapShot.data[Config.speciality]??"",
       sessionRate: docSnapShot.data[Config.sessionRate]??"",

@@ -68,20 +68,27 @@ class TrainerInfo extends StatelessWidget {
                   color: MyColors().gray,
                 ),
                 Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Session Type"),
 
                     Container(
                       height: 60,
                       child:Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                         // for (var i in profileModel.sessionType) Text(i.toString())
+                          for (var i in profileModel.sessionType) Text(i.toString(),style: TextStyle(fontSize:15,fontWeight: FontWeight.bold),),
+
                         ],
                       ) ,
                     )
 
                   ],
                 ),
+
+                        detailItem("Class Schedule", profileModel.classSchedule),
                // detailItem("Session type", profileModel.sessionType),
                 Divider(
                   color: MyColors().gray,
