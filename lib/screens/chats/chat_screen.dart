@@ -378,16 +378,16 @@ class ChatScreenState extends State<ChatScreen> {
       appBar:  AppBar(
 
         elevation: 0.0,
-        backgroundColor: Colors.transparent,
 
-        title: Text(receiverFirstName,style: TextStyle(fontSize: 20.0,fontFamily: 'GothamRnd')),
+
+        title: Text(receiverFirstName,style: TextStyle(fontSize: 20.0,fontFamily: 'Montserrat')),
         actions: <Widget>[
 
          
 
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: IconButton(icon: Icon(Icons.image,color: Theme.of(context).primaryColor,), onPressed: getImage),
+            child: IconButton(icon: Icon(Icons.image,color:Colors.white,), onPressed: getImage),
           ),
         ],
 

@@ -97,7 +97,9 @@ class ProfileProvider extends ChangeNotifier{
   ///
   Stream<List<TrainerProfileModel>> streamTrainersListSessionType(String sessionType){
     return _firestore.collection(Config.users)
-       .where(Config.sessionType,arrayContains:sessionType )
+       .where(Config.sessionType,arrayContains:sessionType)
+        .where(Config.presence,isEqualTo: true)
+        .where(Config.currentlyInSession,isEqualTo: false)
         .snapshots()
         .map((list) =>
     list.documents.map((doc) => TrainerProfileModel.fromFirestore(doc)).toList());
