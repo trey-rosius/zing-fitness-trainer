@@ -37,10 +37,8 @@ class LoginSignUpProvider with ChangeNotifier {
     });
   }
 
-  Future<void>updateNotificationToken(String token,String userId){
-    return _firestore.collection(Config.users).document(userId).updateData({
-      Config.notificationToken:token
-    });
+  Future<void>updateTokenAndLongitude(Map<String,dynamic> map,String userId){
+    return _firestore.collection(Config.users).document(userId).updateData(map);
   }
 
 

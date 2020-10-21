@@ -284,30 +284,14 @@ class _EditProfileRegularState extends State<EditProfileRegular> {
                                   onClick: () async{
     if (_regularFormKey.currentState.validate()) {
 
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      setState(() {
+        longitude = position?.longitude.toString();
+        latitude = position?.latitude.toString();
 
-      final List<Placemark> placemarks = await Future(
-              () => _geolocator.placemarkFromAddress(locationController.text))
-          .catchError((onError) {
-        _scaffoldkey.currentState.showSnackBar(SnackBar(
-          content: Text(onError.toString()),
-        ));
-        return Future.value(List<Placemark>());
+        _saveLatitude(latitude);
+        _saveLongitude(longitude);
       });
-
-      if (placemarks != null && placemarks.isNotEmpty) {
-        final Placemark pos = placemarks[0];
-
-
-
-        setState(() {
-          longitude = pos.position?.longitude.toString();
-          latitude = pos.position?.latitude.toString();
-
-          _saveLatitude(latitude);
-          _saveLongitude(longitude);
-        });
-
-      }
       if (file != null && profilePic == null) {
         setState(() {
           loading = true;

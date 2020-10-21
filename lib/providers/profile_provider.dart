@@ -122,6 +122,20 @@ class ProfileProvider extends ChangeNotifier{
 
   }
 
+  Future<double> calculateDistance(TrainerProfileModel trainerUserModel,String longitude,String latitude) async{
+    final double startLatitude = double.parse(latitude);
+    final double startLongitude = double.parse(longitude);
+    final double endLatitude = double.parse(trainerUserModel.latitude);
+    final double endLongitude = double.parse(trainerUserModel.longitude);
+
+    final double distance = Geolocator.distanceBetween(
+        startLatitude, startLongitude, endLatitude, endLongitude);
+
+    return distance;
+
+  }
+
+
   /// Stream trainers profiles
   ///
   Stream<List<TrainerProfileModel>> streamTrainersList(){
@@ -136,18 +150,6 @@ class ProfileProvider extends ChangeNotifier{
 
   }
 
-  Future<double> calculateDistance(TrainerProfileModel trainerUserModel,String longitude,String latitude) async{
-    final double startLatitude = double.parse(latitude);
-    final double startLongitude = double.parse(longitude);
-    final double endLatitude = double.parse(trainerUserModel.latitude);
-    final double endLongitude = double.parse(trainerUserModel.longitude);
-
-    final double distance = await Geolocator().distanceBetween(
-        startLatitude, startLongitude, endLatitude, endLongitude);
-
-    return distance;
-
-  }
 
   /// Get a stream of a single trainer profile document
   Stream<TrainerProfileModel> streamTrainerUserProfile(String userId) {

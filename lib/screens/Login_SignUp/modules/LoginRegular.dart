@@ -2,17 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zing_fitnes_trainer/components/passwordInput.dart';
-import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
+
 import 'package:zing_fitnes_trainer/screens/Login_SignUp/forgot_password.dart';
 import 'package:zing_fitnes_trainer/screens/Login_SignUp/modules/SignUpRegular.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/edit_profile_regular.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/profile_regular_user.dart';
+
 import 'package:zing_fitnes_trainer/screens/home/home_container.dart';
-import 'package:zing_fitnes_trainer/screens/home/home_screen.dart';
+
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 import 'package:zing_fitnes_trainer/utils/authentication.dart';
 import 'package:zing_fitnes_trainer/utils/showdialogue.dart';
@@ -20,7 +20,7 @@ import '../../../components/button.dart';
 import '../../../components/input.dart';
 import '../../../utils/myColors.dart';
 import '../../../providers/login_SignUpProvider.dart';
-import './SignUpTrainer.dart';
+
 import 'package:zing_fitnes_trainer/utils/validator.dart';
 
 class LoginRegular extends StatefulWidget {
@@ -34,10 +34,13 @@ class _LoginRegularState extends State<LoginRegular> {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   String notificationToken;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  String longitude,latitude;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getLocation();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -69,6 +72,34 @@ class _LoginRegularState extends State<LoginRegular> {
 
     });
   }
+  _saveLongitude(String longitude) async {
+    final prefs =  await StreamingSharedPreferences.instance;
+
+
+    prefs.setString(Config.longitude, longitude);
+  }
+  _saveLatitude(String latitude) async {
+    final prefs =  await StreamingSharedPreferences.instance;
+
+
+    prefs.setString(Config.latitude, latitude);
+  }
+
+
+  void getLocation() async{
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      longitude = position?.longitude.toString();
+      latitude = position?.latitude.toString();
+
+      print("longitude"+longitude);
+      print("latitude"+latitude);
+
+      _saveLatitude(latitude);
+      _saveLongitude(longitude);
+    });
+  }
   _launchURL() async {
     const url = 'https://www.websitepolicies.com/policies/view/RpRamNWi';
     if (await canLaunch(url)) {
@@ -85,7 +116,7 @@ class _LoginRegularState extends State<LoginRegular> {
   Widget build(BuildContext context) {
     var formdata = Provider.of<LoginSignUpProvider>(context);
     return Form(
-      autovalidate: formdata.readAutovalidate,
+      autovalidateMode: AutovalidateMode.always,
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,7 +326,12 @@ class _LoginRegularState extends State<LoginRegular> {
           data.login().then((value) {
             _saveUserId(value);
             print(value);
-            data.updateNotificationToken(notificationToken, value).then((_){
+            Map map = new Map<String,dynamic>();
+            map[Config.notificationToken] =notificationToken;
+            map[Config.longitude] = longitude;
+            map[Config.latitude] = latitude;
+
+            data.updateTokenAndLongitude(map, value).then((_){
               Navigator.push(
                 context,
                 MaterialPageRoute(

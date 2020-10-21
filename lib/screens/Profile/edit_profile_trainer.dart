@@ -196,24 +196,12 @@ class _FormSectionState extends State<FormSection> {
   }
 
 
-void getLocation() async{
-  final List<Placemark> placemarks = await Future(
-          () => _geolocator.placemarkFromAddress(locationController.text))
-      .catchError((onError) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(onError.toString()),
-    ));
-    return Future.value(List<Placemark>());
-  });
-
-  if (placemarks != null && placemarks.isNotEmpty) {
-    final Placemark pos = placemarks[0];
-
-
+  void getLocation() async{
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
     setState(() {
-      longitude = pos.position?.longitude.toString();
-      latitude = pos.position?.latitude.toString();
+      longitude = position?.longitude.toString();
+      latitude = position?.latitude.toString();
 
       print("longitude"+longitude);
       print("latitude"+latitude);
@@ -221,9 +209,7 @@ void getLocation() async{
       _saveLatitude(latitude);
       _saveLongitude(longitude);
     });
-
   }
-}
   @override
   void initState() {
     // TODO: implement initState

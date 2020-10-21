@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,13 +32,14 @@ class _LoginTrainerState extends State<LoginTrainer> {
   var userAuth = UserAuth();
   bool _loading = false;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
+  String longitude,latitude;
   String notificationToken;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getLocation();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -270,6 +272,32 @@ class _LoginTrainerState extends State<LoginTrainer> {
     );
   }
 
+  _saveLongitude(String longitude) async {
+    final prefs =  await StreamingSharedPreferences.instance;
+
+
+    prefs.setString(Config.longitude, longitude);
+  }
+  _saveLatitude(String latitude) async {
+    final prefs =  await StreamingSharedPreferences.instance;
+
+
+    prefs.setString(Config.latitude, latitude);
+  }
+  void getLocation() async{
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      longitude = position?.longitude.toString();
+      latitude = position?.latitude.toString();
+
+      print("longitude"+longitude);
+      print("latitude"+latitude);
+
+      _saveLatitude(latitude);
+      _saveLongitude(longitude);
+    });
+  }
   _saveUserId(String userId) async {
     final prefs =  await StreamingSharedPreferences.instance;
 
@@ -292,8 +320,11 @@ class _LoginTrainerState extends State<LoginTrainer> {
        data.login().then((firebaseUserId) {
          _saveUserId(firebaseUserId);
          print(firebaseUserId);
-
-         data.updateNotificationToken(notificationToken, firebaseUserId)
+         Map map = new Map<String,dynamic>();
+         map[Config.notificationToken] =notificationToken;
+         map[Config.longitude] = longitude;
+         map[Config.latitude] = latitude;
+         data.updateTokenAndLongitude(map, firebaseUserId)
              .then((_) {
            setState(() {
              _loading = false;

@@ -118,32 +118,16 @@ Size size = MediaQuery.of(context).size;
                         setState(() {
                           loading = true;
                         });
-                        final List<Placemark> placemarks = await Future(
-                                () => _geolocator.placemarkFromAddress(locationController.text))
-                            .catchError((onError) {
-                              setState((){
-                                loading =false;
-                              });
-                          _scaffoldKey.currentState
-                            ..removeCurrentSnackBar()
-                            ..showSnackBar(SnackBar(
-                            content: Text("Please enter a valid address"),
-                          ));
-                          return Future.value(List<Placemark>());
-                        });
+                      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-                        if (placemarks != null && placemarks.isNotEmpty) {
-                          final Placemark pos = placemarks[0];
-
-
+                      if(position == null){
 
                           setState(() {
                             loading = false;
-                            longitude = pos.position?.longitude.toString();
-                            latitude = pos.position?.latitude.toString();
+                            longitude = position?.longitude.toString();
+                            latitude = position?.latitude.toString();
 
-                           // _saveLatitude(latitude);
-                          //  _saveLongitude(longitude);
+
 
                             Navigator.pop(context,{
                               Config.longitude:longitude,
