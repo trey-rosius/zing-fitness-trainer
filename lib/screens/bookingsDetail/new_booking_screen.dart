@@ -3,10 +3,12 @@ import 'package:intl/intl.dart';
 
 
 import 'package:provider/provider.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/trainers_screen.dart';
 import 'package:interval_time_picker/interval_time_picker.dart';
+import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 
 class NewBookingScreen extends StatefulWidget {
@@ -30,14 +32,34 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
   var endTimeController = TextEditingController();
   var numberOfPeopleController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String longitude,latitude;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+
+
+  getLongitudeAndLatitude() async{
+    final prefs =  await StreamingSharedPreferences.instance;
+    setState(() {
+      longitude = prefs.getString(Config.longitude, defaultValue: Config.longitude).getValue();
+      latitude = prefs.getString(Config.latitude, defaultValue: Config.latitude).getValue();
+
+      print("longitude "+longitude);
+      print("latitude" +latitude);
+    });
+
+
+  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getLongitudeAndLatitude();
     selectDateController.text = "Select Date";
     print("user Id"+widget.userId);
+
+    setState(() {
+
+    });
   }
 
   Future<Null> selected15MinIncrements(BuildContext context) async{
@@ -484,6 +506,8 @@ Center(
                 endHr: endHr,
                 endMin: endMin,
                 sessionType :sessionType,
+                longitude:longitude,
+                latitude:latitude,
                 numberOfPeople: numberOfPeopleController.text.isEmpty  ? 0 : int.parse(numberOfPeopleController.text)
               );
               Navigator.push(
