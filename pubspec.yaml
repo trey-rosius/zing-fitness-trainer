@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^3.1.0
+  provider: 4.1.0-dev+3
   intl: ^0.16.1
 
   flutter_masked_text: ^0.8.0

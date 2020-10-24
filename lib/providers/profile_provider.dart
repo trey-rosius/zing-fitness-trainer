@@ -8,6 +8,7 @@ import 'package:zing_fitnes_trainer/screens/Profile/modules/certificate_model.da
 import 'package:zing_fitnes_trainer/screens/Profile/modules/user_certificate_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/distance_model.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 class ProfileProvider extends ChangeNotifier{
 
@@ -16,6 +17,24 @@ class ProfileProvider extends ChangeNotifier{
 
   ProfileProvider.instance() : _firestore = Firestore.instance,
         storage = FirebaseStorage.instance;
+
+  DistanceModel _distanceModel;
+
+  DistanceModel get distanceModel => _distanceModel;
+  List<DistanceModel> _listDistanceModel = [];
+
+  List<DistanceModel> get listDistanceModel =>_listDistanceModel;
+
+  set listDistanceModel(val){
+    _listDistanceModel.add(val);
+    notifyListeners();
+  }
+
+  set distanceModel (val){
+    _distanceModel = val;
+    notifyListeners();
+  }
+
 
 
 
@@ -120,6 +139,25 @@ class ProfileProvider extends ChangeNotifier{
 
 
 
+  }
+
+  Future<List<DistanceModel>> listDistance(List<TrainerProfileModel> trainerList,String longitude,String latitude) {
+
+    for (int i = 0; i <= trainerList.length - 1; i++) {
+      calculateDistance(trainerList[i], longitude, latitude).then((value) {
+        print("this is the value" + value.toStringAsFixed(2));
+        distanceModel =
+            DistanceModel(distance: value, trainerId: trainerList[0].userId);
+
+        listDistanceModel = distanceModel;
+      });
+
+
+      print("distance list" + listDistanceModel.toString());
+      if(i == trainerList.length){
+        break;
+      }
+    }
   }
 
   Future<double> calculateDistance(TrainerProfileModel trainerUserModel,String longitude,String latitude) async{

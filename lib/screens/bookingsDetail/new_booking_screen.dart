@@ -103,7 +103,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
             }else if(picked.hourOfPeriod != 0 && picked.minute == 0){
               endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
               startTimeController.text = '${picked.hourOfPeriod}:00 AM';
-              endTimeController.text = '${(picked.hourOfPeriod+1)}:00' +(endHrTimeOfDay.period  ==DayPeriod.am ?"AM":"PM");
+              endTimeController.text = '${(picked.hourOfPeriod+1)}:00' +"AM";
               startHr = picked.hourOfPeriod;
               startMin =00;
               endHr = picked.hourOfPeriod+1;
@@ -111,8 +111,9 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
 
             }else{
               endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
+              print("this once ahdhsahd a hsdad");
               startTimeController.text = '${picked.hourOfPeriod}:${picked.minute} AM';
-              endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute} '+(endHrTimeOfDay.period  ==DayPeriod.am ?"AM":"PM");
+              endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute} '+ "AM";
 
               startHr = picked.hourOfPeriod;
               startMin =picked.minute;

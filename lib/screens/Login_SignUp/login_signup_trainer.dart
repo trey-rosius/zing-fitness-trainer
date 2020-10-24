@@ -82,7 +82,7 @@ class MyLoginSignUp extends StatelessWidget {
                                 MultiProvider(
                                   providers: [
                                     ChangeNotifierProvider(
-                                      builder: (_) => LoginSignUpProvider.instance(),
+                                      create: (_) => LoginSignUpProvider.instance(),
                                     ),
                                   ],
                                   child: Consumer<LoginSignUpProvider>(
