@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/book_now_screen.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/trainers_screen.dart';
 import 'package:interval_time_picker/interval_time_picker.dart';
@@ -511,6 +512,8 @@ Center(
                 latitude:latitude,
                 numberOfPeople: numberOfPeopleController.text.isEmpty  ? 0 : int.parse(numberOfPeopleController.text)
               );
+
+
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
@@ -520,7 +523,8 @@ Center(
                       catchError: (context, error) {
                         print(error);
                       },
-                      child: TrainersScreen(widget.userId,bookingModel));
+                      child:  BookNowScreen(widget.userId,bookingModel));
+                      //child: TrainersScreen(widget.userId,bookingModel));
                   //  child: ProfileRegularUser();
                 }),
               );

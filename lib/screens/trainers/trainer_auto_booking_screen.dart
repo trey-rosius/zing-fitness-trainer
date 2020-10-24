@@ -1,24 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/distance_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
 
 import 'package:zing_fitnes_trainer/screens/trainers/booking_card.dart';
 
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
-class TrainerBookingsScreen extends StatefulWidget {
-  TrainerBookingsScreen(this.userId,this.trainerInfo,this.bookingModel);
+class TrainerAutoBookingsScreen extends StatefulWidget {
+  TrainerAutoBookingsScreen(this.userId,this.bookingModel);
   final String userId;
-  final TrainerProfileModel trainerInfo;
+
   final NewBookingModel bookingModel;
   @override
-  _TrainerBookingsScreenState createState() => _TrainerBookingsScreenState();
+  _TrainerAutoBookingsScreenState createState() => _TrainerAutoBookingsScreenState();
 }
 
-class _TrainerBookingsScreenState extends State<TrainerBookingsScreen> {
+class _TrainerAutoBookingsScreenState extends State<TrainerAutoBookingsScreen> {
   Future<Null> alertText(BuildContext context) async {
     return showDialog<Null>(
       context: context,
@@ -61,8 +63,21 @@ class _TrainerBookingsScreenState extends State<TrainerBookingsScreen> {
   bool _loading = false;
   @override
   Widget build(BuildContext context) {
+    var trainerInfo = Provider.of<TrainerProfileModel>(context);
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return trainerInfo == null ?
+    Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        title: Text('Trainer Booking Details',style: TextStyle(fontSize: 20),),
+        centerTitle: true,
+      ),
+      body: Container(child: Center(child: CircularProgressIndicator(),),),
+    ):
+
+    Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         elevation: 0,
@@ -119,7 +134,7 @@ class _TrainerBookingsScreenState extends State<TrainerBookingsScreen> {
 
               Container(
                 margin: EdgeInsets.symmetric(vertical: 20),
-                child: BookingsCard(widget.userId,widget.trainerInfo,widget.bookingModel),
+                child: BookingsCard(widget.userId,trainerInfo,widget.bookingModel),
               )
             ],
           ),
@@ -165,7 +180,7 @@ class _TrainerBookingsScreenState extends State<TrainerBookingsScreen> {
             bookingMap[Config.bookingEndMin] = widget.bookingModel.endMin;
             bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
             bookingMap[Config.bookingStatus] = Config.requested;
-            bookingMap[Config.trainerUserId] = widget.trainerInfo.userId;
+            bookingMap[Config.trainerUserId] = trainerInfo.userId;
             bookingMap[Config.userId] = widget.userId;
             bookingMap[Config.bookingSessionStarted] = false;
             bookingMap[Config.bookingSessionCompleted] = false;
@@ -177,8 +192,8 @@ class _TrainerBookingsScreenState extends State<TrainerBookingsScreen> {
             bookingMap[Config.createdOn] = FieldValue.serverTimestamp();
 
 
-            bookingMap[Config.sessionRate] = widget.trainerInfo.sessionRate;
-            BookingRepository.instance().saveRequestedBookingDetails(widget.userId,widget.trainerInfo.userId, bookingMap).then((_){
+            bookingMap[Config.sessionRate] = trainerInfo.sessionRate;
+            BookingRepository.instance().saveRequestedBookingDetails(widget.userId,trainerInfo.userId, bookingMap).then((_){
               setState(() {
                 _loading = false;
                 alertText(context);
