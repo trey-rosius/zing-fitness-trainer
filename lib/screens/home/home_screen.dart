@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zing_fitnes_trainer/screens/bookings/regular_users/regular_users_bookings_page.dart';
 import 'package:zing_fitnes_trainer/screens/bookings/trainer_bookings_page.dart';
+import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_auto_booking_screen.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_screen.dart';
 
 import 'package:zing_fitnes_trainer/screens/home/zoom_scaffold.dart';
@@ -47,9 +48,61 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       _selectedIndex = index;
     });
   }
+  Future<Null> bookType(BuildContext context) async {
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return new AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  ListTile(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewAutoBookingScreen(widget.userId),
+
+                        ),
+                      );
+                    },
+                    title: Text("Book Now",style: TextStyle(fontSize: 20),),
+                  ),
+                  Divider(),
+                  ListTile(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewBookingScreen(widget.userId),
+
+                        ),
+                      );
+                    },
+                    title: Text("Book Later",style: TextStyle(fontSize: 20),),
+                  ),
+
+
+
+                ],
+              ),
+            )
+
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+
+
 
         return Scaffold(
           backgroundColor:  Color(0xFF2f00ad),
@@ -119,15 +172,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ],
           ),
 
-          body: widget.userType== Config.trainer ? TrainerBookingsPage(widget.userId,widget.userType) :RegularUsersBookingsPage(widget.userId,widget.userType) ,
-          floatingActionButton: FloatingActionButton(onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => NewBookingScreen(widget.userId),
+          body:
 
-              ),
-            );
+
+          widget.userType== Config.trainer ? TrainerBookingsPage(widget.userId,widget.userType) :RegularUsersBookingsPage(widget.userId,widget.userType) ,
+          floatingActionButton: FloatingActionButton(onPressed: (){
+
+            bookType(context);
+
           },child: Icon(Icons.add),),
 
 

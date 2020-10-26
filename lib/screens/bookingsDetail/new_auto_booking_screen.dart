@@ -12,14 +12,14 @@ import 'package:interval_time_picker/interval_time_picker.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 
-class NewBookingScreen extends StatefulWidget {
-  NewBookingScreen(this.userId);
+class NewAutoBookingScreen extends StatefulWidget {
+  NewAutoBookingScreen(this.userId);
   final String userId;
   @override
-  _NewBookingScreenState createState() => _NewBookingScreenState();
+  _NewAutoBookingScreenState createState() => _NewAutoBookingScreenState();
 }
 
-class _NewBookingScreenState extends State<NewBookingScreen> {
+class _NewAutoBookingScreenState extends State<NewAutoBookingScreen> {
 
   DateTime selectedDate = DateTime.now();
   int day,month,year;
@@ -59,6 +59,14 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
     print("user Id"+widget.userId);
 
     setState(() {
+      day = selectedDate.day;
+      month = selectedDate.month;
+      year = selectedDate.year;
+      selectedDate = selectedDate;
+      print(selectedDate.day.toString());
+      print(selectedDate.month.toString());
+      print(selectedDate.year.toString());
+      selectDateController.text = '${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}';
 
     });
   }
@@ -257,55 +265,8 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
 
 
   }
-/*
-  Future<TimeOfDay> selectedTime12Hour(BuildContext context) async {
-    final TimeOfDay picked =  await showTimePicker(
 
-      context: context,
 
-      initialTime: TimeOfDay.now(),
-
-      builder: (BuildContext context, Widget child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-          child: child,
-        );
-      },
-    );
-    if(picked != null && picked != initialTime){
-
-      setState(() {
-        print(picked.hourOfPeriod);
-        endTimeController.text = '${picked.hourOfPeriod}-${picked.minute}';
-      });
-
-      /*
-      setState(() {
-        endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 1)));
-      });
-      */
-    }
-  }
-*/
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        day = picked.day;
-        month = picked.month;
-        year = picked.year;
-        selectedDate = picked;
-        print(picked.day.toString());
-        print(picked.month.toString());
-        print(picked.year.toString());
-        selectDateController.text = '${picked.day} / ${picked.month} / ${picked.year}';
-
-      });
-  }
   void showInSnackBar(String value) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(
       content: new Text(
@@ -343,7 +304,7 @@ class _NewBookingScreenState extends State<NewBookingScreen> {
                       child: Text("Select Date",style: TextStyle(fontSize: 20,color: Theme.of(context).primaryColorDark),),),
 
                     InkWell(
-                      onTap: () => _selectDate(context),
+                    //  onTap: () => _selectDate(context),
                       child: Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -523,9 +484,9 @@ Center(
                       catchError: (context, error) {
                         print(error);
                       },
-
-                      child: TrainersScreen(widget.userId,bookingModel));
-
+                      child: BookNowScreen(widget.userId,bookingModel));
+                      //child: TrainersScreen(widget.userId,bookingModel));
+                  //  child: ProfileRegularUser();
                 }),
               );
             }
