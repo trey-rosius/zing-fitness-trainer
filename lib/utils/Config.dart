@@ -248,6 +248,8 @@ class Config{
 
 
   static final String country= "country";
+  static final String numOfPeople= "numOfPeople";
+  static final String massageTherapist= "Massage Therapist";
   static final String pk_key= "pk_test_3NcEyxbZTpX24vEi3KpuQUef00h81LUz94";
   static final String visa= "Visa";
   static final String experience= "experience";

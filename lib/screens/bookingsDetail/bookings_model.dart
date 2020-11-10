@@ -10,11 +10,12 @@ class BookingsModel{
   bool bookingSessionStarted,bookingSessionCompleted;
   String trainerUserId,userId;
   bool currentlyInSession;
+  int numberOfPeople;
   Timestamp createdOn;
 
 
 
-  BookingsModel({this.bookingId, this.bookingDate, this.bookingDay,
+  BookingsModel({this.bookingId, this.numberOfPeople,this.bookingDate, this.bookingDay,
       this.bookingEndHr, this.bookingEndMin, this.bookingStartHr,
       this.bookingStartMin, this.bookingYear, this.bookingMonth,
       this.bookingEndTime, this.bookingStartTime, this.bookingStatus,
@@ -38,6 +39,7 @@ class BookingsModel{
       bookingYear: docSnap[Config.bookingsYear],
       sessionRate: docSnap[Config.sessionRate],
       sessionType: docSnap[Config.sessionType],
+      numberOfPeople: docSnap[Config.numOfPeople]??0,
       currentlyInSession: docSnap[Config.currentlyInSession] ?? false,
       userId: docSnap[Config.userId],
        bookingSessionCompleted: docSnap[Config.bookingSessionCompleted],

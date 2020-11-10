@@ -74,6 +74,17 @@ class _SelectUserTypeScreenState extends State<SelectUserTypeScreen> {
                   },
                     child: Text("Trainer",style: TextStyle(fontSize: 20),),),
                 ),
+                Container(
+                  height: size.height/12,
+                  width: size.width/1.3,
+                  margin: EdgeInsets.all(10),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    onPressed: (){
+                      _saveUserType(Config.trainer);
+                    },
+                    child: Text(Config.massageTherapist,style: TextStyle(fontSize: 20),),),
+                ),
               ],
             ),
 

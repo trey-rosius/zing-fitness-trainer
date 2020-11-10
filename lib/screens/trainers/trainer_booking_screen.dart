@@ -166,6 +166,7 @@ class _TrainerBookingsScreenState extends State<TrainerBookingsScreen> {
             bookingMap[Config.bookingStartMin] = widget.bookingModel.startMin;
             bookingMap[Config.bookingStatus] = Config.requested;
             bookingMap[Config.trainerUserId] = widget.trainerInfo.userId;
+            bookingMap[Config.numOfPeople] = widget.bookingModel.numberOfPeople;
             bookingMap[Config.userId] = widget.userId;
             bookingMap[Config.bookingSessionStarted] = false;
             bookingMap[Config.bookingSessionCompleted] = false;

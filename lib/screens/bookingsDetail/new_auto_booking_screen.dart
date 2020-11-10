@@ -111,7 +111,7 @@ class _NewAutoBookingScreenState extends State<NewAutoBookingScreen> {
 
             }else if(picked.hourOfPeriod != 0 && picked.minute == 0){
               endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
-              startTimeController.text = '${picked.hourOfPeriod}:00 AM';
+              startTimeController.text = '${picked.hourOfPeriod}:00' +'AM';
               endTimeController.text = '${(picked.hourOfPeriod+1)}:00' +"AM";
               startHr = picked.hourOfPeriod;
               startMin =00;
@@ -136,8 +136,9 @@ class _NewAutoBookingScreenState extends State<NewAutoBookingScreen> {
 
               if(picked.hourOfPeriod == 12 && picked.minute == 0)
               {
+                print("hour"+picked.hourOfPeriod.toString());
                 endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
-                startTimeController.text = '12:00'+ (picked.period ==DayPeriod.am ?"AM":"PM");
+                startTimeController.text = '12:00'+"PM";
                 endTimeController.text = '1:00'+(endHrTimeOfDay.period ==DayPeriod.am ?"AM":"PM");
                 startHr = 12;
                 startMin =00;
@@ -145,8 +146,9 @@ class _NewAutoBookingScreenState extends State<NewAutoBookingScreen> {
                 endMin=00;
 
               }else if(picked.hourOfPeriod == 12 && picked.minute != 0){
+                print("hour"+picked.hourOfPeriod.toString());
                 endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
-                startTimeController.text = '12:${picked.minute}'+(picked.period ==DayPeriod.am ?"AM":"PM");
+                startTimeController.text = '12:${picked.minute}'+"PM";
                 endTimeController.text = '1:${picked.minute}'+(endHrTimeOfDay.period  ==DayPeriod.am ?"AM":"PM");
                 startHr = 12;
                 startMin =picked.minute;
@@ -154,6 +156,7 @@ class _NewAutoBookingScreenState extends State<NewAutoBookingScreen> {
                 endMin=picked.minute;
 
               }else if(picked.hourOfPeriod != 12 && picked.minute == 0){
+                print("hour"+picked.hourOfPeriod.toString());
                 endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
                 startTimeController.text = '${picked.hourOfPeriod}:00'+"PM";
                 endTimeController.text = '${(picked.hourOfPeriod+1)}:00'+"PM";
@@ -163,6 +166,7 @@ class _NewAutoBookingScreenState extends State<NewAutoBookingScreen> {
                 endMin=00;
 
               }else{
+                print("hour"+picked.hourOfPeriod.toString());
                 endHrTimeOfDay = TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 2)));
                 startTimeController.text = '${picked.hourOfPeriod}:${picked.minute}'+"PM";
                 endTimeController.text = '${(picked.hourOfPeriod+1)}:${picked.minute}'+"PM";
