@@ -17,16 +17,6 @@ class CreditCardScreen extends StatefulWidget {
 
 class _CreditCardScreenState extends State<CreditCardScreen> {
 
-  void addCard(){
-
-
-
-    StripeSource.addSource().then((String token) {
-      print("here is the token"+token);
-    CreditCardRepository.instance().addCard(widget.userId, token);
-    });
-
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +34,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
               fontSize: 20.0),
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed:()=>addCard(),
+      floatingActionButton: FloatingActionButton(onPressed:()=>CreditCardRepository.instance().paymentRequestWithCardForm(widget.userId),
       child: Icon(Icons.credit_card),),
       body:StreamProvider.value(
         value: CreditCardRepository.instance().streamUserCreditCards(widget.userId),

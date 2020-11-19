@@ -225,6 +225,9 @@ class Config{
 
   static final String booking = "booking";
   static final String presence = "presence";
+  static final String expMonth = "expMonth";
+  static final String expYear = "expYear";
+  static final String paymentMethodId = "paymentMethodId";
 
   //notification Strings
 

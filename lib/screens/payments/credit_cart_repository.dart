@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:stripe_payment/stripe_payment.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
 import 'package:zing_fitnes_trainer/screens/payments/credit_card_model.dart';
 import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
@@ -15,14 +16,50 @@ class CreditCardRepository  extends ChangeNotifier{
 
     Future<void>addCard(String userId,String token){
 
-     return _firestore.collection(Config.users).document(userId).collection(Config.tokens).add({
-        Config.tokenId:token
-      }).then((val){
+      return _firestore
+          .collection(Config.users)
+          .document(userId)
+          .collection(Config.paymentMethodId)
+          .add({Config.paymentMethodId: token}).then((val) {
         print("User Card Token Saved");
-
       });
     }
 
+  void paymentRequestWithCardForm(String userId) {
+    StripePayment.paymentRequestWithCardForm(CardFormPaymentRequest())
+        .then((paymentMethod) {
+      print("payment method id " + paymentMethod.id);
+      print("last 4 digits " + paymentMethod.card.last4);
+      print("exp month " + paymentMethod.card.expMonth.toString());
+      print("exp year " + paymentMethod.card.expYear.toString());
+      print("received " + paymentMethod.card.brand);
+
+      Map map = Map<String, Object>();
+      map[Config.last4] = paymentMethod.card.last4;
+      map[Config.expMonth] = paymentMethod.card.expMonth;
+      map[Config.expYear] = paymentMethod.card.expYear;
+      map[Config.brand] = paymentMethod.card.brand;
+      map[Config.createdOn] = FieldValue.serverTimestamp();
+      map[Config.paymentMethodId] = paymentMethod.id;
+
+      print("received " + paymentMethod.card.last4);
+      saveCardDetails(userId, map, paymentMethod.id);
+      addCard(userId, paymentMethod.id);
+    });
+  }
+  /// Get a Stream of credit cards for a user
+  Stream<List<CreditCardModel>> streamUserCreditCards(String userId) {
+    return _firestore
+        .collection(Config.users)
+        .document(userId)
+        .collection(Config.cards)
+        .orderBy(Config.createdOn, descending: true)
+        .snapshots()
+        .map((list) => list.documents
+        .map((doc) => CreditCardModel.fromFirestore(doc))
+        .toList());
+  }
+  /*
   /// Get a Stream of credit cards for a user
   Stream<List<CreditCardModel>> streamUserCreditCards(String userId){
     return _firestore
@@ -34,9 +71,21 @@ class CreditCardRepository  extends ChangeNotifier{
         .map((list) =>
         list.documents.map((doc) => CreditCardModel.fromFirestore(doc)).toList());
 
-
-
   }
+  */
+
+  Future<void> saveCardDetails(String userId, Map cardMap, String paymentId) {
+    return _firestore
+        .collection(Config.users)
+        .document(userId)
+        .collection(Config.cards)
+        .document(paymentId)
+        .setData(cardMap, merge: true)
+        .then((_) {
+      print("User Card Token Saved");
+    });
+  }
+
 
   Future<void>setCardAsDefault(String userId,Map defaultMap){
       return _firestore

@@ -53,7 +53,7 @@ class BookingRepository{
     return _firestore.collection(Config.users).document(userId).collection(Config.charges).document(customerId).setData({
       Config.currencyDes:'usd',
       Config.amount: (amount*100).round(),
-
+      Config.userId: userId,
       Config.customerId:customerId
     }).then((val){
 

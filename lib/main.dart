@@ -12,7 +12,16 @@ Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   final preferences = await StreamingSharedPreferences.instance;
   final settings = AppSettings(preferences);
-  StripeSource.setPublishableKey(Config.pk_key);
+  StripePayment.setOptions(
+    StripeOptions(
+      publishableKey:
+      Config.pk_key, // add you key as per Stripe dashboard
+      // merchantId: 'merchant.thegreatestmarkeplace',
+      merchantId: 'apple-pay',
+// add you merchantId as per apple developer account
+      androidPayMode: 'test',
+    ),
+  );
 
 
   runApp(App(settings));

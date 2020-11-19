@@ -1,35 +1,41 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
-class CreditCardModel{
+class CreditCardModel {
   String cardType;
   String cardNumber;
+  Timestamp createdOn;
 
   String holderName;
+  String paymentMethodId;
   int month;
-  int  year;
+  int year;
 
   String cardId;
   String customer;
 
-  CreditCardModel({this.cardType, this.cardNumber, this.holderName,
-      this.month, this.year, this.cardId,this.customer});
+  CreditCardModel(
+      {this.cardType,
+        this.cardNumber,
+        this.month,
+        this.year,
+        this.createdOn,
+        this.cardId,
+        this.paymentMethodId,
+        this.holderName,
+        this.customer});
 
-  factory CreditCardModel.fromFirestore(DocumentSnapshot docSnap){
+  factory CreditCardModel.fromFirestore(DocumentSnapshot docSnap) {
     return CreditCardModel(
-       cardType: docSnap[Config.card][Config.brand],
-       cardNumber: docSnap[Config.card][Config.last4],
-
-       holderName: docSnap[Config.cardHolderName],
-      month: docSnap[Config.card][Config.exp_month],
-      year: docSnap[Config.card][Config.exp_year],
-
-      cardId:docSnap[Config.cardId],
-      customer: docSnap[Config.customer]
-
-
-    );
+        cardType: docSnap[Config.brand],
+        cardNumber: docSnap[Config.last4],
+        createdOn: docSnap[Config.createdOn],
+        holderName: docSnap[Config.cardHolderName] ?? "",
+        month: docSnap[Config.expMonth],
+        year: docSnap[Config.expYear],
+        paymentMethodId: docSnap[Config.paymentMethodId],
+        cardId: docSnap[Config.cardId],
+        customer: docSnap[Config.customerId] ?? "");
   }
-
-
 }
