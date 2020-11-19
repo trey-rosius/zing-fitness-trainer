@@ -74,7 +74,7 @@ class TrainerDetailsBookingsCard extends StatelessWidget {
                 Divider(),
                 otherInfo("Session type", bookingModel.sessionType),
                 bookingModel.sessionType =="Groups"?
-                otherInfo("Number of people", bookingModel.numberOfPeople) : Container(),
+                otherInfo("Number of people", bookingModel.numberOfPeople.toString()) : Container(),
 
                 otherInfo("Speciality", trainerInfo.speciality),
                 Container(

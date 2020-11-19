@@ -2,17 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/providers/profile_provider.dart';
-import 'package:zing_fitnes_trainer/screens/Profile/regular_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
-
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
-import 'package:zing_fitnes_trainer/screens/trainers/trainer_booking_screen.dart';
 import 'package:zing_fitnes_trainer/screens/trainers/trainer_details_screen.dart';
-import 'package:zing_fitnes_trainer/screens/trainers/user_details_screen.dart';
-
-
 import 'package:zing_fitnes_trainer/utils/Config.dart';
-import 'package:zing_fitnes_trainer/utils/myColors.dart';
+
 
 class UserRequestedBookingsItem extends StatelessWidget {
   UserRequestedBookingsItem(

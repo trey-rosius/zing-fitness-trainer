@@ -89,6 +89,8 @@ class UserBookingsCard extends StatelessWidget {
                 otherInfo("Start Time", bookingModel.bookingStartTime),
                 otherInfo("End Time", bookingModel.bookingEndTime),
                 otherInfo("Session type", bookingModel.sessionType),
+                bookingModel.sessionType =="Groups"?
+                otherInfo("Number of people", bookingModel.numberOfPeople.toString()) : Container(),
 
 
               ],

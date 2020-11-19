@@ -1,15 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:zing_fitnes_trainer/screens/Profile/trainer_profile_model.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/booking_repository.dart';
 import 'package:zing_fitnes_trainer/screens/bookingsDetail/bookings_model.dart';
-import 'package:zing_fitnes_trainer/screens/bookingsDetail/new_booking_model.dart';
-import 'package:zing_fitnes_trainer/screens/bookingsDetail/request_booking_screen.dart';
-import 'package:zing_fitnes_trainer/screens/payments/credit_cart_repository.dart';
-import 'package:zing_fitnes_trainer/screens/payments/default_credit_card_model.dart';
+
 import 'package:zing_fitnes_trainer/screens/trainers/trainer_details_booking_card.dart';
-import 'package:zing_fitnes_trainer/screens/trainers/make_payment_screen.dart';
 import 'package:zing_fitnes_trainer/utils/Config.dart';
 
 class TrainerDetailsScreen extends StatefulWidget {
@@ -57,7 +52,7 @@ class _TrainerDetailsScreenState extends State<TrainerDetailsScreen> {
                        Row(
                          children: <Widget>[
                            Text(widget.bookingModel.bookingStartTime,style: TextStyle(fontSize: 20,color:Colors.black,fontWeight: FontWeight.bold),),
-                           Text(widget.bookingModel.bookingStartHr > 12 ? "PM":"AM",style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
+                          // Text(widget.bookingModel.bookingStartHr > 12 ? "PM":"AM",style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
                          ],
                        ),
 
@@ -72,7 +67,7 @@ class _TrainerDetailsScreenState extends State<TrainerDetailsScreen> {
                      Row(
                        children: <Widget>[
                          Text(widget.bookingModel.bookingEndTime,style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
-                         Text(widget.bookingModel.bookingEndHr > 12 ? "PM":"AM",style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
+                        // Text(widget.bookingModel.bookingEndHr > 12 ? "PM":"AM",style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
                        ],
                      ),
 
