@@ -69,6 +69,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
   Widget build(BuildContext context) {
     var colors = MyColors();
     Size size = MediaQuery.of(context).size;
+
     var defaultCard = Provider.of<DefaultCreditCardModel>(context);
     return Scaffold(
       appBar: AppBar(
@@ -217,7 +218,13 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                   Divider(),
                   otherInfo("Session type", widget.bookingModel.sessionType),
                   Divider(),
+                  if(widget.bookingModel.sessionType =="Groups")
+                  otherInfo("Number of People", widget.bookingModel.numberOfPeople.toString())
+                  else
+                    Container(),
+                  Divider(),
                   otherInfo("Speciality", widget.trainerInfo.speciality),
+
                   Divider(),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
@@ -299,6 +306,8 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                               setState(() {
                                 loading = true;
                               });
+
+                              print("customer id is"+defaultCard.customerId);
                               saveBookingAfterDuration(defaultCard.customerId,double.parse(widget.trainerInfo.sessionRate), bookingMap);
 
 

@@ -69,7 +69,9 @@ class BookingRepository{
 
   ///Stream Single Bookings
   Stream<BookingsModel>streamSingleBooking(String bookingId){
-    return _firestore.collection(Config.bookings).document(bookingId).snapshots()
+    return _firestore.collection(Config.bookings)
+         
+        .document(bookingId).snapshots()
         .map((snap){
       print(snap.data.toString());
       return BookingsModel.fromFirestore(snap);
@@ -80,6 +82,7 @@ class BookingRepository{
   Stream<List<UserBookingsModel>>streamListOfUserBookings(String userId){
 
     return _firestore.collection(Config.users).document(userId).collection(Config.userBookings)
+        .orderBy(Config.createdOn,descending: true)
 
         .snapshots()
         .map((list)=>
