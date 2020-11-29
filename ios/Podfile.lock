@@ -321,9 +321,7 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - geolocator (5.1.5):
-    - Flutter
-  - google_api_availability (2.0.1):
+  - "geolocator (6.0.0+4)":
     - Flutter
   - GoogleAppMeasurement (6.7.2):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
@@ -389,8 +387,6 @@ PODS:
   - libwebp/mux (1.1.0):
     - libwebp/demux
   - libwebp/webp (1.1.0)
-  - location_permissions (2.0.3):
-    - Flutter
   - Mantle (2.1.1):
     - Mantle/extobjc (= 2.1.1)
   - Mantle/extobjc (2.1.1)
@@ -412,10 +408,10 @@ PODS:
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
-  - Stripe (16.0.3)
-  - stripe_payment (0.0.1):
+  - Stripe (19.4.0)
+  - stripe_payment (1.0.0):
     - Flutter
-    - Stripe (= 16.0.3)
+    - Stripe (>= 19.0.1)
   - url_launcher (0.0.1):
     - Flutter
 
@@ -430,9 +426,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
-  - google_api_availability (from `.symlinks/plugins/google_api_availability/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
-  - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -491,12 +485,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_image_compress/ios"
   geolocator:
     :path: ".symlinks/plugins/geolocator/ios"
-  google_api_availability:
-    :path: ".symlinks/plugins/google_api_availability/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
-  location_permissions:
-    :path: ".symlinks/plugins/location_permissions/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
@@ -531,8 +521,7 @@ SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_image_compress: 082f8daaf6c1b0c9fe798251c750ef0ecd98d7ae
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  geolocator: 80aba2bb48f8c7dfc5a8b70b9d13fc3edc8399c4
-  google_api_availability: 163b30f802e6148c67f092aa4501c90ddd8eec8d
+  geolocator: 1ae40084cc6c1586ce5ad12cfc3fd38c64d05f2f
   GoogleAppMeasurement: 3def7652b1f5b5a576178dc332e2a36a260fbef6
   GoogleDataTransport: 672fb0ce96fe7f7f31d43672fca62ad2c9c86f7b
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
@@ -542,7 +531,6 @@ SPEC CHECKSUMS:
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
-  location_permissions: 195ff2a1182fa9029ef3f2653156961ee5a1e40b
   Mantle: 35238ae6f2e2b2d474fa7b67fee82a59fea71915
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
@@ -552,8 +540,8 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
   shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
-  Stripe: 82a77b8dd26be83555f8ca9a3cc034dfda81fc40
-  stripe_payment: ad35272cff5c6c6d3cdaf88f34393536fe365870
+  Stripe: 92f1c73a9dbd3c54277ed06a1fea6e08f20414c6
+  stripe_payment: ad86f099179edb7b9fe12b9b62ac3746d5e56802
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
 PODFILE CHECKSUM: 773246ea3c8c7c8d17dd2fde2265ae37a79b8eb4
